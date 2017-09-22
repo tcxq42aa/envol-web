@@ -1,5 +1,24 @@
 extends layout
-
+block style
+  link(rel='stylesheet', href='/stylesheets/index.css')
 block content
-  h1= title
-  p Welcome to #{title}
+  .panel
+    .avatar
+      .img
+      .name Seb
+    .statictis
+      .statictis-item
+        .lg 1600
+        span 学习时长/分钟
+      .statictis-item
+        .lg 31
+        span 坚持学习/天
+
+  .btn-main 进入学习
+
+  - var active = 'index';
+  include tabbar
+block script
+  script(src='/javascripts/index.js')
+
+

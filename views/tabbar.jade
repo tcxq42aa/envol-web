@@ -1,0 +1,18 @@
+//
+   Created by charles on 17/9/23.
+
+div.tabbar
+  - if (active == 'index')
+    div.tabbar-item.active 学习首页
+  - else
+    a.tabbar-item(href='/') 学习首页
+
+  - if (active == 'plan')
+    div.tabbar-item.active 阅读计划
+  - else
+    a.tabbar-item(href='/plan') 阅读计划
+
+  - if (active == 'uc')
+    div.tabbar-item.active 个人中心
+  - else
+    a.tabbar-item(href='/uc') 个人中心
