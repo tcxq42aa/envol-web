@@ -7,7 +7,7 @@ body {
   display: flex;
   bottom: 0;
   width: 100%;
-  height: 1.26rem;
+  height: 1rem;
   background-color: #fff;
   box-shadow: 0 0 0.25rem 0px #eee;
   justify-content: space-around;
@@ -17,10 +17,10 @@ body {
   text-align: center;
   color: #999;
   text-decoration: none;
-  padding-top: .85rem;
+  padding-top: .65rem;
   background-repeat: no-repeat;
-  background-position: center .15rem;
-  background-size: .6rem;
+  background-position: center .1rem;
+  background-size: .5rem;
   -webkit-tap-highlight-color: transparent;
 }
 .tabbar-item:nth-child(1) {
