@@ -19,7 +19,7 @@ pack: init
 
 	sh online.sh
 
-	(cp -r bin public routes node_modules views app.js package.json ./$(TMPDIR))
+	(cd server && cp -r bin public routes node_modules views app.js package.json ../$(TMPDIR))
 
 	mkdir -p $(RELEASESDIR)
 	tar czf $(RELEASESDIR)/$(TMPDIR).tar.gz $(TMPDIR)/
