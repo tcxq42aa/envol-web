@@ -18,7 +18,6 @@ const routes = [
   { path: '*', redirect: '/index' }
 ]
 const router = new VueRouter({
-  mode: 'history',
   routes // （缩写）相当于 routes: routes
 })
 

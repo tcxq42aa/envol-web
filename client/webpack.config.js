@@ -1,7 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: './src/main.js',
@@ -48,14 +48,6 @@ module.exports = {
         }
       },
       {
-        test: /\.styl$/,
-        loader: ['style-loader', 'css-loader', 'stylus-loader']
-      },
-      {
-        test: /\.css$/,
-        loader: ['style-loader', 'css-loader']
-      },
-      {
         test: /\.(eot|ttf|woff|woff2)\w*/,
         loader: 'url-loader?limit=1000000'
       }
@@ -63,7 +55,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'index.ejs'),
+      template: path.join(__dirname, 'index-prod.html'),
       filename: 'index.ejs'
     })
   ],
@@ -95,6 +87,34 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    })
+    }),
+    new ExtractTextPlugin("styles.css"),
+  ])
+  module.exports.module.rules = (module.exports.module.rules || []).concat([
+    {
+      test: /\.styl$/,
+      loader: ExtractTextPlugin.extract({
+        fallback: "style-loader",
+        use: ["css-loader", "stylus-loader"]
+      })
+    },
+    {
+      test: /\.css$/,
+      loader: ExtractTextPlugin.extract({
+        fallback: "style-loader",
+        use: "css-loader"
+      })
+    },
+  ])
+} else {
+  module.exports.module.rules = (module.exports.module.rules || []).concat([
+    {
+      test: /\.styl$/,
+      loader: ['style-loader', 'css-loader', 'stylus-loader']
+    },
+    {
+      test: /\.css$/,
+      loader: ['style-loader', 'css-loader']
+    },
   ])
 }
