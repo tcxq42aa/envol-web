@@ -60,4 +60,6 @@ typings/
 package-lock.json
 www.envol.vip/
 releases/
+server/public/dist
+server/views
 

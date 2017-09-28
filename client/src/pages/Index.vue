@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="index-container">
+  <v-container fluid>
     <div class="index-panel orange">
       <v-avatar
         size="75px"

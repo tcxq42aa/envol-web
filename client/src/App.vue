@@ -3,16 +3,16 @@
     <main>
       <router-view></router-view>
     </main>
-    <v-bottom-nav :value="true" :active.sync="e1" class="white">
-      <v-btn flat class="orange--text" value="recent">
+    <v-bottom-nav :value="true" :active.sync="currentPage" class="white">
+      <v-btn flat class="orange--text" value="/index" @click="switchTab('/index')">
         <span>阅读首页</span>
         <v-icon>home</v-icon>
       </v-btn>
-      <v-btn flat class="orange--text" value="favorites">
+      <v-btn flat class="orange--text" value="/plan" @click="switchTab('/plan')">
         <span>阅读计划</span>
         <v-icon>date_range</v-icon>
       </v-btn>
-      <v-btn flat class="orange--text" value="nearby">
+      <v-btn flat class="orange--text" value="/uc" @click="switchTab('/uc')">
         <span>个人中心</span>
         <v-icon>person_outline</v-icon>
       </v-btn>
@@ -22,22 +22,17 @@
 
 <script>
   export default {
+    mounted(){
+      this.currentPage = location.pathname
+    },
     data () {
       return {
-        e6: null,
-        menu2: false,
-        modal2: false,
-        clipped: false,
-        drawer: true,
-        fixed: false,
-        items: [
-          { icon: 'bubble_chart', title: 'Inspire' }
-        ],
-        miniVariant: false,
-        right: true,
-        rightDrawer: false,
-        title: 'Vuetify.js',
-        e1: ''
+        currentPage: '/index'
+      }
+    },
+    methods: {
+      switchTab(e) {
+        this.$router.replace(e)
       }
     }
   }

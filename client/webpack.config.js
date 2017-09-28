@@ -1,5 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = {
   entry: './src/main.js',
@@ -48,9 +50,23 @@ module.exports = {
       {
         test: /\.styl$/,
         loader: ['style-loader', 'css-loader', 'stylus-loader']
+      },
+      {
+        test: /\.css$/,
+        loader: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)\w*/,
+        loader: 'url-loader?limit=1000000'
       }
     ]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'index.ejs'),
+      filename: 'index.ejs'
+    })
+  ],
   devServer: {
     host: '0.0.0.0',
     historyApiFallback: true,

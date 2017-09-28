@@ -1,0 +1,30 @@
+.plan-status
+  padding-left 10px
+  display flex
+  align-items  center
+  justify-content center
+.point
+  margin-left 8px
+  display block
+  width 13px
+  height 13px
+  border-radius 50%
+  box-shadow 0 1px 5px rgba(219, 219, 219, 0.8)
+  background linear-gradient(to right, rgb(255,213,68), rgb(255,231,18))
+.point-1
+  @extend .point
+  background #fff
+
+.point-2
+  @extend .point
+  background #fff
+  box-shadow inset 0 0 0 2px rgb(255,231,18), 0 1px 5px rgba(219, 219, 219, 0.8)
+.plan-panel
+  position relative
+  height 311px
+
+.calender-year
+  position absolute
+  left 0
+  top 0
+  font-size 150px
