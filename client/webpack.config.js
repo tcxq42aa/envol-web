@@ -41,6 +41,10 @@ module.exports = {
         ]
       },
       {
+        test: /\.html$/,
+        loader: 'html-loader?interpolate=require'
+      },
+      {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
         options: {

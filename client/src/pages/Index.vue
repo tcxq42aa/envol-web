@@ -5,9 +5,9 @@
         size="75px"
         class="grey index-avatar"
       >
-        <img src="../../public/avatar.jpg" alt="avatar">
+        <img :src="userInfo.headimgurl" alt="avatar">
       </v-avatar>
-      <div class="white--text mt-3 mb-3 subheading">ENVOL</div>
+      <div class="white--text mt-3 mb-3 subheading">{{userInfo.nickname}}</div>
       <v-layout row wrap class="white--text text-xs-center">
         <v-flex xs6 class="seg-vert-small">
           <div class="display-1">1600</div>
@@ -57,7 +57,9 @@
   import '../stylus/index.styl'
   export default {
     data() {
-      return {}
+      return {
+        userInfo: userInfo
+      }
     }
   }
 </script>

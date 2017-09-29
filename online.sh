@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 cd client && npm install --registry=https://registry.npm.taobao.org && npm run build
-cp -r dist ../server/public
-cp dist/index.ejs ../server/views
+cd ../server/ && npm install  --registry=https://registry.npm.taobao.org
+cd ../
+cp -r client/dist server/public
+cp client/dist/index.ejs server/views
