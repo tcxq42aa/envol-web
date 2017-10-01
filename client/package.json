@@ -10,6 +10,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "html-loader": "^0.5.1",
     "url-loader": "^0.5.9",
     "vue": "^2.4.2",

@@ -3,7 +3,7 @@
     <main>
       <router-view></router-view>
     </main>
-    <v-bottom-nav :value="true" :active.sync="currentPage" class="white">
+    <v-bottom-nav v-if="!navHidden" :value="true" :active.sync="currentPage" class="white">
       <v-btn flat class="orange--text" value="/index" @click="switchTab('/index')">
         <span>阅读首页</span>
         <v-icon>home</v-icon>
@@ -23,16 +23,22 @@
 <script>
   export default {
     mounted(){
-      if(location.pathname != '/') {
+      if(location.hash != '#/') {
         this.currentPage = location.pathname
       }
       wx.ready(function(){
         // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
         alert('ready')
       });
+      if(location.hash == '#/appointment'){
+        this.navHidden = true
+      } else {
+        this.navHidden = false
+      }
     },
     data () {
       return {
+        navHidden: false,
         currentPage: '/index'
       }
     },

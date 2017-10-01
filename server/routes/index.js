@@ -10,6 +10,7 @@ router.get('/', function (req, res, next) {
   if(!req.session.userInfo && req.query.code) {
     var code = req.query.code;
     axios.get(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.appid}&secret=${config.secret}&code=${code}&grant_type=authorization_code`).then(function(response){
+      console.log(response.data.errcode)
       if(response.data.errcode) {
         console.log(response.data)
         res.render('invalid', {errcode: response.data.errcode});
@@ -18,6 +19,7 @@ router.get('/', function (req, res, next) {
       var access_token = response.data.access_token;
       var openid = response.data.openid;
       axios.get('https://api.weixin.qq.com/sns/userinfo?access_token=' + access_token + '&openid=' + openid + '&lang=zh_CN').then(function(resp){
+        console.log(resp.data.errcode)
         if(resp.data.errcode) {
           console.log(resp.data)
           res.render('invalid', {errcode: resp.data.errcode});
@@ -25,6 +27,12 @@ router.get('/', function (req, res, next) {
         }
         req.session.userInfo = resp.data;
         req.session.save();
+        //
+        axios.post(config.serverHost + '/api/user/subscribe', resp.data).then((resp2)=>{
+          console.log(resp2.data)
+        }).catch(function (error) {
+          console.log(error);
+        });
         res.render('index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo)});
       })
     })
@@ -33,6 +41,10 @@ router.get('/', function (req, res, next) {
   }
 
 });
+
+router.get('/appointment', function (req, res, next) {
+  res.render('appointment', {title: '法棍阅读'});
+})
 
 /* GET user center page. */
 router.all('/wx', function (req, res, next) {

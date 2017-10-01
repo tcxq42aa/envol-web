@@ -7,6 +7,7 @@ import '../public/css/font.css'
 const Index = () => import('./pages/index.vue')
 const Plan = () => import('./pages/plan.vue')
 const UC = () => import('./pages/uc.vue')
+const Appointment = () => import('./pages/appointment.vue')
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
@@ -15,6 +16,7 @@ const routes = [
   { path: '/index', component: Index },
   { path: '/plan', component: Plan },
   { path: '/uc', component: UC },
+  { path: '/appointment', component: Appointment },
   { path: '*', redirect: '/index' }
 ]
 const router = new VueRouter({
