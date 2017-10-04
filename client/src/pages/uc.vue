@@ -22,9 +22,25 @@
 
     <div class="uc-block-wrap white--text">
       <div class="uc-block block-1">
-        <v-icon class="white--text opacity-6">alarm</v-icon>
-        <div>阅读提醒设置</div>
-        <div>每天</div>
+        <v-dialog
+          persistent
+          v-model="modal2"
+          lazy
+        >
+          <div slot="activator" v-model="e6">
+            <v-icon class="white--text opacity-6">alarm</v-icon>
+            <div>阅读提醒设置</div>
+            <div>每天</div>
+          </div>
+          <v-time-picker v-model="e6" actions>
+            <template scope="{ save, cancel }">
+              <v-card-actions>
+                <v-btn flat primary @click.native="cancel()">取消</v-btn>
+                <v-btn flat primary @click.native="save()">确定</v-btn>
+              </v-card-actions>
+            </template>
+          </v-time-picker>
+        </v-dialog>
       </div><div class="uc-block block-2">
         <v-icon class="white--text opacity-6">alarm</v-icon>
         <div>常见问题</div>
@@ -47,7 +63,9 @@
   export default {
     data() {
       return {
-        userInfo: userInfo || {}
+        userInfo: userInfo || {},
+        e6: null,
+        modal2: false,
       }
     }
   }
