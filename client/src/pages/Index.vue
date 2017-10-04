@@ -58,7 +58,7 @@
   export default {
     data() {
       return {
-        userInfo: userInfo
+        userInfo: userInfo || {}
       }
     }
   }

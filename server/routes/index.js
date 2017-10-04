@@ -117,3 +117,9 @@ function getJsapiTicket() {
 getAccessToken(getJsapiTicket)
 
 module.exports = router;
+module.exports = {
+  router,
+  getAccessToken: ()=>{
+    return access_token
+  }
+};

@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session')
-var routes = require('./routes/index');
+var routes = require('./routes/index').router;
 var users = require('./routes/user');
 
 var app = express();
@@ -34,8 +34,8 @@ if(process.env.NODE_ENV !== 'production') {
     next();
   });
 }
-app.all('*', function(req, res, next){
-  console.log(req.session)
+app.all(function(req, res, next){
+  console.log(req.session.userInfo)
   next()
 })
 app.use('/', routes);
