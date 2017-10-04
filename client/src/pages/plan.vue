@@ -21,14 +21,16 @@
         <div class="day-wrap">
           <div class="day-title" v-for="(date, index) in emptyDates"></div>
           <div class="day-title" v-for="(date, index) in dates">
-            <div class="day" :class="{ finished: dateEqual(date, today), 'white-bg': !dateEqual(date, today)}">{{index + 1}}</div>
+            <div class="day"
+                 @click="viewDetail(date)"
+                 :class="{ finished: dateEqual(date, today), 'white-bg': !dateEqual(date, today)}">{{index + 1}}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="btn-link mt-5 mb-4">
-      <v-btn round class="orange white--text btn__orange">开始学习</v-btn>
-      <a href="javascript:;">&lt; 点击日期  进入当日阅读</a>
+      <v-btn round class="orange white--text btn__orange" @click="viewDetail(today)">开始学习</v-btn>
+      <a href="javascript:;" @click="viewDetail(today)">&lt; 点击日期  进入当日阅读</a>
     </div>
     <div class="book-list">
       <div class="book-item" v-for="book in books">
@@ -49,9 +51,8 @@
   const MONTH_MAP = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   export default {
     created(){
+      document.title = '阅读计划'
       this.initCalender()
-    },
-    mounted(){
     },
     data() {
       return {
@@ -84,6 +85,10 @@
 
       dateEqual(l, r){
         return l.getFullYear() * 10000 + l.getMonth() * 100 + l.getDate() == r.getFullYear() * 10000 + r.getMonth() * 100 + r.getDate()
+      },
+
+      viewDetail(date) {
+        this.$router.push('/planDetail?date=' + date.getTime())
       }
     }
   }

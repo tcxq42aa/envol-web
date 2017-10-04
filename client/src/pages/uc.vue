@@ -61,6 +61,10 @@
 <script>
   import '../stylus/uc.styl'
   export default {
+    created(){
+      document.title = '个人中心'
+      this.initCalender()
+    },
     data() {
       return {
         userInfo: userInfo || {},

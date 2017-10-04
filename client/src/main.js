@@ -6,6 +6,7 @@ import './stylus/main.styl'
 import '../public/css/font.css'
 const Index = () => import('./pages/index.vue')
 const Plan = () => import('./pages/plan.vue')
+const PlanDetail = () => import('./pages/PlanDetail.vue')
 const UC = () => import('./pages/uc.vue')
 const Appointment = () => import('./pages/appointment.vue')
 
@@ -15,6 +16,7 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/index', component: Index },
   { path: '/plan', component: Plan },
+  { path: '/planDetail', component: PlanDetail },
   { path: '/uc', component: UC },
   { path: '/appointment', component: Appointment },
   { path: '*', redirect: '/index' }

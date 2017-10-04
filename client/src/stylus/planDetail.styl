@@ -1,0 +1,64 @@
+.planDetail-container
+  overflow hidden
+.plan-list
+  margin 43px -16px 0
+  display flex
+  transform translateX(-155%);
+  transition transform .25s ease-out
+.plan-card
+  background #fff
+  border-radius  10px
+  position relative
+  width 70%
+  flex-basis 70%
+  flex-shrink 0
+  margin-left 7.5%
+  height 400px
+  box-shadow 0 5px 20px rgb(252, 148, 60)
+  padding 60px 0 40px
+.plan-card:first-child
+  margin-left 15%
+.plan-tag
+  position absolute
+  right 0
+  top 20px
+  background rgb(240,240,240)
+  font-size 15px
+  width 80px
+  height 22px
+  line-height 22px
+  text-align center
+  border-top-left-radius 10px!important
+  border-top-right-radius 0!important
+  border-bottom-left-radius 10px!important
+  border-bottom-right-radius 0!important
+.plan-detail
+  list-style none
+  padding 0
+  height: 100%;
+  overflow: auto;
+  li
+    padding 10px 30px
+    .qa
+      font-size 16px
+      color rgb(51,51,51)
+    .as
+      font-size 13px
+      color rgb(153,153,153)
+    &:active
+      background rgb(240,240,240)
+
+.indicator-wrap
+  display flex
+  width 80px
+  margin 40px auto
+  justify-content space-around
+  .indicator
+    width 10px
+    height 10px
+    border-radius 50%
+    background #fff
+    opacity .5
+    box-shadow 0 5px 20px rgb(252, 148, 60)
+    &.active
+      opacity 1
