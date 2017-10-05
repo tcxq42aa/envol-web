@@ -4,15 +4,15 @@
       <router-view></router-view>
     </main>
     <v-bottom-nav v-if="!navHidden" :value="true" :active.sync="currentPage" class="white">
-      <v-btn flat class="orange--text" value="#/index" @click="switchTab('/index')">
+      <v-btn flat class="orange--text" value="/index" @click="switchTab('/index')">
         <span>阅读首页</span>
         <v-icon>home</v-icon>
       </v-btn>
-      <v-btn flat class="orange--text" value="#/plan" @click="switchTab('/plan')">
+      <v-btn flat class="orange--text" value="/plan" @click="switchTab('/plan')">
         <span>阅读计划</span>
         <v-icon>date_range</v-icon>
       </v-btn>
-      <v-btn flat class="orange--text" value="#/uc" @click="switchTab('/uc')">
+      <v-btn flat class="orange--text" value="/uc" @click="switchTab('/uc')">
         <span>个人中心</span>
         <v-icon>person_outline</v-icon>
       </v-btn>
@@ -21,20 +21,13 @@
 </template>
 
 <script>
+  const extraPages = ['/appointment', '/test']
   export default {
     mounted(){
-      if(location.hash != '#/') {
-        this.currentPage = location.hash
-      }
-      wx.ready(function(){
+//      wx.ready(function(){
         // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-        alert('ready')
-      });
-      if(location.hash == '#/appointment'){
-        this.navHidden = true
-      } else {
-        this.navHidden = false
-      }
+//        alert('ready')
+//      });
     },
     data () {
       return {
@@ -47,7 +40,18 @@
         this.$router.replace(e)
       }
     },
-    watch:{
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      $route(){
+        this.currentPage = this.$router.currentRoute.path
+        if(extraPages.indexOf(this.currentPage) >= 0){
+          this.navHidden = true
+        } else {
+          this.navHidden = false
+        }
+      }
+    }
+//    watch:{
 
 //      $route(){
 //
@@ -62,6 +66,6 @@
 //
 //      }
 
-    }
+//    }
   }
 </script>
