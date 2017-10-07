@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  const extraPages = ['/appointment', '/test']
+  const extraPages = ['/appointment', '/test', '/read']
   export default {
     mounted(){
 //      wx.ready(function(){

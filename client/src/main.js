@@ -10,6 +10,7 @@ const PlanDetail = () => import('./pages/PlanDetail.vue')
 const UC = () => import('./pages/uc.vue')
 const Appointment = () => import('./pages/appointment.vue')
 const Test = () => import('./pages/Test.vue')
+const Read = () => import('./pages/Read.vue')
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
@@ -21,6 +22,7 @@ const routes = [
   { path: '/uc', component: UC },
   { path: '/appointment', component: Appointment },
   { path: '/test', component: Test },
+  { path: '/read', component: Read },
   { path: '*', redirect: '/index' }
 ]
 const router = new VueRouter({
