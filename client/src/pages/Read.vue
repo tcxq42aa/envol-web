@@ -18,8 +18,8 @@
       </div>
     </div>
     <div class="audio-wrap">
-      <div class="btn__next-wrap">
-        <v-btn round class="orange white--text btn__orange btn__next">读完了，去测试</v-btn>
+      <div class="btn__test-wrap">
+        <v-btn round class="orange white--text btn__orange btn__test" href="/#/test">读完了，去测试</v-btn>
       </div>
       <div class="audio-progress">
         <div class="audio-progress-point"></div>
