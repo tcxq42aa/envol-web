@@ -35,7 +35,6 @@ if(process.env.NODE_ENV !== 'production') {
   });
 }
 app.all(function(req, res, next){
-  console.log(req.session.userInfo)
   next()
 })
 app.use('/', routes);

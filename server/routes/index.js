@@ -5,7 +5,12 @@ var sha1 = require('sha1');
 var config = require('../config/app.config');
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  console.log(req.session.userInfo)
+  if(!req.session.userInfo  && !req.query.code) {
+    var url = encodeURIComponent('http://www.envol.vip/')
+    res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe073c9d18b45b0ca&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo#wechat_redirect')
+    return
+  }
+
   if(!req.session.userInfo && req.query.code) {
     var code = req.query.code;
     axios.get(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.appid}&secret=${config.secret}&code=${code}&grant_type=authorization_code`).then(function(response){
@@ -80,7 +85,7 @@ router.get('/api/wx/signature', function(req, res, next){
   var q = req.query;
   var noncestr = 'ttp123';
   var jsapi_ticket = global.jsapi_ticket;
-  var timestamp = Date.now();
+  var timestamp = Math(Date.now()/1000);
   var url = q.url;
   var str = `jsapi_ticket=${jsapi_ticket}&noncestr=${noncestr}&timestamp=${timestamp}&url=${url}`;
   var signature = sha1(str);

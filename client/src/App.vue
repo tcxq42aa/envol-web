@@ -46,21 +46,12 @@
     methods: {
       switchTab(e) {
         this.$router.replace(e)
-      }
-    },
-    watch:{
-
-      $route(){
-        this.currentPage = this.$router.currentRoute.path
-        if(extraPages.indexOf(this.currentPage) >= 0){
-          this.navHidden = true
-        } else {
-          this.navHidden = false
-        }
-        signature('http://www.envol.vip').then(function(res){
+      },
+      refreshSignature(){
+        signature(location.href.split('#')[0]).then(function(res){
           var data = res.data;
           wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: 'wxe073c9d18b45b0ca', // 必填，公众号的唯一标识
             timestamp: data.timestamp, // 必填，生成签名的时间戳
             nonceStr: data.nonceStr, // 必填，生成签名的随机串
@@ -68,6 +59,17 @@
             jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
         })
+      }
+    },
+    watch:{
+      $route(){
+        this.currentPage = this.$router.currentRoute.path
+        if(extraPages.indexOf(this.currentPage) >= 0){
+          this.navHidden = true
+        } else {
+          this.navHidden = false
+        }
+        this.refreshSignature()
       }
 
     }
