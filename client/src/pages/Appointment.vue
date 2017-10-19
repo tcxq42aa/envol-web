@@ -54,18 +54,14 @@
 
 <script>
   import '../stylus/appointment.styl'
-  import axios from 'axios'
-  const instance = axios.create({
-    baseURL: process.env.NODE_ENV !== 'production' ? 'http://127.0.0.1:3100/' : '/',
-    timeout: 3000
-  });
+  import {bind} from '../service/user'
   export default {
     methods: {
       bindPhone() {
         const reg = /^1[34578]\d{9}$/
         const self = this
         if(reg.test(this.mobilePhone)) {
-          instance.put('/api/user/bind?mobilePhone=' + this.mobilePhone).then( res => {
+          bind(this.mobilePhone).then( res => {
             self.dialog = false;
             self.successDialog = true;
           }).catch( e => {

@@ -3,7 +3,6 @@ var router = express.Router();
 var axios = require('axios')
 var sha1 = require('sha1');
 var config = require('../config/app.config');
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
   console.log(req.session.userInfo)
@@ -77,26 +76,40 @@ router.all('/wx', function (req, res, next) {
   }
 });
 
+router.get('/api/wx/signature', function(req, res, next){
+  var q = req.query;
+  var noncestr = 'ttp123';
+  var jsapi_ticket = global.jsapi_ticket;
+  var timestamp = Date.now();
+  var url = q.url;
+  var str = `jsapi_ticket=${jsapi_ticket}&noncestr=${noncestr}&timestamp=${timestamp}&url=${url}`;
+  var signature = sha1(str);
+  res.send({
+    url: url,
+    timestamp: timestamp,
+    nonceStr: noncestr,
+    signature: signature
+  })
+});
+
 router.get('/accessToken', function (req, res, next) {
   res.set('Content-Type', 'text/plain');
-  res.send(access_token);
+  res.send(global.access_token);
 });
 router.get('/jsapiTicket', function (req, res, next) {
   res.set('Content-Type', 'text/plain');
-  res.send(access_token);
+  res.send(global.jsapi_ticket);
 });
 
-var access_token = ''
-var jsapi_ticket = ''
 setInterval(function(){
-  getAccessToken()
+  getAccessToken(getJsapiTicket)
 }, 7000000)
 
 function getAccessToken(cb) {
   axios.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.appid}&secret=${config.secret}`)
     .then(function (response) {
-      access_token = response.data.access_token;
-      console.log('access_token=' + access_token);
+      global.access_token = response.data.access_token;
+      console.log('access_token=' + global.access_token);
       cb()
     })
     .catch(function (error) {
@@ -104,10 +117,10 @@ function getAccessToken(cb) {
     });
 }
 function getJsapiTicket() {
-  axios.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + access_token + '&type=jsapi')
+  axios.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + global.access_token + '&type=jsapi')
     .then(function (response) {
-      jsapi_ticket = response.data.ticket;
-      console.log('jsapi_ticket=' + jsapi_ticket);
+      global.jsapi_ticket = response.data.ticket;
+      console.log('jsapi_ticket=' + global.jsapi_ticket);
     })
     .catch(function (error) {
       console.log(error);
@@ -120,6 +133,6 @@ module.exports = router;
 module.exports = {
   router,
   getAccessToken: ()=>{
-    return access_token
+    return global.access_token
   }
 };
