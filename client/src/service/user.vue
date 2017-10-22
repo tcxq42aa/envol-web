@@ -9,7 +9,7 @@ const instance = axios.create({
 });
 
 export const bind = (semesterId, mobilePhone) => {
-  return instance.put('api/' + semesterId + '/reservation?mobilePhone=' + mobilePhone)
+  return instance.post('api/userSemester/' + semesterId + '/reservation?mobilePhone=' + mobilePhone)
 }
 
 export const signature = (url)=>{
