@@ -8,9 +8,9 @@ var config = require('../config/app.config');
 var wx = require('../service/wx');
 var getAccessToken = require('../routes/index').getAccessToken;
 
-router.put('/user/bind', function (req, res, next){
+router.put('/:semesterId/reservation', function (req, res, next){
   console.log('PUT ' + config.serverHost + '/api/user/bind?mobilePhone=' + req.query.mobilePhone + '&openId=' + req.session.userInfo.openid)
-  axios.put(config.serverHost + '/api/user/bind?mobilePhone=' + req.query.mobilePhone + '&openid=' + req.session.userInfo.openid).then((response)=>{
+  axios.put(config.serverHost + '/' + req.params.semesterId + '/reservation?mobilePhone=' + req.query.mobilePhone + '&openid=' + req.session.userInfo.openid).then((response)=>{
     console.log(response.data)
     wx.sendAppointmentMsg(getAccessToken(), req.session.userInfo)
     res.send(response.data)

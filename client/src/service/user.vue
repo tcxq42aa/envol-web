@@ -8,8 +8,8 @@ const instance = axios.create({
   timeout: 3000
 });
 
-export const bind = (mobilePhone) => {
-  return instance.put('/api/user/bind?mobilePhone=' + mobilePhone)
+export const bind = (semesterId, mobilePhone) => {
+  return instance.put('api/' + semesterId + '/reservation?mobilePhone=' + mobilePhone)
 }
 
 export const signature = (url)=>{

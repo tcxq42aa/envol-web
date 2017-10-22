@@ -85,7 +85,7 @@ router.get('/api/wx/signature', function(req, res, next){
   var q = req.query;
   var noncestr = 'ttp123';
   var jsapi_ticket = global.jsapi_ticket;
-  var timestamp = Math(Date.now()/1000);
+  var timestamp = Date.now();
   var url = q.url;
   var str = `jsapi_ticket=${jsapi_ticket}&noncestr=${noncestr}&timestamp=${timestamp}&url=${url}`;
   var signature = sha1(str);

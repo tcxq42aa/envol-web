@@ -1,11 +1,26 @@
 .btn-appoint
   position fixed
+  display flex
+  align-items stretch
   bottom 0
   left 0
   width 100%
   text-align center
-  height 48px
-  line-height 48px
+  height 54px
   font-size 16px
   color #fff
-  background rgb(255,181,49)
+  box-shadow 0 -.5px 0 0 rgba(221 ,221 ,221, 0.5)
+.btn-appoint > div
+  height 100%
+
+.overlay--active:before
+  opacity 1
+.overlay:before
+  background rgba(0,0,0,.8)
+.btn__next
+  font-size 16px
+  margin 0 auto
+  width 60%
+  height 50px
+  line-height 50px
+
