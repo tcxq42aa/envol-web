@@ -32,7 +32,7 @@ router.get('/', function (req, res, next) {
         req.session.userInfo = resp.data;
         req.session.save();
         //
-        axios.post(config.serverHost + '/api/user/subscribe', resp.data).then((resp2)=>{
+        axios.post(config.serverHost + '/api/user/subscribe?openid=' + resp.data.openid, resp.data).then((resp2)=>{
           console.log(resp2.data)
         }).catch(function (error) {
           console.log(error);

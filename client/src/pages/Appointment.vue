@@ -71,9 +71,17 @@
         const self = this
         if(reg.test(this.mobilePhone)) {
           bind(this.$route.query.semesterId, this.mobilePhone).then( res => {
-            self.dialog = false;
-            self.successDialog = false;
+            if(res.data.code == 1) {
+              self.dialog = false;
+              self.successDialog = true;
+              self.failDialog = false;
+            } else {
+              self.dialog = false;
+              self.successDialog = false;
+              self.failDialog = false;
+            }
           }).catch( e => {
+            console.log(e)
             self.dialog = false;
             if(e.response.data.code == 4001) {
               self.failDialog = true;
