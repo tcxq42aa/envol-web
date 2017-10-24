@@ -4,7 +4,7 @@
  */
 import axios from 'axios'
 const instance = axios.create({
-  baseURL: process.env.NODE_ENV !== 'production' ? 'http://127.0.0.1:3100/' : '/',
+  baseURL: '/',
   timeout: 3000
 });
 

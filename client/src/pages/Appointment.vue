@@ -38,7 +38,7 @@
         <v-card-title>
           <span class="headline">预约</span>
         </v-card-title>
-        <v-card-text>当前手机号已经预约过</v-card-text>
+        <v-card-text>已经预约过了</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn class="blue--text darken-1" flat @click.native="failDialog = false">我知道了</v-btn>
@@ -78,14 +78,12 @@
             } else {
               self.dialog = false;
               self.successDialog = false;
-              self.failDialog = false;
-            }
-          }).catch( e => {
-            console.log(e)
-            self.dialog = false;
-            if(e.response.data.code == 4001) {
               self.failDialog = true;
             }
+          }).catch((e)=>{
+            self.dialog = false;
+            self.successDialog = false;
+            self.failDialog = true;
           })
         }
       }
@@ -99,9 +97,9 @@
         mobilePhone: '',
         emailRules: [
           (v) => !!v || '请填写您的手机号码',
-          (v) => /^1[34578]\d{9}$/.test(v) || '您的手机号码有误',
+          (v) => /^\d{8,}$/.test(v) || '您的手机号码有误',
+//          (v) => /^1[34578]\d{9}$/.test(v) || '您的手机号码有误',
           (v) => {
-            console.log(this.errMsg)
             return !this.errMsg || this.errMsg
           }
         ]

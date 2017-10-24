@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var proxy = require('http-proxy-middleware');
 var session = require('express-session')
 var routes = require('./routes/index').router;
 var users = require('./routes/user');
@@ -17,6 +18,16 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+if(process.env.NODE_ENV !== 'production') {
+  app.use('/dist', proxy({target: 'http://127.0.0.1:8081', changeOrigin: true}));
+  // app.all('/api/*', function(req, res, next) {
+  //   res.header("Access-Control-Allow-Origin", "*");
+  //   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  //   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  //   res.header('Access-Control-Allow-Headers', 'Content-Type');
+  //   next();
+  // });
+}
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -25,20 +36,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 700000 }}))
 
-if(process.env.NODE_ENV !== 'production') {
-  app.all('/api/*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-  });
-}
+
 app.all(function(req, res, next){
   next()
 })
 app.use('/', routes);
 app.use('/api', users);
+app.use('/api/evaluation/detail', proxy({
+  target: 'http://127.0.0.1:8080',
+  changeOrigin: true,
+  pathRewrite: function (path, req) {
+    return path + '?openId=' + (req.session.userInfo && req.session.userInfo.openid)
+  }
+}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

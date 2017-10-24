@@ -2,11 +2,17 @@ var express = require('express');
 var router = express.Router();
 var axios = require('axios')
 var sha1 = require('sha1');
+var querystring = require('querystring');
 var config = require('../config/app.config');
+
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get(/^\/(index|plan|planDetail|uc|test|read|appointment)?$/, function (req, res, next) {
+  var redirectUrl = 'http://www.envol.vip' + req.path;
+  if(querystring.stringify(req.query)) {
+    redirectUrl += '?' + querystring.stringify(req.query);
+  }
   if(!req.session.userInfo  && !req.query.code) {
-    var url = encodeURIComponent('http://www.envol.vip/')
+    var url = encodeURIComponent(redirectUrl)
     res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe073c9d18b45b0ca&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo#wechat_redirect')
     return
   }
@@ -32,7 +38,7 @@ router.get('/', function (req, res, next) {
         req.session.userInfo = resp.data;
         req.session.save();
         //
-        axios.post(config.serverHost + '/api/user/subscribe?openid=' + resp.data.openid, resp.data).then((resp2)=>{
+        axios.post(config.serverHost + 'api/user/subscribe', querystring.stringify(resp.data)).then((resp2)=>{
           console.log(resp2.data)
         }).catch(function (error) {
           console.log(error);
@@ -41,15 +47,11 @@ router.get('/', function (req, res, next) {
       })
     })
   } else {
+    console.log(req.session.userInfo.openid)
     res.render('index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
   }
 
 });
-
-router.get('/appointment', function (req, res, next) {
-  res.render('appointment', {title: '法棍阅读'});
-})
-
 /* GET user center page. */
 router.all('/wx', function (req, res, next) {
   var q = req.query;

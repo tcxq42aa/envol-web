@@ -64,6 +64,7 @@
     watch:{
       $route(){
         this.currentPage = this.$router.currentRoute.path
+        console.log(this.currentPage)
         if(extraPages.indexOf(this.currentPage) >= 0){
           this.navHidden = true
         } else {
