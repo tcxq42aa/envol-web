@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var proxy = require('http-proxy-middleware');
 var session = require('express-session')
+var querystring = require('querystring');
 var routes = require('./routes/index').router;
 var users = require('./routes/user');
 
@@ -17,16 +18,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-if(process.env.NODE_ENV !== 'production') {
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+if(app.get('env') != 'production') {
   app.use('/dist', proxy({target: 'http://127.0.0.1:8081', changeOrigin: true}));
-  // app.all('/api/*', function(req, res, next) {
-  //   res.header("Access-Control-Allow-Origin", "*");
-  //   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  //   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  //   res.header('Access-Control-Allow-Headers', 'Content-Type');
-  //   next();
-  // });
 }
 app.use(compression());
 app.use(logger('dev'));
@@ -42,11 +36,16 @@ app.all(function(req, res, next){
 })
 app.use('/', routes);
 app.use('/api', users);
-app.use('/api/evaluation/detail', proxy({
+app.use('/api', proxy({
   target: 'http://127.0.0.1:8080',
   changeOrigin: true,
   pathRewrite: function (path, req) {
-    return path + '?openId=' + (req.session.userInfo && req.session.userInfo.openid)
+    var q = ''
+    if(req.session.userInfo && req.session.userInfo.openid) {
+      req.query.openid = req.query.openId = req.session.userInfo.openid;
+      q = '?' + querystring.stringify(req.query)
+    }
+    return path + q
   }
 }));
 

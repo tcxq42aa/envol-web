@@ -31,7 +31,7 @@
             </div>
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn round class="orange white--text btn__orange" href="/#/test">开始学习</v-btn>
+            <v-btn round class="orange white--text btn__orange" href="/test">开始学习</v-btn>
           </v-card-actions>
         </v-flex>
         <v-flex xs6>
@@ -45,7 +45,7 @@
             </div>
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn outline round class="orange--text" href="/#/read">开始阅读</v-btn>
+            <v-btn outline round class="orange--text" href="/read">开始阅读</v-btn>
           </v-card-actions>
         </v-flex>
       </v-layout>

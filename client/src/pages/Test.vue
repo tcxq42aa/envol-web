@@ -30,9 +30,9 @@
           <div class="result-percent">{{testResult}}</div>
         </div>
       </div>
-    </div>
-    <div class="btn__next-wrap">
-      <v-btn round class="orange white--text btn__orange btn__next">立即报名</v-btn>
+      <div class="btn__next-wrap">
+        <v-btn round class="orange white--text btn__orange btn__next">立即报名</v-btn>
+      </div>
     </div>
   </v-container>
 </template>
@@ -45,6 +45,7 @@
       document.title = '小试牛刀'
       axios.get('/api/evaluation/detail')
         .then((response) => {
+          this.evaluationId = response.data.id;
           this.data = JSON.parse(response.data.content)
         })
         .catch((error) => {
@@ -86,6 +87,7 @@
         this.level2Result = level2;
         this.level3Result = level3;
         this.level4Result = level4;
+        axios.post('/api/user/evaluation/' + evaluationId + '/save')
       },
       select(item, index, idx) {
         item.testIdx = idx
