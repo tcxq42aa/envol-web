@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-if(app.get('env') != 'production') {
+if(app.get('env') == 'development') {
   app.use('/dist', proxy({target: 'http://127.0.0.1:8081', changeOrigin: true}));
 }
 app.use(compression());
@@ -35,17 +35,18 @@ app.all(function(req, res, next){
   next()
 })
 app.use('/', routes);
-app.use('/api', users);
+app.use('/api/userSemester', users);
 app.use('/api', proxy({
   target: 'http://127.0.0.1:8080',
   changeOrigin: true,
   pathRewrite: function (path, req) {
     var q = ''
     if(req.session.userInfo && req.session.userInfo.openid) {
-      req.query.openid = req.query.openId = req.session.userInfo.openid;
-      q = '?' + querystring.stringify(req.query)
+      let qy = Object.assign({}, req.query);
+      qy.openid = qy.openId = req.session.userInfo.openid;
+      q = '?' + querystring.stringify(qy)
     }
-    return path + q
+    return req.path + q
   }
 }));
 

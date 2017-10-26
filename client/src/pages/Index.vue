@@ -10,11 +10,11 @@
       <div class="white--text mt-3 mb-3 subheading">{{userInfo.nickname}}</div>
       <v-layout row wrap class="white--text text-xs-center">
         <v-flex xs6 class="seg-vert-small">
-          <div class="display-1">1600</div>
-          <div class="titke">学习时长/分钟</div>
+          <div class="display-1">{{wordsTotalStr}}</div>
+          <div class="titke">词汇量</div>
         </v-flex>
         <v-flex xs6>
-          <div class="display-1">31</div>
+          <div class="display-1">{{statistical.length}}</div>
           <div class="titke">坚持学习/天</div>
         </v-flex>
       </v-layout>
@@ -36,11 +36,11 @@
         </v-flex>
         <v-flex xs6>
           <v-card-title primary-title>
-            <div>
+            <div style="width: 100%">
               <h4 class="title text-xs-center">今日阅读</h4>
               <div class="card-content">
-                <div class="mb-1"><strong>Jour 01</strong></div>
-                <div>Located two hours south of Sydney in the Southern Highlands of New South Wales, ...</div>
+                <div class="mb-1"><strong>{{todayStr}}</strong></div>
+                <div class="tractate" v-html="tractateStr"></div>
               </div>
             </div>
           </v-card-title>
@@ -55,13 +55,37 @@
 
 <script>
   import '../stylus/index.styl'
+  import axios from 'axios'
   export default {
     created(){
-      document.title = '法棍阅读'
+      document.title = '法棍阅读';
+      axios.post('/api/user/today?readToday=2017-12-01')
+        .then((response) => {
+          this.tractate = response.data.data.paper.tractate;
+          this.statistical = response.data.data.statistical;
+        }).catch((error) => {
+          console.log(error);
+        });
     },
     data() {
       return {
+        wordsTotal: 0,
+        tractate: '',
+        statistical: [],
         userInfo: userInfo || {}
+      }
+    },
+    computed: {
+      tractateStr(){
+        return this.tractate.replace(/\\r|\\n/g, '')
+      },
+      todayStr(){
+        var monthArr = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
+        var today = new Date();
+        return monthArr[today.getMonth()] + ' ' + today.getDate()
+      },
+      wordsTotalStr(){
+        return this.statistical.map(item => item.wordsTotal).reduceRight((a,b)=>(a+b), 0)
       }
     }
   }

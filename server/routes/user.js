@@ -8,7 +8,7 @@ var config = require('../config/app.config');
 var wx = require('../service/wx');
 var getAccessToken = require('../routes/index').getAccessToken;
 
-router.post('/userSemester/:semesterId/reservation', function (req, res, next){
+router.post('/:semesterId/reservation', function (req, res, next){
   axios.post(config.serverHost + '/api/userSemester/' + req.params.semesterId + '/reservation?mobilePhone=' + req.query.mobilePhone + '&openId=' + req.session.userInfo.openid).then((response)=>{
     console.log('success', response.status)
     wx.sendAppointmentMsg(getAccessToken(), req.session.userInfo)
