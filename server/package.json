@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "PORT=3100 NODE_ENV=development node ./bin/www",
-    "start": "PORT=3100 NODE_ENV=production node ./bin/www"
+    "dev": "PORT=3100 NODE_ENV=dev node ./bin/www",
+    "start": "PORT=3100 NODE_ENV=prod node ./bin/www"
   },
   "dependencies": {
     "axios": "^0.16.2",

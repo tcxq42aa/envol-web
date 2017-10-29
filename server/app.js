@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-if(app.get('env') == 'development') {
+if(app.get('env') == 'dev') {
   app.use('/dist', proxy({target: 'http://127.0.0.1:8081', changeOrigin: true}));
 }
 app.use(compression());

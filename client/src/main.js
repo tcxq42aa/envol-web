@@ -11,6 +11,7 @@ const PlanDetail = () => import('./pages/PlanDetail.vue')
 const UC = () => import('./pages/uc.vue')
 const Appointment = () => import('./pages/appointment.vue')
 const Test = () => import('./pages/Test.vue')
+const PreTest = () => import('./pages/PreTest.vue')
 const Read = () => import('./pages/Read.vue')
 
 Vue.use(Vuetify)
@@ -23,6 +24,7 @@ const routes = [
   { path: '/uc', component: UC },
   { path: '/appointment', component: Appointment },
   { path: '/test', component: Test },
+  { path: '/pretest', component: PreTest },
   { path: '/read', component: Read },
   { path: '*', redirect: '/index' }
 ]
