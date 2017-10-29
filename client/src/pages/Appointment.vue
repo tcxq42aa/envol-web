@@ -78,7 +78,7 @@
         }
       },
       bindPhone() {
-        const reg = /^1[34578]\d{9}$/
+        const reg = /^\d{11,12}$/
         const self = this
         if(this.userReservation){
           self.failDialog = true;
@@ -110,12 +110,13 @@
         userReservation: false,// 是否预约
         dialog: false,
         failDialog: false,
+        failMessage: '',
         successDialog: false,
         errMsg: '',
         mobilePhone: '',
         emailRules: [
           (v) => !!v || '请填写您的手机号码',
-          (v) => /^\d{8,}$/.test(v) || '您的手机号码有误',
+          (v) => /^\d{11,12}$/.test(v) || '您的手机号码有误',
 //          (v) => /^1[34578]\d{9}$/.test(v) || '您的手机号码有误',
           (v) => {
             return !this.errMsg || this.errMsg
