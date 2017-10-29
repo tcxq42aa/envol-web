@@ -6,7 +6,7 @@
         <div style="color: #000"><strong>每天</strong> <span style="font-size: 18px;color: #ffb531">¥5.5</span> <strong>尽享法语阅读</strong></div>
         <div style="color: rgb(153,153,153)">495元/期/90天</div>
       </div>
-      <div class="orange" style="flex-grow: 0;width: 120px;line-height: 1.3;font-size: 15px;padding-top: 10px;" @click="dialog = true">
+      <div class="orange" style="flex-grow: 0;width: 120px;line-height: 1.3;font-size: 15px;padding-top: 10px;" @click="onSubmit()">
         <span>立即报名</span><br>
         <span style="font-size: 12px;">预约立减 ¥20</span>
       </div>
@@ -38,7 +38,7 @@
         <v-card-title>
           <span class="headline">预约</span>
         </v-card-title>
-        <v-card-text>已经预约过了</v-card-text>
+        <v-card-text>{{failMessage || '已经预约过了'}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn class="blue--text darken-1" flat @click.native="failDialog = false">我知道了</v-btn>
@@ -60,18 +60,33 @@
 
 <script>
   import '../stylus/appointment.styl'
-  import {bind} from '../service/user'
+  import {bind, check} from '../service/user'
   export default {
     created(){
       console.log(this.$route.query.semesterId)
+      check(this.$route.query.semesterId).then( res => {
+        this.userBind = res.data.bind;
+        this.userReservation = res.data.reservation;
+      })
     },
     methods: {
+      onSubmit() {
+        if(this.userBind) {
+          this.bindPhone();
+        } else {
+          this.dialog = true;
+        }
+      },
       bindPhone() {
         const reg = /^1[34578]\d{9}$/
         const self = this
-        if(reg.test(this.mobilePhone)) {
+        if(this.userReservation){
+          self.failDialog = true;
+          return;
+        }
+        if(this.userBind || reg.test(this.mobilePhone)) {
           bind(this.$route.query.semesterId, this.mobilePhone).then( res => {
-            if(res.data.code == 1) {
+            if(res.data.status == 200) {
               self.dialog = false;
               self.successDialog = true;
               self.failDialog = false;
@@ -79,6 +94,7 @@
               self.dialog = false;
               self.successDialog = false;
               self.failDialog = true;
+              self.failMessage = res.data.message;
             }
           }).catch((e)=>{
             self.dialog = false;
@@ -90,6 +106,8 @@
     },
     data() {
       return {
+        userBind: false, // 是否绑定手机
+        userReservation: false,// 是否预约
         dialog: false,
         failDialog: false,
         successDialog: false,

@@ -15,4 +15,8 @@ export const bind = (semesterId, mobilePhone) => {
 export const signature = (url)=>{
   return instance.get('/api/wx/signature?url=' + url)
 }
+
+export const check = (semesterId)=>{
+  return instance.get('api/userSemester/' + semesterId + '/check')
+}
 </script>

@@ -12,10 +12,18 @@ router.post('/:semesterId/reservation', function (req, res, next){
   axios.post(config.serverHost + '/api/userSemester/' + req.params.semesterId + '/reservation?mobilePhone=' + req.query.mobilePhone + '&openId=' + req.session.userInfo.openid).then((response)=>{
     console.log('success', response.status)
     wx.sendAppointmentMsg(getAccessToken(), req.session.userInfo)
-    res.send({code: 1})
+    res.send({status: response.status})
   }).catch(function (error) {
+    var status = error.response.status;
+    var message = '';
     console.log('error', {status: error.response.status, data: error.response.data});
-    res.send({code: 0})
+    if(status == 404) {
+      message = '该课程还未开始预约～';
+    }
+    if(status == 417) {
+      message = '预约失败啦～';
+    }
+    res.send({status: status, message: message})
   });
 })
 
