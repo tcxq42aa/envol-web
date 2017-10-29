@@ -47,6 +47,12 @@ app.use('/api', proxy({
       q = '?' + querystring.stringify(qy)
     }
     return req.path + q
+  },
+  onProxyReq: function(proxyReq, req, res){
+    if(req.session.userInfo && req.session.userInfo.openid) {
+      proxyReq.setHeader('openid', req.session.userInfo.openid);
+      proxyReq.setHeader('openId', req.session.userInfo.openid);
+    }
   }
 }));
 
