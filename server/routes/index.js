@@ -20,7 +20,6 @@ router.get(/^\/(index|plan|planDetail|uc|test|pretest|read|appointment)?$/, func
   if(!req.session.userInfo && req.query.code) {
     var code = req.query.code;
     axios.get(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.appid}&secret=${config.secret}&code=${code}&grant_type=authorization_code`).then(function(response){
-      console.log(response.data.errcode)
       if(response.data.errcode) {
         console.log(response.data)
         res.render('invalid', {errcode: response.data.errcode});
@@ -29,7 +28,6 @@ router.get(/^\/(index|plan|planDetail|uc|test|pretest|read|appointment)?$/, func
       var access_token = response.data.access_token;
       var openid = response.data.openid;
       axios.get('https://api.weixin.qq.com/sns/userinfo?access_token=' + access_token + '&openid=' + openid + '&lang=zh_CN').then(function(resp){
-        console.log(resp.data.errcode)
         if(resp.data.errcode) {
           console.log(resp.data)
           res.render('invalid', {errcode: resp.data.errcode});
@@ -47,7 +45,7 @@ router.get(/^\/(index|plan|planDetail|uc|test|pretest|read|appointment)?$/, func
       })
     })
   } else {
-    console.log(req.session.userInfo.openid)
+    console.log('openid=' + req.session.userInfo.openid)
     res.render('index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
   }
 

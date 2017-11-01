@@ -11,6 +11,9 @@ const instance = axios.create({
 export const bind = (semesterId, mobilePhone) => {
   return instance.post('api/userSemester/' + semesterId + '/reservation?mobilePhone=' + mobilePhone)
 }
+export const enroll = (semesterId, mobilePhone) => {
+  return instance.post('api/userSemester/' + semesterId + '/enroll?mobilePhone=' + mobilePhone)
+}
 
 export const signature = (url)=>{
   return instance.get('/api/wx/signature?url=' + url)
