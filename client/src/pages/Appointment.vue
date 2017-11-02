@@ -6,8 +6,9 @@
         <div style="color: #000"><strong>每天</strong> <span style="font-size: 18px;color: #ffb531">¥5.5</span> <strong>尽享法语阅读</strong></div>
         <div style="color: rgb(153,153,153)">495元/期/90天</div>
       </div>
-      <div class="orange" style="flex-grow: 0;width: 120px;line-height: 1.3;font-size: 15px;padding-top: 10px;" @click="onSubmit()">
-        <span>立即报名</span><br>
+      <div :class="{'orange': true, 'disabled': userEnroll}" style="flex-grow: 0;width: 120px;line-height: 1.3;font-size: 15px;padding-top: 10px;"
+           @click="onSubmit()">
+        <span>{{buttonText}}</span><br>
         <span style="font-size: 12px;">预约立减 ¥20</span>
       </div>
     </div>
@@ -66,6 +67,7 @@
       check(this.$route.query.semesterId).then( res => {
         this.userBind = res.data.bind;
         this.userReservation = res.data.reservation;
+        this.userEnroll = res.data.enroll;
       })
     },
     methods: {
@@ -128,6 +130,7 @@
       return {
         userBind: false, // 是否绑定手机
         userReservation: false,// 是否预约
+        userEnroll: false,// 是否报名
         dialog: false,
         failDialog: false,
         failMessage: '',
@@ -142,6 +145,21 @@
             return !this.errMsg || this.errMsg
           }
         ]
+      }
+    },
+    computed: {
+      // 计算属性的 getter
+      buttonText(){
+        if(this.userEnroll) {
+          return '已报名'
+        } else {
+//          if(this.userReservation) {
+//            return '立即报名'
+//          } else {
+//            return '立即预约'
+//          }
+          return '立即预约'
+        }
       }
     }
   }

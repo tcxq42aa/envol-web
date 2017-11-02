@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var proxy = require('http-proxy-middleware');
 var session = require('express-session')
+var FileStore = require('session-file-store')(session);
 var querystring = require('querystring');
 var routes = require('./routes/index').router;
 var users = require('./routes/user');
@@ -28,7 +29,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 700000 }}))
+app.use(session({
+  store: new FileStore({ttl:10}),
+  secret: 'keyboard cat',
+  cookie: { maxAge: 700000 },
+  resave: true,
+  saveUninitialized: true
+}))
 
 
 app.all(function(req, res, next){
@@ -36,8 +43,13 @@ app.all(function(req, res, next){
 })
 app.use('/', routes);
 app.use('/api/userSemester', users);
+
+var serverHost = 'http://127.0.0.1:8080'
+if(app.get('env') == 'dev') {
+  serverHost = 'http://support.envol.vip'
+}
 app.use('/api', proxy({
-  target: 'http://127.0.0.1:8080',
+  target: serverHost,
   changeOrigin: true,
   pathRewrite: function (path, req) {
     var q = ''
