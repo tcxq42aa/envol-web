@@ -28,9 +28,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {maxAge:1000*60*60}));
 app.use(session({
-  store: new FileStore({ttl:10}),
+  store: new FileStore(),
   secret: 'keyboard cat',
   cookie: { maxAge: 700000 },
   resave: true,
