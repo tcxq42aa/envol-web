@@ -48,11 +48,23 @@
 
 <script>
   import '../stylus/plan.styl'
+  import { bus } from '../bus.vue'
   const MONTH_MAP = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   export default {
     created(){
-      document.title = '阅读计划'
+      document.title = '阅读计划';
       this.initCalender()
+      this.handler = (data) => {
+        this.paper = data.paper;
+        this.tractate = this.paper && this.paper.tractate;
+        this.semesterId = this.paper && this.paper.semesterId;
+        this.statistical = data.statistical;
+      }
+      bus.$on('done', this.handler)
+      bus.$once('needTest', this.handleRedirect.bind(this))
+    },
+    destroyed(){
+      bus.$off('done', this.handler)
     },
     data() {
       return {
@@ -64,6 +76,9 @@
       }
     },
     methods: {
+      handleRedirect(){
+        this.$router.replace('/testLand')
+      },
       initCalender() {
         let d1 = new Date()
         d1.setDate(1)

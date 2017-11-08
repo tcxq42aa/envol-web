@@ -54,7 +54,7 @@
   export default {
     created(){
       document.title = '小试牛刀'
-      axios.get('/api/evaluation/detail?semesterId=' + this.$route.query.semesterId)
+      axios.get('/api/evaluation/detail')
         .then((response) => {
           this.evaluationId = response.data.id;
           let content = response.data.content.replace(/\$\d+/g,'<span onclick=\\\"console.log(app.__vue__.$children[0])\\\" class=\\\"qa-underline\\\">&nbsp;</span>')
@@ -66,7 +66,6 @@
     },
     data() {
       return {
-        semesterId: this.$route.query.semesterId,
         todayStr: todayStr(),
         showResult: false,
         current: 0,
@@ -109,10 +108,20 @@
         let level4 = this.data.filter( test => test.level == '4' && test.isCorrect);
         this.testResult = Math.round(correntCnt / this.data.length * 100) + '%'
         this.showResult = true
-        this.level1Result = level1;
-        this.level2Result = level2;
-        this.level3Result = level3;
-        this.level4Result = level4;
+        this.level1Result = level1.length;
+        this.level2Result = level2.length;
+        this.level3Result = level3.length;
+        this.level4Result = level4.length;
+
+        let score = 0
+        if(level1 + level2 < 7){
+          score = 20
+        }
+        if(level1 + level2 >= 7){
+          score = 40
+        }
+        console.log(score, {level1, level2,level3,level4})
+
         axios.post('/api/user/evaluation/' + this.evaluationId + '/save?score=60')
       },
       select(item, index, idx) {

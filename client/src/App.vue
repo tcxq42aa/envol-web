@@ -17,14 +17,54 @@
         <v-icon>person_outline</v-icon>
       </v-btn>
     </v-bottom-nav>
+    <!--<v-snackbar-->
+      <!--:timeout="timeout"-->
+      <!--:top="y === 'top'"-->
+      <!--:bottom="y === 'bottom'"-->
+      <!--:right="x === 'right'"-->
+      <!--:left="x === 'left'"-->
+      <!--:multi-line="mode === 'multi-line'"-->
+      <!--:vertical="mode === 'vertical'"-->
+      <!--v-model="snackbar"-->
+    <!--&gt;-->
+      <!--{{ text }}-->
+      <!--<v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>-->
+    <!--</v-snackbar>-->
   </v-app>
 </template>
 
 <script>
-  import { signature } from './service/user'
+  import { bus } from './bus.vue'
+  import { signature, check } from './service/user'
+  import {formatDate} from './pages/util.vue'
   import axios from 'axios'
+  var qs = require('querystringify');
   const extraPages = ['/appointment', '/test','/practice', '/testLand', '/read']
   export default {
+    created(){
+      let date = qs.parse(location.search).date
+      axios.post('/api/user/today?readToday=' + (date || formatDate(Date.now()))).then((response) => {
+        this.appData = response.data.data
+        bus.$emit("done", this.appData);
+        if(this.appData.paper && this.appData.paper.semesterId) {
+          check(this.appData.paper.semesterId).then( res => {
+            this.hasTested = res.data.test;
+            if(!this.hasTested) {
+
+            }
+          })
+        }
+      }).catch((error) => {
+        if(error.response) {
+          let res = error.response
+          if(res.status == 404 && res.data.code == 4042) {
+            this.needTest = true
+            bus.$emit("needTest", true);
+//            this.$router.replace('/testLand')
+          }
+        }
+      });
+    },
     mounted(){
       wx.ready(function(res){
 //         config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
@@ -40,7 +80,13 @@
     data () {
       return {
         navHidden: false,
-        currentPage: '/index'
+        currentPage: '/index',
+//        snackbar: true,
+//        y: 'top',
+//        x: null,
+//        mode: '',
+//        timeout: 5000,
+//        text: '你好，今日没有课程哦'
       }
     },
     methods: {
@@ -69,6 +115,12 @@
         } else {
           this.navHidden = false
         }
+        setTimeout(()=>{
+          this.appData && bus.$emit("done", this.appData);
+          if(this.needTest == true) {
+            bus.$emit("needTest", true);
+          }
+        })
         this.refreshSignature()
       }
 

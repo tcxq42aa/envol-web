@@ -60,16 +60,32 @@
 
 <script>
   import '../stylus/uc.styl'
+  import { bus } from '../bus.vue'
   export default {
     created(){
-      document.title = '个人中心'
-      this.initCalender()
+      document.title = '个人中心';
+      this.handler = (data) => {
+        this.paper = data.paper;
+        this.tractate = this.paper && this.paper.tractate;
+        this.semesterId = this.paper && this.paper.semesterId;
+        this.statistical = data.statistical;
+      }
+      bus.$on('done', this.handler)
+      bus.$once('needTest', this.handleRedirect.bind(this))
+    },
+    destroyed(){
+      bus.$off('done', this.handler)
     },
     data() {
       return {
         userInfo: userInfo || {},
         e6: null,
         modal2: false,
+      }
+    },
+    methods: {
+      handleRedirect(){
+        this.$router.replace('/testLand')
       }
     }
   }

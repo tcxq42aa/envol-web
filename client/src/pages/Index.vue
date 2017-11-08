@@ -26,26 +26,26 @@
             <div style="width: 100%">
               <h4 class="title text-xs-center">今日词表</h4>
               <div class="card-content text-xs-center">
-                <img src="../../public/a.png" alt="a" width="65px" class="mt-2">
+                <img v-if="paper" src="../../public/a.png" alt="a" width="65px" class="mt-2">
               </div>
             </div>
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn round class="orange white--text btn__orange" href="/test">开始学习</v-btn>
+            <v-btn v-if="paper" round class="orange white--text btn__orange" href="/test">开始学习</v-btn>
           </v-card-actions>
         </v-flex>
         <v-flex xs6>
           <v-card-title primary-title>
             <div style="width: 100%">
               <h4 class="title text-xs-center">今日阅读</h4>
-              <div class="card-content">
+              <div v-if="paper" class="card-content">
                 <div class="mb-1"><strong>{{todayStr}}</strong></div>
                 <div class="tractate" v-html="tractateStr"></div>
               </div>
             </div>
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn outline round class="orange--text" href="/read">开始阅读</v-btn>
+            <v-btn v-if="paper" outline round class="orange--text" href="/read">开始阅读</v-btn>
           </v-card-actions>
         </v-flex>
       </v-layout>
@@ -55,20 +55,26 @@
 
 <script>
   import '../stylus/index.styl'
+//  import { bus } from '../bus.vue'
   import axios from 'axios'
+//  import {check} from '../service/user'
   export default {
     created(){
       document.title = '法棍阅读';
-      axios.post('/api/user/today?readToday=2017-12-01')
-        .then((response) => {
-          this.tractate = response.data.data.paper.tractate;
-          this.statistical = response.data.data.statistical;
-        }).catch((error) => {
-          console.log(error);
-        });
+//      this.handler = (data) => {
+//        this.paper = data.paper;
+//        this.tractate = this.paper && this.paper.tractate;
+//        this.semesterId = this.paper && this.paper.semesterId;
+//        this.statistical = data.statistical;
+//      }
+//      bus.$on('done', this.handler)
+    },
+    destroyed(){
+//      bus.$off('done', this.handler)
     },
     data() {
       return {
+        paper: null,
         wordsTotal: 0,
         tractate: '',
         statistical: [],
@@ -85,7 +91,7 @@
         return monthArr[today.getMonth()] + ' ' + today.getDate()
       },
       wordsTotalStr(){
-        return this.statistical.map(item => item.wordsTotal).reduceRight((a,b)=>(a+b), 0)
+        return this.statistical.map(function(item) { return item.wordsTotal}).reduceRight(function(a,b){return (a+b)}, 0)
       }
     }
   }
