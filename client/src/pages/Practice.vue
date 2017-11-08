@@ -5,8 +5,13 @@
          :style="{transform: 'translateX(-' + 95 * current + '%)'}">
       <div class="test-card" v-for="(test, index) in data">
         <div class="test-tag">{{index + 1}}/{{data.length}}</div>
-        <div class="test-title">{{test.title}}</div>
-        <ul class="test-detail">
+        <ul class="qa-answers" v-if="test.type == 2">
+          <li v-for="(answer, idx) in test.options">
+            <v-btn small class="primary">{{answer.content}}</v-btn>
+          </li>
+        </ul>
+        <div class="test-title" v-html="test.title"></div>
+        <ul class="test-detail" v-if="test.type != 2">
           <li @click="select(test, index, idx)"
               :class="{active: test.testIdx == idx}"
               v-for="(answer, idx) in test.options">{{answer.content}}</li>
@@ -19,18 +24,6 @@
 
     <div v-if="showResult" >
       <div class="card orange test-result-wrap pa-3 mb-3">
-        <div>
-          <p>N1: 答对{{level1Result.length}}题</p>
-          <p>N2: 答对{{level2Result.length}}题</p>
-          <p>N3: 答对{{level3Result.length}}题</p>
-          <p>N4: 答对{{level4Result.length}}题</p>
-        </div>
-        <div>
-          <div>正确率</div>
-          <div class="result-percent">{{testResult}}</div>
-        </div>
-      </div>
-      <div class="card orange test-result-wrap pa-3 mb-3">
         <div>太棒了，<br>你完成了今天的阅读任务！</div>
         <div>
           <div>正确率</div>
@@ -38,14 +31,14 @@
         </div>
       </div>
       <div class="card result-card mb-3">
-        <div class="test-tag">Jour 30</div>
+        <div class="test-tag">{{todayStr}}</div>
         <ul class="test-detail">
           <li class="result-item"
               v-for="(test, index) in data">
             <div>0{{index + 1}}</div>
             <div>
-              <v-icon v-if="test.testIdx == test.correctIdx" class="orange--text">check</v-icon>
-              <v-icon v-if="test.testIdx != test.correctIdx" class="black--text">close</v-icon>
+              <v-icon v-if="test.isCorrect" class="orange--text">check</v-icon>
+              <v-icon v-if="!test.isCorrect" class="black--text">close</v-icon>
             </div>
           </li>
         </ul>
@@ -54,20 +47,18 @@
       <div class="card pa-3 mb-3 dis-flex">
         <div class="bl-orange">
           <div class="grey--text">今日已读</div>
-          <div class="f18 mt-2">2000字</div>
+          <div class="f18 mt-2">{{todayWordsTotal}}字</div>
         </div>
         <div class="bl-orange">
           <div class="grey--text">全部已读</div>
-          <div class="f18 mt-2">12340字</div>
+          <div class="f18 mt-2">{{wordsTotal}}字</div>
         </div>
       </div>
       <div class="card pa-3 mb-3 dis-flex">
-        <div class="subheading">今日解析</div>
+        <div class="subheading mb-4">今日解析</div>
+        <div v-html="lexicalAnalysis"></div>
       </div>
       <div class="orange btn-share">分享到朋友圈，完成打卡</div>
-      <div class="btn__next-wrap">
-        <v-btn round class="orange white--text btn__orange btn__next">立即报名</v-btn>
-      </div>
     </div>
   </v-container>
 </template>
@@ -89,12 +80,18 @@
           console.log(error);
         });
       axios.post('/api/user/today?readToday=2017-12-01')
-      .then((response) => {
-        this.tractate = response.data.data.paper.tractate;
-        this.statistical = response.data.data.statistical;
-      }).catch((error) => {
-          console.log(error);
-      });
+        .then((response) => {
+          this.tractate = response.data.data.paper.tractate;
+          this.lexicalAnalysis = response.data.data.paper.lexicalAnalysis;
+          this.todayWordsTotal = response.data.data.paper.wordsTotal;
+          this.statistical = response.data.data.statistical;
+          this.wordsTotal = this.statistical.map(i => i.wordsTotal).reduceRight((a, b)=>{
+            return a + b
+          }, 0)
+          this.initShare()
+        }).catch((error) => {
+            console.log(error);
+        });
     },
     data() {
       return {

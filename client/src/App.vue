@@ -23,7 +23,7 @@
 <script>
   import { signature } from './service/user'
   import axios from 'axios'
-  const extraPages = ['/appointment', '/test', '/read']
+  const extraPages = ['/appointment', '/test','/practice', '/testLand', '/read']
   export default {
     mounted(){
       wx.ready(function(res){

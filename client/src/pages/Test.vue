@@ -5,8 +5,13 @@
          :style="{transform: 'translateX(-' + 95 * current + '%)'}">
       <div class="test-card" v-for="(test, index) in data">
         <div class="test-tag">{{index + 1}}/{{data.length}}</div>
-        <div class="test-title">{{test.title}}</div>
-        <ul class="test-detail">
+        <ul class="qa-answers" v-if="test.type == 2">
+          <li v-for="(answer, idx) in test.options">
+            <v-btn small class="primary">{{answer.content}}</v-btn>
+          </li>
+        </ul>
+        <div class="test-title" v-html="test.title"></div>
+        <ul class="test-detail" v-if="test.type != 2">
           <li @click="select(test, index, idx)"
               :class="{active: test.testIdx == idx}"
               v-for="(answer, idx) in test.options">{{answer.content}}</li>
@@ -38,21 +43,6 @@
           </li>
         </ul>
       </div>
-
-      <div class="card pa-3 mb-3 dis-flex">
-        <div class="bl-orange">
-          <div class="grey--text">今日已读</div>
-          <div class="f18 mt-2">2000字</div>
-        </div>
-        <div class="bl-orange">
-          <div class="grey--text">全部已读</div>
-          <div class="f18 mt-2">12340字</div>
-        </div>
-      </div>
-      <div class="card pa-3 mb-3 dis-flex">
-        <div class="subheading">今日解析</div>
-      </div>
-      <div class="orange btn-share">分享到朋友圈，完成打卡</div>
     </div>
   </v-container>
 </template>
@@ -64,24 +54,19 @@
   export default {
     created(){
       document.title = '小试牛刀'
-      axios.get('/api/evaluation/detail')
+      axios.get('/api/evaluation/detail?semesterId=' + this.$route.query.semesterId)
         .then((response) => {
           this.evaluationId = response.data.id;
-          this.data = JSON.parse(response.data.content)
+          let content = response.data.content.replace(/\$\d+/g,'<span onclick=\\\"console.log(app.__vue__.$children[0])\\\" class=\\\"qa-underline\\\">&nbsp;</span>')
+          this.data = JSON.parse(content)
         })
         .catch((error) => {
           console.log(error);
         });
-      axios.post('/api/user/today?readToday=2017-12-01')
-      .then((response) => {
-        this.tractate = response.data.data.paper.tractate;
-        this.statistical = response.data.data.statistical;
-      }).catch((error) => {
-          console.log(error);
-      });
     },
     data() {
       return {
+        semesterId: this.$route.query.semesterId,
         todayStr: todayStr(),
         showResult: false,
         current: 0,
@@ -96,6 +81,9 @@
         } else {
           this.finishTest()
         }
+      },
+      choose() {
+        alert('choose')
       },
       finishTest(){
         this.data = this.data.map(test => {
