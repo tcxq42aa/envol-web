@@ -45,7 +45,7 @@
             </div>
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn v-if="paper" outline round class="orange--text" href="/read">开始阅读</v-btn>
+            <v-btn v-if="paper" outline round class="orange--text" :href="'/read?date=' + today">开始阅读</v-btn>
           </v-card-actions>
         </v-flex>
       </v-layout>
@@ -55,22 +55,21 @@
 
 <script>
   import '../stylus/index.styl'
-//  import { bus } from '../bus.vue'
-  import axios from 'axios'
-//  import {check} from '../service/user'
+  import { bus } from '../bus.vue'
+  var qs = require('querystringify');
   export default {
     created(){
       document.title = '法棍阅读';
-//      this.handler = (data) => {
-//        this.paper = data.paper;
-//        this.tractate = this.paper && this.paper.tractate;
-//        this.semesterId = this.paper && this.paper.semesterId;
-//        this.statistical = data.statistical;
-//      }
-//      bus.$on('done', this.handler)
+      this.handler = (data) => {
+        this.paper = data.paper;
+        this.tractate = this.paper && this.paper.tractate;
+        this.semesterId = this.paper && this.paper.semesterId;
+        this.statistical = data.statistical;
+      }
+      bus.$on('done', this.handler)
     },
     destroyed(){
-//      bus.$off('done', this.handler)
+      bus.$off('done', this.handler)
     },
     data() {
       return {
@@ -82,6 +81,9 @@
       }
     },
     computed: {
+      today() {
+        return qs.parse(location.search).date || ''
+      },
       tractateStr(){
         return this.tractate.replace(/\\r|\\n/g, '')
       },

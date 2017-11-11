@@ -102,7 +102,9 @@
     },
     watch:{
       e6:function (val) {
-        console.log(val);
+        let [reminderHour, reminderMinute] = val.split(':')
+        let differenceMinute = new Date().getTimezoneOffset()
+        axios.put(`/api/user/setting?reminderHour=${reminderHour}&reminderMinute=${reminderMinute}&differenceMinute=${differenceMinute}`)
       }
     }
   }

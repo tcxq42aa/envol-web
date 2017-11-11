@@ -137,7 +137,7 @@
         this.level2Result = level2;
         this.level3Result = level3;
         this.level4Result = level4;
-        axios.post('/api/user/evaluation/' + this.evaluationId + '/save?score=60')
+        axios.post('/api/user/course/' + this.paper.paperId + '/save?wordsTotal=' + this.paper.wordsTotal + 'score=' + Math.round(correntCnt / this.data.length * 100))
       },
       select(item, index, idx) {
         item.testIdx = idx
