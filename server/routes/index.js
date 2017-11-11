@@ -46,7 +46,7 @@ router.get(/^\/(index|plan|planDetail|uc|test|practice|read|appointment|testLand
     })
   } else {
     console.log('openid=' + req.session.userInfo.openid)
-    res.render('index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
+    res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
   }
 
 });

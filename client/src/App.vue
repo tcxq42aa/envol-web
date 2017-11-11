@@ -6,30 +6,20 @@
     <v-bottom-nav v-if="!navHidden" :value="true" :active.sync="currentPage" class="white">
       <v-btn flat class="orange--text" value="/index" @click="switchTab('/index')">
         <span>阅读首页</span>
-        <v-icon>home</v-icon>
+        <img v-if="currentPage!='/index'" src="./assets/home4@2x.png" height="25px"/>
+        <img v-if="currentPage=='/index'" src="./assets/home2@2x.png" height="25px"/>
       </v-btn>
       <v-btn flat class="orange--text" value="/plan" @click="switchTab('/plan')">
         <span>阅读计划</span>
-        <v-icon>date_range</v-icon>
+        <img v-if="currentPage!='/plan'" src="./assets/plan4@2x.png" height="25px"/>
+        <img v-if="currentPage=='/plan'" src="./assets/plan3@2x.png" height="25px"/>
       </v-btn>
       <v-btn flat class="orange--text" value="/uc" @click="switchTab('/uc')">
         <span>个人中心</span>
-        <v-icon>person_outline</v-icon>
+        <img v-if="currentPage!='/uc'" src="./assets/personal4@2x.png" height="25px"/>
+        <img v-if="currentPage=='/uc'" src="./assets/personal3@2x.png" height="25px"/>
       </v-btn>
     </v-bottom-nav>
-    <!--<v-snackbar-->
-      <!--:timeout="timeout"-->
-      <!--:top="y === 'top'"-->
-      <!--:bottom="y === 'bottom'"-->
-      <!--:right="x === 'right'"-->
-      <!--:left="x === 'left'"-->
-      <!--:multi-line="mode === 'multi-line'"-->
-      <!--:vertical="mode === 'vertical'"-->
-      <!--v-model="snackbar"-->
-    <!--&gt;-->
-      <!--{{ text }}-->
-      <!--<v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>-->
-    <!--</v-snackbar>-->
   </v-app>
 </template>
 
@@ -102,7 +92,7 @@
             timestamp: data.timestamp, // 必填，生成签名的时间戳
             nonceStr: data.nonceStr, // 必填，生成签名的随机串
             signature: data.signature,// 必填，签名，见附录1
-            jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            jsApiList: ['chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
         })
       }

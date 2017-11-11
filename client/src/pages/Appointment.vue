@@ -119,6 +119,7 @@
             success: function (res) {
               // 支付成功后的回调函数
               alert('支付成功')
+              window.location.replace = '/paySuccess'
             }
           });
         }).catch((e)=>{
@@ -158,7 +159,7 @@
 //          } else {
 //            return '立即预约'
 //          }
-          return '立即预约'
+          return '立即报名'
         }
       }
     }

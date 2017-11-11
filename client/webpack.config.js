@@ -2,13 +2,13 @@ var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
+var env = process.env.NODE_ENV
 module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: 'build-[hash].js'
+    filename: env != 'development' ? 'build-[hash].js' : 'build.js'
   },
   resolve: {
     extensions: ['.js', '.vue'],

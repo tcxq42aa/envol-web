@@ -31,8 +31,9 @@
             <v-icon class="white--text opacity-6">alarm</v-icon>
             <div>阅读提醒设置</div>
             <div>每天</div>
+            <div>{{e6}}</div>
           </div>
-          <v-time-picker v-model="e6" actions>
+          <v-time-picker v-model="e6" actions format="24hr">
             <template scope="{ save, cancel }">
               <v-card-actions>
                 <v-btn flat primary @click.native="cancel()">取消</v-btn>
@@ -45,16 +46,23 @@
         <v-icon class="white--text opacity-6">alarm</v-icon>
         <div>常见问题</div>
         <div>使用方法、打卡、<br>活动等</div>
-      </div><div class="uc-block block-3">
-        <v-icon class="white--text opacity-6">alarm</v-icon>
-        <div>我要找督导老师</div>
-        <div>特殊问题</div>
-      </div><div class="uc-block block-4">
+      </div>
+        <div class="uc-block block-3" dark @click.stop="dialog=true">
+          <v-icon class="white--text opacity-6">alarm</v-icon>
+          <div>我要找督导老师</div>
+          <div>特殊问题</div>
+        </div>
+      <div class="uc-block block-4">
         <v-icon class="white--text opacity-6">alarm</v-icon>
         <div>晒学习成果</div>
         <div>学习使我快乐</div>
       </div>
     </div>
+    <v-dialog v-model="dialog" >
+      <v-card class="pa-4">
+        <img src="../assets/qrcode.png" width="100%">
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -78,6 +86,7 @@
     },
     data() {
       return {
+        dialog:false,
         userInfo: userInfo || {},
         e6: null,
         modal2: false,
@@ -86,6 +95,14 @@
     methods: {
       handleRedirect(){
         this.$router.replace('/testLand')
+      },
+      save(e){
+        console.log(e)
+      }
+    },
+    watch:{
+      e6:function (val) {
+        console.log(val);
       }
     }
   }

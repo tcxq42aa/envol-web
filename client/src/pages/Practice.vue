@@ -54,7 +54,7 @@
           <div class="f18 mt-2">{{wordsTotal}}字</div>
         </div>
       </div>
-      <div class="card pa-3 mb-3 dis-flex">
+      <div class="card pa-3 mb-3">
         <div class="subheading mb-4">今日解析</div>
         <div v-html="lexicalAnalysis"></div>
       </div>
@@ -64,34 +64,30 @@
 </template>
 
 <script>
-  import '../stylus/test.styl'
+  import '../stylus/practice.styl'
+  import { bus } from '../bus.vue'
   import { todayStr } from './util.vue'
   import axios from 'axios'
   export default {
     created(){
       document.title = '小试牛刀'
-      axios.get('/api/evaluation/detail')
-        .then((response) => {
-          this.evaluationId = response.data.id;
-          let content = response.data.content.replace(/\$\d+/g,'<span onclick=\\\"console.log(app.__vue__.$children[0])\\\" class=\\\"qa-underline\\\">&nbsp;</span>')
-          this.data = JSON.parse(content)
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      axios.post('/api/user/today?readToday=2017-12-01')
-        .then((response) => {
-          this.tractate = response.data.data.paper.tractate;
-          this.lexicalAnalysis = response.data.data.paper.lexicalAnalysis;
-          this.todayWordsTotal = response.data.data.paper.wordsTotal;
-          this.statistical = response.data.data.statistical;
-          this.wordsTotal = this.statistical.map(i => i.wordsTotal).reduceRight((a, b)=>{
-            return a + b
-          }, 0)
-          this.initShare()
-        }).catch((error) => {
-            console.log(error);
-        });
+      this.handler = (data) => {
+        this.paper = data.paper;
+        if(this.paper){
+          this.tractate = this.paper.tractate;
+          this.data = JSON.parse(this.paper.content);
+          this.lexicalAnalysis = this.paper.lexicalAnalysis;
+          this.todayWordsTotal = this.paper.wordsTotal;
+        }
+        this.statistical = data.statistical;
+        this.wordsTotal = this.statistical.map(i => i.wordsTotal).reduceRight((a, b)=>{
+          return a + b
+        }, 0)
+      }
+      bus.$on('done', this.handler)
+    },
+    destroyed(){
+      bus.$off('done', this.handler)
     },
     data() {
       return {

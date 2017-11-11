@@ -49,6 +49,7 @@
 <script>
   import '../stylus/plan.styl'
   import { bus } from '../bus.vue'
+  import { formatDate } from './util.vue'
   const MONTH_MAP = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   export default {
     created(){
@@ -103,7 +104,7 @@
       },
 
       viewDetail(date) {
-        this.$router.push('/planDetail?date=' + date.getTime())
+        this.$router.push('/read?date=' + formatDate(date.getTime()))
       }
     }
   }
