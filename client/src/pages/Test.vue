@@ -160,17 +160,13 @@
       },
       finishTest(){
         this.data = this.data.map(test => {
-          test.isCorrect = (test.answer === test.testIdx)
+          if(test.type == '1') {
+            test.isCorrect = (test.answer === test.testIdx)
+          } else if(test.type == '2' || test.type == '3') {
+            test.isCorrect = (test.answer === test.testIdx)
+          }
           return test
         })
-        let correntCnt = this.data.filter(test => {
-          if(test.type == '1') {
-            return test.isCorrect
-          }
-          if(test.type == '2') {
-            return test.isCorrect
-          }
-        }).length
         let level1 = this.data.filter( test => test.level == '1' && test.isCorrect).length;
         let level2 = this.data.filter( test => test.level == '2' && test.isCorrect).length;
         let level3 = this.data.filter( test => test.level == '3' && test.isCorrect).length;

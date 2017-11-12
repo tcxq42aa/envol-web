@@ -1,3 +1,4 @@
+main-color = rgb(252, 147, 61)
 .test-container
   overflow hidden
 .test-list
@@ -33,6 +34,9 @@
   font-weight bold
   padding 0 45px
   margin-bottom 25px
+.test-title-wide
+  font-weight normal
+  padding 0 26px 0 45px
 .test-detail
   list-style none
   padding 0
@@ -45,7 +49,7 @@
     font-size 16px
     color rgb(153,153,153)
     &:active,&.active
-      color rgb(252, 147, 61)
+      color main-color
       background rgb(240,240,240)
   li + li
     &::after
@@ -57,6 +61,36 @@
       left 45px
       background #eee
       right 0
+.editor-input
+  position relative
+  display inline-block
+  text-decoration underline
+  margin 0 2px
+.editor-input.valid
+  color main-color
+  text-decoration-color #333
+.editor-input:not(.valid)::after
+  display: block;
+  position: absolute;
+  content: '?';
+  top: -3px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  line-height 18px
+  text-align: center;
+  margin-left: -9px;
+  border-radius: 50%;
+  text-decoration: unset;
+  color main-color
+  border 1px solid main-color
+.editor-input2
+  display inline-block
+  border-bottom: 1px solid #333;
+  line-height: 20px;
+  width 80px
+  margin 0 2px
+  color main-color
 .btn__next-wrap
   padding 50px 45px 0
 .btn__next
@@ -89,7 +123,7 @@
   flex-basis 0
   border-radius 0!important
   padding-left 12px
-  border-left 2px solid rgb(252, 147, 61)
+  border-left 2px solid main-color
 .btn-share
   position fixed
   bottom 0

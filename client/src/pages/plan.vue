@@ -23,7 +23,7 @@
           <div class="day-title" v-for="(date, index) in dates">
             <div class="day"
                  @click="viewDetail(date)"
-                 :class="{ finished: dateEqual(date, today), 'white-bg': !dateEqual(date, today)}">{{index + 1}}</div>
+                 :class="dateStatus(date, statistical)">{{index + 1}}</div>
           </div>
         </div>
       </div>
@@ -73,7 +73,8 @@
         dates: [],
         today: new Date(),
         MONTH_MAP: MONTH_MAP,
-        books: [0, 0]
+        books: [0, 0],
+        statistical: []
       }
     },
     methods: {
@@ -99,11 +100,26 @@
         this.dates = dates
       },
 
-      dateEqual(l, r){
-        return l.getFullYear() * 10000 + l.getMonth() * 100 + l.getDate() == r.getFullYear() * 10000 + r.getMonth() * 100 + r.getDate()
+      dateStatus(date){
+        let dateStr = formatDate(date)
+        let f = this.statistical.find(item => formatDate(item.readToday) == dateStr)
+        if(dateStr > formatDate(Date.now())) {
+          return ''
+        }
+        if(f) {
+          console.log(f)
+          if(formatDate(f.createTime) > dateStr) {
+            return 'white-bg'
+          }
+        }
+        return f ? 'finished' : 'unfinished'
       },
 
       viewDetail(date) {
+        let dateStr = formatDate(date.getTime())
+        if(dateStr > formatDate(Date.now())) {
+          return
+        }
         this.$router.push('/read?date=' + formatDate(date.getTime()))
       }
     }

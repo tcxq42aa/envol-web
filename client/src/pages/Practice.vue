@@ -5,13 +5,20 @@
          :style="{transform: 'translateX(-' + 95 * current + '%)'}">
       <div class="test-card" v-for="(test, index) in data">
         <div class="test-tag">{{index + 1}}/{{data.length}}</div>
-        <ul class="qa-answers" v-if="test.type == 2">
+        <!-- 题目要求 -->
+        <div v-if="test.desc" class="test-title" v-html="test.desc"></div>
+        <!-- 填空题题目答案选区 -->
+        <ul class="qa-answers" v-if="test.type == 3">
           <li v-for="(answer, idx) in test.options">
-            <v-btn small class="primary">{{answer.content}}</v-btn>
+            <v-btn small round outline class="orange orange--text" @click="activateAnswer(answer.content)">{{answer.content}}</v-btn>
           </li>
         </ul>
-        <div class="test-title" v-html="test.title"></div>
-        <ul class="test-detail" v-if="test.type != 2">
+        <!-- 题目内容 -->
+        <div @click="proxyChildren($event, test)" @input="proxyChildrenInput($event, test)"
+             v-if="test.type == 2 || test.type == 3" class="test-title test-title-wide" v-html="replaceEmpty(test.title, test.type)"></div>
+        <div v-if="test.type != 2 && test.type != 3" class="test-title" v-html="test.title"></div>
+        <!-- 选择题题目答案选区 -->
+        <ul class="test-detail" v-if="test.type == 1">
           <li @click="select(test, index, idx)"
               :class="{active: test.testIdx == idx}"
               v-for="(answer, idx) in test.options">{{answer.content}}</li>
@@ -33,14 +40,23 @@
       <div class="card result-card mb-3">
         <div class="test-tag">{{todayStr}}</div>
         <ul class="test-detail">
-          <li class="result-item"
+          <div
               v-for="(test, index) in data">
-            <div>0{{index + 1}}</div>
-            <div>
-              <v-icon v-if="test.isCorrect" class="orange--text">check</v-icon>
-              <v-icon v-if="!test.isCorrect" class="black--text">close</v-icon>
-            </div>
-          </li>
+            <li class="result-item" v-if="test.type==1">
+              <div>{{index < 9 ? '0' + (index + 1) : index + 1}}</div>
+              <div>
+                <v-icon v-if="test.isCorrect" class="orange--text">check</v-icon>
+                <v-icon v-if="!test.isCorrect" class="black--text">close</v-icon>
+              </div>
+            </li>
+            <li class="result-item" v-if="test.type==2 || test.type==3" v-for="(option, idx) in test.options">
+              <div>{{index < 9 ? '0' + (index + 1) : index + 1}} - {{idx < 9 ? '0' + (idx + 1) : idx + 1}}</div>
+              <div>
+                <v-icon v-if="option.isCorrect" class="orange--text">check</v-icon>
+                <v-icon v-if="!option.isCorrect" class="black--text">close</v-icon>
+              </div>
+            </li>
+          </div>
         </ul>
       </div>
 
@@ -66,7 +82,7 @@
 <script>
   import '../stylus/practice.styl'
   import { bus } from '../bus.vue'
-  import { todayStr } from './util.vue'
+  import { todayStr, formatDate } from './util.vue'
   import axios from 'axios'
   export default {
     created(){
@@ -95,53 +111,88 @@
         showResult: false,
         current: 0,
         testResult: '',
-        data: []
+        data: [],
+        resultArray: []
       }
     },
     methods: {
       next(){
         if(this.current < this.data.length - 1) {
           this.current = this.current + 1
+          window.scrollTo(0, 0)
         } else {
           this.finishTest()
         }
       },
-      choose() {
-        alert('choose')
+      activateAnswer(content) {
+        this.currentAnswer = content
       },
       finishTest(){
         this.data = this.data.map(test => {
           if(test.type == '1') {
             test.isCorrect = (test.answer === test.testIdx)
-          }
-          if(test.type == '2') {
+          } else if(test.type == '2' || test.type == '3') {
             test.isCorrect = (test.answer === test.testIdx)
           }
           return test
         })
-        let correntCnt = this.data.filter(test => {
-          if(test.type == '1') {
-            return test.isCorrect
-          }
-          if(test.type == '2') {
-            return test.isCorrect
-          }
+        let normalList = this.data.filter(test => test.type == '1');
+        let tkList = this.data.filter(test => test.type == '2' || test.type == '3').map(item=>item.options).reduceRight((a,b)=>{
+          return b.concat(a)
+        }, [])
+
+        this.resultArray = [...normalList, ...tkList]
+
+        let correntCnt = this.resultArray.filter(test => {
+          return test.isCorrect
         }).length
-        let level1 = this.data.filter( test => test.level == '1' && test.isCorrect);
-        let level2 = this.data.filter( test => test.level == '2' && test.isCorrect);
-        let level3 = this.data.filter( test => test.level == '3' && test.isCorrect);
-        let level4 = this.data.filter( test => test.level == '4' && test.isCorrect);
-        this.testResult = Math.round(correntCnt / this.data.length * 100) + '%'
+        this.testResult = Math.round(correntCnt / this.resultArray.length * 100) + '%'
         this.showResult = true
-        this.level1Result = level1;
-        this.level2Result = level2;
-        this.level3Result = level3;
-        this.level4Result = level4;
-        axios.post('/api/user/course/' + this.paper.paperId + '/save?wordsTotal=' + this.paper.wordsTotal + 'score=' + Math.round(correntCnt / this.data.length * 100))
+        window.scrollTo(0, 0)
+        axios.post('/api/user/course/' + this.paper.id + '/save?readToday=' + formatDate(Date.now()) + '&wordsTotal=' + this.paper.wordsTotal + '&score=' + Math.round(correntCnt / this.resultArray.length * 100))
       },
       select(item, index, idx) {
         item.testIdx = idx
         this.$set(this.data, index, item)
+      },
+      replaceEmpty(content, type){
+        if(type == '3') {
+          return content.replace(/\$(\d+)/g, function(a, b){
+            return '<span data-idx="' + b + '" class="editor-input">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+          })
+        } else if(type == '2') {
+          return content.replace(/\$(\d+)/g, function(a, b){
+            return '<input type="text" data-idx="' + b + '" class="editor-input2" value=""></input>'
+          })
+        }
+
+      },
+      proxyChildrenInput(e, test){
+        if(e.target.className == 'editor-input2') {
+          let op = test.options[e.target.getAttribute('data-idx') - 1]
+          if(op) {
+            op.isCorrect = (op.content == e.target.value)
+          }
+        }
+      },
+      proxyChildren(e, test) {
+        if(e.target.className == 'editor-input' && this.currentAnswer) {
+          e.target.className = 'editor-input valid'
+          e.target.innerHTML = '&nbsp;&nbsp;' + this.currentAnswer + '&nbsp;&nbsp;'
+          let op = test.options[e.target.getAttribute('data-idx') - 1]
+          if(op) {
+            op.isCorrect = (op.content == this.currentAnswer)
+          }
+          this.currentAnswer = null
+        } else if(e.target.className == 'editor-input valid') {
+          this.currentAnswer = null
+          e.target.className = 'editor-input'
+          e.target.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+          let op = test.options[e.target.getAttribute('data-idx') - 1]
+          if(op) {
+            op.isCorrect = false
+          }
+        }
       }
     }
   }
