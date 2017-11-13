@@ -33,13 +33,13 @@
       <a href="javascript:;" @click="viewDetail(today)">&lt; 点击日期  进入当日阅读</a>
     </div>
     <div class="book-list">
-      <div class="book-item" v-for="book in books">
+      <div class="book-item" v-if="paper">
         <div class="book-media">
-          <img src="../../public/book.png" alt="book">
+          <img :src="paper.bookCoverUrl" alt="book">
         </div>
         <div class="book-content">
-          <div class="small">第xx期</div>
-          <div>《我是书名》</div>
+          <div class="small">{{paper.bookDesc}}</div>
+          <div>《{{paper.bookName}}》</div>
         </div>
       </div>
     </div>
@@ -74,6 +74,7 @@
         today: new Date(),
         MONTH_MAP: MONTH_MAP,
         books: [0, 0],
+        paper: null,
         statistical: []
       }
     },

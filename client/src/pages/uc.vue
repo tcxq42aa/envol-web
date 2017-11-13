@@ -11,12 +11,12 @@
       <div class="white--text">
         <div class="uc-title">{{userInfo.nickname}}</div>
         <div class="uc-sm">已阅读 <span class="ml-3">{{wordsTotalStr}}字  {{statistical.length}}天</span></div>
-        <div class="uc-sm">
-          已解锁
-          <v-icon class="white--text ml-3">star</v-icon>
-          <v-icon class="white--text opacity-3">star</v-icon>
-          <v-icon class="white--text opacity-3">star</v-icon>
-        </div>
+        <!--<div class="uc-sm">-->
+          <!--已解锁-->
+          <!--<v-icon class="white&#45;&#45;text ml-3">star</v-icon>-->
+          <!--<v-icon class="white&#45;&#45;text opacity-3">star</v-icon>-->
+          <!--<v-icon class="white&#45;&#45;text opacity-3">star</v-icon>-->
+        <!--</div>-->
       </div>
     </div>
 
