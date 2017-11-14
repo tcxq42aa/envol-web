@@ -12,7 +12,7 @@
         <div class="mt-2 mb-3 subheading">{{search.nickname}}</div>
         <p style="line-height: 2">
           已在【法棍阅读】测试法语阅读水平，<br>
-          他的水平是N{{search.level}}，相当于欧标{{europeLevel}}
+          他的水平是{{search.level}}，相当于欧标{{europeLevel}}
         </p>
       </div>
       <div class="share-card-bottom">
@@ -46,7 +46,7 @@
     },
     computed: {
       europeLevel(){
-        const levelArray = {1: 'A1', 2: 'A2-B1', 3: 'B1', 4: 'B2'};
+        const levelArray = {'N1': 'A1', 'N2': 'A2-B1', 'N3': 'B1', 'N4': 'B2'};
         return levelArray[this.search.level];
       }
     }

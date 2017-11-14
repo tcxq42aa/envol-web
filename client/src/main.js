@@ -14,6 +14,7 @@ const Read = () => import('./pages/Read.vue')
 const TestLand = () => import('./pages/TestLand.vue')
 const TestShare = () => import('./pages/TestShare.vue')
 const Practice = () => import('./pages/Practice.vue')
+const Paid = () => import('./pages/PaySuccess')
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
@@ -28,6 +29,7 @@ const routes = [
   { path: '/testShare', component: TestShare },
   { path: '/read', component: Read },
   { path: '/practice', component: Practice },
+  { path: '/paid', component: Paid },
   { path: '*', redirect: '/index' }
 ]
 const router = new VueRouter({

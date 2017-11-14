@@ -120,8 +120,9 @@
       initShare(){
         const { nickname, headimgurl } = this.userInfo;
         const level = this.level.toUpperCase();
+        console.log(level, nickname, headimgurl)
         wx.onMenuShareTimeline({
-          title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是N${level}`, // 分享标题
+          title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是${level}`, // 分享标题
           link: `http://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           success: function () {
@@ -132,7 +133,7 @@
           }
         });
         wx.onMenuShareAppMessage({
-            title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是N${level}`, // 分享标题
+            title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是${level}`, // 分享标题
             desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
             link: `http://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
@@ -167,7 +168,7 @@
         let level3 = this.data.filter( test => test.level == '3' && test.isCorrect).length;
 
         let score = 0
-        let level = 'n1'
+        let level = 'n2'
         let pass = true
 
         if(level1 + level2 >= 12) {
@@ -188,7 +189,7 @@
         this.pass = pass
         this.showResult = true
 
-        console.log(level, {level1, level2,level3})
+        this.initShare();
 
         axios.post('/api/user/evaluation/' + this.evaluationId + '/save?score=40')
       },

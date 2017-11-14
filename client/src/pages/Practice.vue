@@ -107,7 +107,6 @@
     },
     mounted(){
       wx.ready((res) => {
-        this.initShare()
       });
         wx.error((err)=>{
           console.log(err)

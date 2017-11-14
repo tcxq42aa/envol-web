@@ -77,13 +77,14 @@
         } else {
           this.dialog = true;
         }
-        if(this.$route.query.test=='true'){
-          this.requestPay()
-        }
       },
       bindPhone() {
         const reg = /^\d{11,12}$/
         const self = this
+        if(this.$route.query.active=='true'){
+          this.requestPay()
+          return
+        }
         if(this.userReservation){
           self.failDialog = true;
           return;
@@ -118,8 +119,7 @@
             paySign: data.paySign, // 支付签名
             success: function (res) {
               // 支付成功后的回调函数
-              alert('支付成功')
-              window.location.replace = '/paySuccess'
+              window.location.replace('/paid')
             }
           });
         }).catch((e)=>{
