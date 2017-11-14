@@ -12,6 +12,7 @@ const Appointment = () => import('./pages/Appointment.vue')
 const Test = () => import('./pages/Test.vue')
 const Read = () => import('./pages/Read.vue')
 const TestLand = () => import('./pages/TestLand.vue')
+const TestShare = () => import('./pages/TestShare.vue')
 const Practice = () => import('./pages/Practice.vue')
 
 Vue.use(Vuetify)
@@ -24,6 +25,7 @@ const routes = [
   { path: '/appointment', component: Appointment },
   { path: '/test', component: Test },
   { path: '/testLand', component: TestLand },
+  { path: '/testShare', component: TestShare },
   { path: '/read', component: Read },
   { path: '/practice', component: Practice },
   { path: '*', redirect: '/index' }

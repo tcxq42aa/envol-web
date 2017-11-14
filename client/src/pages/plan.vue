@@ -28,12 +28,12 @@
         </div>
       </div>
     </div>
-    <div class="btn-link mt-5 mb-4">
+    <div class="btn-link mt-5 mb-4" v-if="paper">
       <v-btn round class="orange white--text btn__orange" @click="viewDetail(today)">开始学习</v-btn>
       <a href="javascript:;" @click="viewDetail(today)">&lt; 点击日期  进入当日阅读</a>
     </div>
     <div class="book-list">
-      <div class="book-item" v-if="paper">
+      <div class="book-item" v-if="paper && paper.bookCoverUrl">
         <div class="book-media">
           <img :src="paper.bookCoverUrl" alt="book">
         </div>

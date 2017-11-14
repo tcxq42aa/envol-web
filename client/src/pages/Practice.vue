@@ -105,6 +105,15 @@
     destroyed(){
       bus.$off('done', this.handler)
     },
+    mounted(){
+      wx.ready((res) => {
+        this.initShare()
+      });
+        wx.error((err)=>{
+          console.log(err)
+      });
+
+    },
     data() {
       return {
         todayStr: todayStr(),

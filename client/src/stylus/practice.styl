@@ -62,18 +62,26 @@ main-color = rgb(252, 147, 61)
       background #eee
       right 0
 .editor-input
+  outline: none;
   position relative
   display inline-block
-  text-decoration underline
+  border-bottom: 1px solid #333
   margin 0 2px
+  padding-left 5px
 .editor-input.valid
   color main-color
   text-decoration-color #333
+.editor-input.valid::before
+  position: absolute;
+  content: '●';
+  font-size: 12px;
+  left: -2px;
+  top: 4px;
 .editor-input:not(.valid)::after
   display: block;
   position: absolute;
   content: '?';
-  top: -3px;
+  top: 0px;
   left: 50%;
   width: 18px;
   height: 18px;
@@ -85,11 +93,13 @@ main-color = rgb(252, 147, 61)
   color main-color
   border 1px solid main-color
 .editor-input2
+  outline: none;
   display inline-block
   border-bottom: 1px solid #333;
   line-height: 20px;
   width 80px
   margin 0 2px
+  padding 10px 10px 2px
   color main-color
 .btn__next-wrap
   padding 50px 45px 0

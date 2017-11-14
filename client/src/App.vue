@@ -29,7 +29,7 @@
   import {formatDate} from './pages/util.vue'
   import axios from 'axios'
   var qs = require('querystringify');
-  const extraPages = ['/appointment', '/test','/practice', '/testLand', '/read']
+  const extraPages = ['/appointment', '/test','/practice', '/testLand', '/testShare', '/read']
   export default {
     created(){
       let date = qs.parse(location.search).date

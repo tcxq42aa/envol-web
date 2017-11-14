@@ -1,0 +1,47 @@
+.share-card {
+  background #fff
+  text-align center
+  box-shadow 0 5px 20px rgb(252, 148, 60)
+}
+.share-card-top {
+  position relative
+  z-index 2
+  padding 20px 0 1px
+  border-bottom: 1px dashed #ccc;
+}
+.share-card-bottom {
+  z-index 1
+  position relative
+  padding 20px 0 20px
+  background rgba(155, 155, 155, 0.1)
+}
+.share-card-top::before,
+.share-card-top::after
+  position absolute
+  content ' '
+  display block
+  width 30px
+  height 30px
+  border-radius 100%
+  bottom -15px
+
+.share-card-top::before
+  left -15px
+  background rgb(252, 147, 61)
+.share-card-top::after
+  right -15px
+  background rgb(255, 181, 49)
+
+.qrcodeWrap {
+    position: relative; width: 135px; height: 135px;
+    margin: 0 auto;
+    background: url(../assets/group@2x.png) no-repeat center center;
+    background-size: contain;
+}
+.qrcodeWrap img {
+  position: absolute; left: -67.5px; top: -67.5px;
+  width: 135px; height: 135px;
+  display: block;
+  border: none;
+  opacity: 0;    /*visibility:hidden*/
+}

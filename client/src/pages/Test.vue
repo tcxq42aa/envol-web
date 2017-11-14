@@ -26,54 +26,48 @@
       <div class="card orange test-land-wrap mb-3">
         <img src="../assets/logo@2x.png" height="22px"/>
         <h3>您的测试等级</h3>
-        <v-avatar
-          size="100px"
-          class="white uc-avatar-land"
-        >
-          <span class="orange--text headline">{{level}}</span>
-        </v-avatar>
-        <p v-if="!pass">
+        <img v-if="level=='n1'" src="../assets/n1@2x.png" width="118px" height="135px">
+        <img v-if="level=='n2'" src="../assets/n2@2x.png" width="118px" height="135px">
+        <img v-if="level=='n3'" src="../assets/n3@2x.png" width="118px" height="135px">
+        <img v-if="level=='n4'" src="../assets/n4@2x.png" width="118px" height="135px">
+        <p v-if="level=='n1'" style="line-height: 2">
           好可惜，<br>
           你现在的学习等级暂不适合参加<br>
           本期课程，<br>
           再加把劲学习法语，<br>
           或期待入门阅读课程上线！
         </p>
-        <div v-if="pass">
+        <div v-if="level=='n2'" style="line-height: 2">
           Bravo！<br>
           等的就是你，<br>
           你非常适合参加本期课程，<br>
           请点击【报名】<br>
           一起享受法语阅读的乐趣吧！
-          <div class="mt-3">
-            <span :href="'/appointment?semesterId=' + semesterId" style="color: rgb(255, 231, 18)">立即报名</span>
+          <div class="mt-3 bold f16">
+            <span>告诉小伙伴<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>
           </div>
         </div>
+        <div v-if="level=='n3'" style="line-height: 2">
+          太棒啦！<br>
+          你的阅读水平已超过一般水平，<br>
+          水平较高，<br>
+          请等待我们更高级的阅读课程吧！
+        </div>
+        <div v-if="level=='n4'" style="line-height: 2">
+          哇，<br>
+          你的法语阅读水平已达到B2+等级，<br>
+          敬请期待我们的<br>
+          达人级别阅读课程吧！
+        </div>
       </div>
-      <v-btn block round class="btn-test orange--text white">
-        告诉小伙伴
-        <img src="../assets/arrow@2x.png" height="15px" style="margin-left: 8px"/>
+      <v-btn block round class="btn-test orange--text white" v-if="level!='n2'">
+        <span v-if="level!='n2'">让小伙伴试试</span>
+        <!--<img src="../assets/share@2x.png" height="15px" style="margin-left: 8px"/>-->
       </v-btn>
-      <!--<div class="card orange test-result-wrap pa-3 mb-3">-->
-        <!--<div>太棒了，<br>你完成了今天的阅读任务！</div>-->
-        <!--<div>-->
-          <!--<div>正确率</div>-->
-          <!--<div class="result-percent">{{testResult}}</div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="card result-card mb-3">-->
-        <!--<div class="test-tag">{{todayStr}}</div>-->
-        <!--<ul class="test-detail">-->
-          <!--<li class="result-item"-->
-              <!--v-for="(test, index) in data">-->
-            <!--<div>0{{index + 1}}</div>-->
-            <!--<div>-->
-              <!--<v-icon v-if="test.isCorrect" class="orange&#45;&#45;text">check</v-icon>-->
-              <!--<v-icon v-if="!test.isCorrect" class="black&#45;&#45;text">close</v-icon>-->
-            <!--</div>-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</div>-->
+      <v-btn block round class="btn-test orange--text white" v-if="level=='n2'"
+             :href="'/appointment?active=true&semesterId=' + semesterId">
+        立即报名
+      </v-btn>
     </div>
   </v-container>
 </template>
@@ -100,12 +94,10 @@
     mounted(){
       wx.ready((res) => {
 //         config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-//        alert('ready')
           this.initShare()
       });
       wx.error((err)=>{
         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-//        alert('error')
         console.log(err)
       });
 
@@ -120,14 +112,17 @@
         level: '',
         current: 0,
         testResult: '',
-        data: []
+        data: [],
+        userInfo: userInfo || {}
       }
     },
     methods: {
       initShare(){
+        const { nickname, headimgurl } = this.userInfo;
+        const level = this.level.toUpperCase();
         wx.onMenuShareTimeline({
-          title: 'Bravo！等的就是你，一起享受法语阅读的乐趣吧！', // 分享标题
-          link: 'http://www.envol.vip/appointment?semesterId=' + this.semesterId, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是N${level}`, // 分享标题
+          link: `http://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           success: function () {
             // 用户确认分享后执行的回调函数
@@ -137,9 +132,9 @@
           }
         });
         wx.onMenuShareAppMessage({
-            title: '是时候开始法语阅读了', // 分享标题
-            desc: 'Bravo！等的就是你，一起享受法语阅读的乐趣吧！', // 分享描述
-            link: 'http://www.envol.vip/appointment?semesterId=' + this.semesterId, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是N${level}`, // 分享标题
+            desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
+            link: `http://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
             type: 'link', // 分享类型,music、video或link，不填默认为link
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -172,20 +167,20 @@
         let level3 = this.data.filter( test => test.level == '3' && test.isCorrect).length;
 
         let score = 0
-        let level = 'N1'
+        let level = 'n1'
         let pass = true
 
         if(level1 + level2 >= 12) {
           if(level3 >= 2) {
-            level = 'N4'
+            level = 'n4'
           } else {
-            level = 'N3'
+            level = 'n3'
           }
         } else {
           if(level1 + level2 >= 7) {
-            level = 'N2'
+            level = 'n2'
           } else {
-            level = 'N1'
+            level = 'n1'
             pass = false
           }
         }
