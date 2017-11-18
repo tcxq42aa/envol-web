@@ -61,7 +61,7 @@
         </div>
       </div>
       <v-btn block round class="btn-test orange--text white" v-if="level!='n2'">
-        <span v-if="level!='n2'">让小伙伴试试</span>
+        <span>让小伙伴试试</span>
         <!--<img src="../assets/share@2x.png" height="15px" style="margin-left: 8px"/>-->
       </v-btn>
       <v-btn block round class="btn-test orange--text white" v-if="level=='n2'"
@@ -75,17 +75,27 @@
 <script>
   import '../stylus/test.styl'
   import { todayStr } from './util.vue'
+  import {check} from '../service/user'
   import axios from 'axios'
   export default {
     created(){
       document.title = '小试牛刀'
       axios.get('/api/evaluation/detail')
         .then((response) => {
+          if(!response.data){
+//            location.replace('/appointment')
+            return
+          }
           this.evaluationId = response.data.id;
           this.semesterId = response.data.semesterId;
           let content = response.data.content.replace(/\$\d+/g,'<span onclick=\\\"console.log(app.__vue__.$children[0])\\\" class=\\\"qa-underline\\\">&nbsp;</span>')
           this.data = JSON.parse(content)
           this.initShare()
+          if(this.semesterId) {
+            check(this.semesterId).then( res => {
+              this.userEnroll = res.data.enroll;
+            })
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -113,7 +123,8 @@
         current: 0,
         testResult: '',
         data: [],
-        userInfo: userInfo || {}
+        userInfo: userInfo || {},
+        userEnroll: false //是否已报名
       }
     },
     methods: {
@@ -153,6 +164,7 @@
         } else {
           this.finishTest()
         }
+        window.scrollTo(0, 0);
       },
       finishTest(){
         this.data = this.data.map(test => {
@@ -191,7 +203,9 @@
 
         this.initShare();
 
-        axios.post('/api/user/evaluation/' + this.evaluationId + '/save?score=40')
+        if(!this.userEnroll) {
+          axios.post('/api/user/evaluation/' + this.evaluationId + '/save?score=40')
+        }
       },
       select(item, index, idx) {
         item.testIdx = idx

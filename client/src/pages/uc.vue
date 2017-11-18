@@ -28,7 +28,7 @@
           lazy
         >
           <div slot="activator" v-model="remindTime">
-            <v-icon class="white--text opacity-6">alarm</v-icon>
+            <img src="../assets/group6@2x.png" width="70px" height="70px">
             <div class="f14 bold mb-1">阅读提醒设置</div>
             <div class="mb-2">每天</div>
             <div class="remind-time f14">{{remindTime}}</div>
@@ -43,17 +43,17 @@
           </v-time-picker>
         </v-dialog>
       </div><div class="uc-block block-2">
-        <v-icon class="white--text opacity-6">alarm</v-icon>
+        <img src="../assets/group5Copy7@2x.png" width="70px" height="70px">
         <div class="f14 bold mb-1">常见问题</div>
         <div>使用方法、打卡、<br>活动等</div>
       </div>
         <div class="uc-block block-3" dark @click.stop="dialog=true">
-          <v-icon class="white--text opacity-6">alarm</v-icon>
+          <img src="../assets/group5Copy5@2x.png" width="70px" height="70px">
           <div class="f14 bold mb-1">我要找督导老师</div>
           <div>特殊问题</div>
         </div>
       <div class="uc-block block-4">
-        <v-icon class="white--text opacity-6">alarm</v-icon>
+        <img src="../assets/group5Copy6@2x.png" width="70px" height="70px">
         <div class="f14 bold mb-1">晒学习成果</div>
         <div>学习使我快乐</div>
       </div>

@@ -31,7 +31,7 @@
 
     <div v-if="showResult" >
       <div class="card orange test-result-wrap pa-3 mb-3">
-        <div>太棒了，<br>你完成了今天的阅读任务！</div>
+        <div>太棒了，<br>你完成了今日测试！</div>
         <div>
           <div>正确率</div>
           <div class="result-percent">{{testResult}}</div>
@@ -74,7 +74,7 @@
         <div class="subheading mb-4">今日解析</div>
         <div v-html="lexicalAnalysis"></div>
       </div>
-      <div class="orange btn-share">分享到朋友圈，完成打卡</div>
+      <div class="orange btn-share">分享到朋友圈，完成打卡<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></div>
     </div>
   </v-container>
 </template>
@@ -86,7 +86,7 @@
   import axios from 'axios'
   export default {
     created(){
-      document.title = '小试牛刀'
+      document.title = '今日测试'
       this.handler = (data) => {
         this.paper = data.paper;
         if(this.paper){
