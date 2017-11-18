@@ -80,7 +80,12 @@
   export default {
     created(){
       document.title = '小试牛刀'
-      axios.get('/api/evaluation/detail')
+      let semesterId = this.$route.query.semesterId;
+      let url = '/api/evaluation/detail';
+      if(semesterId) {
+        url = url + '?semesterId=' + semesterId
+      }
+      axios.get(url)
         .then((response) => {
           if(!response.data){
 //            location.replace('/appointment')
