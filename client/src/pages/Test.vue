@@ -204,7 +204,7 @@
         this.initShare();
 
         if(!this.userEnroll) {
-          axios.post('/api/user/evaluation/' + this.evaluationId + '/save?score=40')
+          axios.post('/api/user/evaluation/' + this.evaluationId + '/save?grade=N2')
         }
       },
       select(item, index, idx) {
