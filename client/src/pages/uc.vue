@@ -10,13 +10,15 @@
       </v-avatar>
       <div class="white--text">
         <div class="uc-title">{{userInfo.nickname}}</div>
-        <div class="uc-sm">已阅读 <span class="ml-3">{{wordsTotalStr}}字  {{statistical.length}}天</span></div>
-        <!--<div class="uc-sm">-->
-          <!--已解锁-->
-          <!--<v-icon class="white&#45;&#45;text ml-3">star</v-icon>-->
-          <!--<v-icon class="white&#45;&#45;text opacity-3">star</v-icon>-->
-          <!--<v-icon class="white&#45;&#45;text opacity-3">star</v-icon>-->
-        <!--</div>-->
+        <div class="uc-sm">已阅读 <span class="ml-4">{{wordsTotalStr}}字  {{statistical.length}}天</span></div>
+        <div class="uc-sm mt-2">
+          已解锁
+          <span class="ml-4">
+            <span class="uc-badge" :class="{'active': badge >= 1}">1</span>
+            <span class="uc-badge" :class="{'active': badge >= 5}">5</span>
+            <span class="uc-badge" :class="{'active': badge >= 10}">10</span>
+          </span>
+        </div>
       </div>
     </div>
 
@@ -68,6 +70,7 @@
 
 <script>
   import '../stylus/uc.styl'
+  import { formatDate } from './util.vue'
   import { bus } from '../bus.vue'
   import axios from 'axios'
   export default {
@@ -78,6 +81,29 @@
         this.tractate = this.paper && this.paper.tractate;
         this.semesterId = this.paper && this.paper.semesterId;
         this.statistical = data.statistical;
+
+        let max = 0;
+        let current = 0;
+        let statistical = this.statistical;
+        let len = statistical.length;
+        for(let i = 0; i < len; i++){
+          if(i > 0) {
+            let l = new Date(statistical[i - 1].readToday);
+            l.setDate(l.getDate() + 1);
+            if(formatDate(l) == formatDate(statistical[i].readToday)) {
+              current++;
+              if(current > max) {
+                max = current;
+              }
+            } else {
+              current = 1;
+            }
+          } else {
+            current = 1;
+            max = 1;
+          }
+        }
+        this.badge = max;
       }
       bus.$on('done', this.handler)
       bus.$once('needTest', this.handleRedirect.bind(this))
@@ -91,7 +117,8 @@
         userInfo: userInfo || {},
         remindTime: localStorage.getItem('remindTime'),
         modal2: false,
-        statistical: []
+        statistical: [],
+        badge: 0
       }
     },
     methods: {
