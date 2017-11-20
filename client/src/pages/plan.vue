@@ -60,6 +60,7 @@
         this.tractate = this.paper && this.paper.tractate;
         this.semesterId = this.paper && this.paper.semesterId;
         this.statistical = data.statistical;
+        this.semester = data.semester;
       }
       bus.$on('done', this.handler)
       bus.$once('needTest', this.handleRedirect.bind(this))
@@ -75,7 +76,16 @@
         MONTH_MAP: MONTH_MAP,
         books: [0, 0],
         paper: null,
-        statistical: []
+        statistical: [],
+        semester: null
+      }
+    },
+    computed: {
+      beginDate() {
+        return this.semester ? this.semester.beginDate : null
+      },
+      endDate() {
+        return this.semester ? this.semester.endDate : null
       }
     },
     methods: {
@@ -107,6 +117,9 @@
         if(dateStr > formatDate(Date.now())) {
           return ''
         }
+        if(!this.semester || (dateStr > formatDate(this.endDate) || dateStr < formatDate(this.beginDate))) {
+          return ''
+        }
         if(f) {
           console.log(f)
           if(formatDate(f.createTime) > dateStr) {
@@ -118,6 +131,9 @@
 
       viewDetail(date) {
         let dateStr = formatDate(date.getTime())
+        if(!this.semester || (dateStr > formatDate(this.endDate) || dateStr < formatDate(this.beginDate))) {
+          return;
+        }
         if(dateStr > formatDate(Date.now())) {
           return
         }

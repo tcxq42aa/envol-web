@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios')
+var crypto = require('crypto');
 var sha1 = require('sha1');
 var querystring = require('querystring');
 var config = require('../config/app.config');
@@ -101,6 +102,10 @@ router.get('/accessToken', function (req, res, next) {
   res.set('Content-Type', 'text/plain');
   res.send(global.access_token);
 });
+router.get('/api/accessToken', function (req, res, next) {
+  res.set('Content-Type', 'text/plain');
+  res.send(encrypt(global.access_token));
+});
 router.get('/jsapiTicket', function (req, res, next) {
   res.set('Content-Type', 'text/plain');
   res.send(global.jsapi_ticket);
@@ -130,6 +135,20 @@ function getJsapiTicket() {
     .catch(function (error) {
       console.log(error);
     });
+}
+
+function encrypt(source) {
+  var secret = 'jnl188**';
+  var cipher = crypto.createCipher('aes192', secret);
+  var enc = cipher.update(source, 'utf8', 'hex');//编码方式从utf-8转为hex;
+  enc += cipher.final('hex');//编码方式从转为hex;
+  //
+  // var decipher = crypto.createDecipher('aes192', secret);
+  // var dec = decipher.update(enc, 'hex', 'utf8');//编码方式从hex转为utf-8;
+  // dec += decipher.final('utf8');//编码方式从utf-8;
+  // console.log(dec);
+
+  return enc;
 }
 
 getAccessToken(getJsapiTicket)
