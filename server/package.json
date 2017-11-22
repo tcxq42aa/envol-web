@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "PORT=3100 NODE_ENV=dev node ./bin/www",
+    "dev": "PORT=3100 NODE_ENV=dev supervisor ./bin/www",
     "start": "PORT=3100 NODE_ENV=prod node ./bin/www"
   },
   "dependencies": {
@@ -22,5 +22,8 @@
     "serve-favicon": "~2.3.0",
     "session-file-store": "^1.1.2",
     "sha1": "^1.1.1"
+  },
+  "devDependencies": {
+    "supervisor": "^0.12.0"
   }
 }

@@ -8,12 +8,14 @@ import '../public/css/font.css'
 const Index = () => import('./pages/index.vue')
 const Plan = () => import('./pages/plan.vue')
 const UC = () => import('./pages/uc.vue')
+const Badge = () => import('./pages/badge.vue')
 const Appointment = () => import('./pages/Appointment.vue')
 const Test = () => import('./pages/Test.vue')
 const Read = () => import('./pages/Read.vue')
 const TestLand = () => import('./pages/TestLand.vue')
 const TestShare = () => import('./pages/TestShare.vue')
 const Practice = () => import('./pages/Practice.vue')
+const PracticeShare = () => import('./pages/PracticeShare.vue')
 const Paid = () => import('./pages/PaySuccess')
 
 Vue.use(Vuetify)
@@ -29,7 +31,9 @@ const routes = [
   { path: '/testShare', component: TestShare },
   { path: '/read', component: Read },
   { path: '/practice', component: Practice },
+  { path: '/practiceShare', component: PracticeShare },
   { path: '/paid', component: Paid },
+  { path: '/badge', component: Badge },
   { path: '*', redirect: '/index' }
 ]
 const router = new VueRouter({

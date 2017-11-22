@@ -95,10 +95,12 @@
           this.lexicalAnalysis = this.paper.lexicalAnalysis;
           this.todayWordsTotal = this.paper.wordsTotal;
         }
+        this.book = data.book;
         this.statistical = data.statistical;
         this.wordsTotal = this.statistical.map(i => i.wordsTotal).reduceRight((a, b)=>{
           return a + b
         }, 0)
+        this.initShare()
       }
       bus.$on('done', this.handler)
     },
@@ -107,6 +109,8 @@
     },
     mounted(){
       wx.ready((res) => {
+//         config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+          this.initShare()
       });
         wx.error((err)=>{
           console.log(err)
@@ -120,10 +124,42 @@
         current: 0,
         testResult: '',
         data: [],
-        resultArray: []
+        userInfo: userInfo || {}
       }
     },
     methods: {
+      initShare(){
+        const { nickname, headimgurl } = this.userInfo;
+        const day = this.statistical ? this.statistical.length : 0;
+        const word = this.wordsTotal;
+        const book = this.book ? this.book.name : '';
+        const cover = this.book ? this.book.coverUrl : '';
+        wx.onMenuShareTimeline({
+          title: `${nickname}在法棍阅读已坚持完成${day}天${word}单词`, // 分享标题
+          link: `http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+          success: function () {
+            // 用户确认分享后执行的回调函数
+          },
+          cancel: function () {
+            // 用户取消分享后执行的回调函数
+          }
+        });
+        wx.onMenuShareAppMessage({
+            title: `${nickname}在法棍阅读已坚持完成${day}天${word}单词`, // 分享标题
+            desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
+            link: `http://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+              // 用户取消分享后执行的回调函数
+            }
+        });
+      },
       next(){
         if(this.current < this.data.length - 1) {
           this.current = this.current + 1

@@ -1,0 +1,38 @@
+.badge-card {
+  box-shadow 0 5px 20px rgb(252, 148, 60)
+  margin-top 15px
+  padding 35px 33px
+}
+.badge-header {
+  display flex
+  align-items center
+  justify-content center
+  color rgb(153,153,153)
+  margin-bottom 40px
+}
+.badge-line {
+  width 70px
+  position relative
+  height 1px
+  margin 0 10px
+  background rgb(216,216,216)
+}
+.badge-line::before {
+  position absolute
+  display block
+  content ' '
+  right 0
+  top -1px
+  width 3px
+  height 3px
+  border-radius 50%
+  background rgb(216,216,216)
+}
+.badge-line:last-child::before {
+  left 0
+}
+
+.badge-body {
+  display flex
+  justify-content space-between
+}
