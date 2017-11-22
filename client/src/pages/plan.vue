@@ -137,7 +137,7 @@
         if(dateStr > formatDate(Date.now())) {
           return
         }
-        this.$router.push('/read?date=' + formatDate(date.getTime()))
+        window.location.href = '/read?date=' + formatDate(date.getTime());
       }
     }
   }

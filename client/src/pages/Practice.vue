@@ -193,7 +193,7 @@
         this.testResult = Math.round(correntCnt / this.resultArray.length * 100) + '%'
         this.showResult = true
         window.scrollTo(0, 0)
-        axios.post('/api/user/course/' + this.paper.id + '/save?readToday=' + formatDate(Date.now()) + '&wordsTotal=' + this.paper.wordsTotal + '&score=' + Math.round(correntCnt / this.resultArray.length * 100))
+        axios.post('/api/user/course/' + this.paper.id + '/save?readToday=' + formatDate(this.paper.readToday) + '&wordsTotal=' + this.paper.wordsTotal + '&score=' + Math.round(correntCnt / this.resultArray.length * 100))
       },
       select(item, index, idx) {
         item.testIdx = idx
