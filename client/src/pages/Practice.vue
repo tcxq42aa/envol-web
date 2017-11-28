@@ -72,7 +72,7 @@
       </div>
       <div class="card pa-3 mb-3">
         <div class="subheading mb-4">今日解析</div>
-        <div v-html="lexicalAnalysis"></div>
+        <div v-html="sentenceAnalysis"></div>
       </div>
       <div class="orange btn-share">分享到朋友圈，完成打卡<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></div>
     </div>
@@ -93,6 +93,7 @@
           this.tractate = this.paper.tractate;
           this.data = JSON.parse(this.paper.content);
           this.lexicalAnalysis = this.paper.lexicalAnalysis;
+          this.sentenceAnalysis = this.paper.sentenceAnalysis;
           this.todayWordsTotal = this.paper.wordsTotal;
         }
         this.book = data.book;
@@ -192,6 +193,7 @@
         }).length
         this.testResult = Math.round(correntCnt / this.resultArray.length * 100) + '%'
         this.showResult = true
+        this.initShare()
         window.scrollTo(0, 0)
         axios.post('/api/user/course/' + this.paper.id + '/save?readToday=' + formatDate(this.paper.readToday) + '&wordsTotal=' + this.paper.wordsTotal + '&score=' + Math.round(correntCnt / this.resultArray.length * 100))
       },

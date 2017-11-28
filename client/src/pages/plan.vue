@@ -33,13 +33,13 @@
       <a href="javascript:;" @click="viewDetail(today)">&lt; 点击日期  进入当日阅读</a>
     </div>
     <div class="book-list">
-      <div class="book-item" v-if="paper && paper.bookCoverUrl">
+      <div class="book-item" v-if="book && book.id">
         <div class="book-media">
-          <img :src="paper.bookCoverUrl" alt="book">
+          <img :src="'http://support.envol.vip/' + book.coverUrl" alt="book">
         </div>
         <div class="book-content">
-          <div class="small">{{paper.bookDesc}}</div>
-          <div>《{{paper.bookName}}》</div>
+          <div class="small">{{book.description}}</div>
+          <div>《{{book.name}}》</div>
         </div>
       </div>
     </div>
@@ -57,6 +57,7 @@
       this.initCalender()
       this.handler = (data) => {
         this.paper = data.paper;
+        this.book = data.book;
         this.tractate = this.paper && this.paper.tractate;
         this.semesterId = this.paper && this.paper.semesterId;
         this.statistical = data.statistical;

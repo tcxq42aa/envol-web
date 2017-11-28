@@ -61,8 +61,8 @@
       </div>
     </div>
     <v-dialog v-model="dialog" >
-      <v-card class="pa-4">
-        <img src="../assets/qrcode.png" width="100%">
+      <v-card>
+        <img src="../assets/vovo.jpg" width="100%">
       </v-card>
     </v-dialog>
   </v-container>

@@ -208,8 +208,8 @@
 
         this.initShare();
 
-        if(!this.userEnroll) {
-          axios.post('/api/user/evaluation/' + this.evaluationId + '/save?grade=N2')
+        if(this.level == 'n2') {
+          axios.post('/api/user/evaluation/' + this.evaluationId + '/save?grade=' + this.level.toUpperCase())
         }
       },
       select(item, index, idx) {
