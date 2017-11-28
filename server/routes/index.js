@@ -116,15 +116,23 @@ setInterval(function(){
 }, 7000000)
 
 function getAccessToken(cb) {
-  axios.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.appid}&secret=${config.secret}`)
-    .then(function (response) {
-      global.access_token = response.data.access_token;
+  if(process.env.NODE_ENV=='dev') {
+    axios.get('http://www.envol.vip/accessToken').then((res)=>{
+      global.access_token = res.data;
       console.log('access_token=' + global.access_token);
       cb()
-    })
-    .catch(function (error) {
-      console.log(error);
     });
+  } else {
+    axios.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.appid}&secret=${config.secret}`)
+      .then(function (response) {
+        global.access_token = response.data.access_token;
+        console.log('access_token=' + global.access_token);
+        cb()
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 }
 function getJsapiTicket() {
   axios.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + global.access_token + '&type=jsapi')

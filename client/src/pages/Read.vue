@@ -6,18 +6,19 @@
     </div>
     <div class="card pa-3 mb-3" v-if="tractate">
       <div v-html="tractate"></div>
+      <div class="btn__test-wrap">
+        <v-btn round class="orange white--text btn__orange btn__test"
+               :class="{'btn--disabled': !finished}"
+               :href="'/practice?date=' + today">读完了，去测试</v-btn>
+      </div>
     </div>
     <div class="audio-wrap">
-      <div class="btn__test-wrap">
-        <v-btn round class="orange white--text btn__orange btn__test" :href="'/practice?date=' + today">读完了，去测试</v-btn>
-      </div>
       <div class="audio-progress">
         <div class="audio-progress-point" v-bind:style="{ left: percent + '%' }"></div>
         <div class="audio-progress-line" v-bind:style="{ width: percent + '%' }"></div>
       </div>
-      <audio v-if="paper && paper.audio" ref="audio"
-             @loadedmetadata="loadedmetadata"
-             :src="'http://support.envol.vip'+paper.audio"></audio>
+      <audio ref="audio"
+             @loadedmetadata="loadedmetadata" preload="metadata"></audio>
       <div class="audio-panel">
         <div>
           <div>Vitesse</div>
@@ -47,8 +48,13 @@
         this.tractate = this.paper && this.paper.tractate;
         this.semesterId = this.paper && this.paper.semesterId;
         this.statistical = data.statistical;
+        this.initAudio();
       }
       bus.$on('done', this.handler)
+//      let self = this;
+//      wx.ready(function () {
+//        self.initAudio();
+//      });
     },
     destroyed(){
       bus.$off('done', this.handler)
@@ -59,6 +65,7 @@
     },
     data() {
       return {
+        finished: false,
         isPlay: false,
         paper: {},
         tractate: null,
@@ -78,13 +85,29 @@
       }
     },
     methods: {
+      initAudio(){
+        var self = this;
+        if(this.paper) {
+          wx.getNetworkType({
+            success: function (res) {
+              var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+              self.$refs.audio.src = 'http://support.envol.vip' + self.paper.audio;
+            }
+          });
+        }
+      },
       loadedmetadata(e){
         this.audioRef = e.target;
         this.duration = this.formatTime(e.target.duration)
         this.timer = setInterval(()=>{
           this.currentTime = this.formatTime(this.audioRef.currentTime)
           this.percent = this.audioRef.currentTime / this.audioRef.duration * 100
-      }, 1000)
+          if(this.percent == 100){
+            this.finished = true;
+            this.percent = 0;
+            this.pause();
+          }
+        }, 1000)
       },
       play(){
         if(!this.audioRef)
