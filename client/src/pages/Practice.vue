@@ -103,23 +103,19 @@
         this.wordsTotal = this.statistical.map(i => i.wordsTotal).reduceRight((a, b)=>{
           return a + b
         }, 0)
-//        this.initShare()
       }
       bus.$on('done', this.handler)
+//      wx.ready((res) => {
+//        this.initShare()
+//      });
+//      wx.error((err)=>{
+//        console.log(err)
+//      });
     },
     destroyed(){
       bus.$off('done', this.handler)
     },
     mounted(){
-      wx.ready((res) => {
-//         config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-//          this.initShare()
-        this.wxReady = true;
-      });
-        wx.error((err)=>{
-          console.log(err)
-      });
-
     },
     data() {
       return {
@@ -135,18 +131,30 @@
     },
     methods: {
       initShare(){
-        if(this.wxReady) {
-          this.bindEvent();
-        } else {
-          wx.ready((res) => {
-            this.bindEvent();
-            this.wxReady = true;
-          });
-          wx.error((err)=>{
-            console.log(err)
-          });
-        }
-
+        console.log(11111);
+        wx.onMenuShareTimeline({
+          title: `测试测试`, // 分享标题
+          link: `http://www.envol.vip/`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg' // 分享图标
+        });
+        wx.onMenuShareAppMessage({
+          title: `测试测试测试测试测试测试`, // 分享标题
+          desc: '测试测试测试测试测试测试测试测试测试测试', // 分享描述
+          link: `http://www.envol.vip`,
+          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg' // 分享图标
+        });
+//        this.bindEvent()
+//        if(this.wxReady) {
+//          this.bindEvent();
+//        } else {
+//          wx.ready((res) => {
+//            this.bindEvent();
+//            this.wxReady = true;
+//          });
+//          wx.error((err)=>{
+//            console.log(err)
+//          });
+//        }
       },
       bindEvent() {
         const { nickname, headimgurl } = this.userInfo;
@@ -154,9 +162,6 @@
         const word = this.paper.wordsTotal;
         const book = this.book ? this.book.name : '';
         const cover = this.book ? this.book.coverUrl : '';
-        if(this.debug) {
-          alert(`${day},${word},${book},${cover}`);
-        }
 
         wx.onMenuShareTimeline({
           title: `${nickname}在法棍阅读已坚持完成${day}天${word}单词`, // 分享标题
