@@ -131,30 +131,24 @@
     },
     methods: {
       initShare(){
-        console.log(11111);
+        const { nickname, headimgurl } = this.userInfo;
+        const day = this.statistical ? this.statistical.length : 0;
+        const word = this.paper.wordsTotal;
+        const book = this.book ? this.book.name : '';
+        const cover = this.book ? this.book.coverUrl : '';
+
         wx.onMenuShareTimeline({
-          title: `测试测试`, // 分享标题
-          link: `http://www.envol.vip/`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          title: `${nickname}在法棍阅读已坚持完成${day}天${word}单词`, // 分享标题
+          link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg' // 分享图标
         });
         wx.onMenuShareAppMessage({
-          title: `测试测试测试测试测试测试`, // 分享标题
-          desc: '测试测试测试测试测试测试测试测试测试测试', // 分享描述
-          link: `http://www.envol.vip`,
-          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg' // 分享图标
+          title: `${nickname}在法棍阅读已坚持完成${day}天${word}单词`, // 分享标题
+          desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
+          link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+          type: 'link' // 分享类型,music、video或link，不填默认为link
         });
-//        this.bindEvent()
-//        if(this.wxReady) {
-//          this.bindEvent();
-//        } else {
-//          wx.ready((res) => {
-//            this.bindEvent();
-//            this.wxReady = true;
-//          });
-//          wx.error((err)=>{
-//            console.log(err)
-//          });
-//        }
       },
       bindEvent() {
         const { nickname, headimgurl } = this.userInfo;
@@ -166,27 +160,14 @@
         wx.onMenuShareTimeline({
           title: `${nickname}在法棍阅读已坚持完成${day}天${word}单词`, // 分享标题
           link: `http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
-          success: function () {
-            // 用户确认分享后执行的回调函数
-          },
-          cancel: function () {
-            // 用户取消分享后执行的回调函数
-          }
+          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg' // 分享图标
         });
         wx.onMenuShareAppMessage({
           title: `${nickname}在法棍阅读已坚持完成${day}天${word}单词`, // 分享标题
           desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
           link: `http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
-          type: 'link', // 分享类型,music、video或link，不填默认为link
-          dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-          success: function () {
-            // 用户确认分享后执行的回调函数
-          },
-          cancel: function () {
-            // 用户取消分享后执行的回调函数
-          }
+          type: 'link' // 分享类型,music、video或link，不填默认为link
         });
       },
       next(){

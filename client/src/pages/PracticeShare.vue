@@ -25,7 +25,7 @@
           </div>
         </div>
         <p class="orange--text">我在读{{search.book}}</p>
-        <img :src="search.coverUrl" alt="" class="mb-2" style="min-height: 100px;min-width: 75px"/>
+        <img v-if="search.cover" :src="'http://support.envol.vip' + search.cover" alt="" class="mb-2" style="max-width: 50%;min-height: 100px;min-width: 75px"/>
       </div>
       <div class="share-card-bottom">
         <p style="line-height: 2">
@@ -52,8 +52,10 @@
     mounted(){
       console.log(this.search)
     },
-    data: {
-      search: {}
+    data() {
+      return {
+        search: {}
+      }
     },
     computed: {
       europeLevel(){
