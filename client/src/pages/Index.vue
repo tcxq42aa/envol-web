@@ -1,6 +1,10 @@
 <template>
   <v-container fluid>
     <div class="index-panel orange">
+      <router-link :to="'/handout?date=' + today">
+        <div class="handout-entry">今日讲义</div>
+      </router-link>
+
       <v-avatar
         size="75px"
         class="grey index-avatar"
@@ -31,7 +35,9 @@
             </div>
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn v-if="paper" round class="orange white--text btn__orange" :href="'/practice?date=' + today">开始学习</v-btn>
+            <router-link :to="'/wordList?date=' + today">
+              <v-btn v-if="paper" round class="orange white--text btn__orange">开始学习</v-btn>
+            </router-link>
           </v-card-actions>
         </v-flex>
         <v-flex xs6>
@@ -45,7 +51,9 @@
             </div>
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn v-if="paper" outline round class="orange--text" :href="'/read?date=' + today">开始阅读</v-btn>
+            <router-link :to="'/read?date=' + today">
+              <v-btn v-if="paper" outline round class="orange--text">开始阅读</v-btn>
+            </router-link>
           </v-card-actions>
         </v-flex>
       </v-layout>
@@ -55,14 +63,16 @@
         <v-flex xs12 class="seg-vert">
           <v-card-title primary-title>
             <div style="width: 100%">
-              <h4 class="title text-xs-center">今日测试</h4>
+              <h4 class="title text-xs-center">章节测试</h4>
               <div class="card-content text-xs-center">
                 <img v-if="paper" src="../assets/group12@2x.png" alt="a" width="95px" class="mt-2">
               </div>
             </div>
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn v-if="paper" round class="orange white--text btn__orange" :href="'/practice?date=' + today">开始测试</v-btn>
+            <router-link :to="'/practice?date=' + today">
+              <v-btn v-if="paper" round class="orange white--text btn__orange">开始测试</v-btn>
+            </router-link>
           </v-card-actions>
         </v-flex>
       </v-layout>

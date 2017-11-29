@@ -36,28 +36,7 @@
   ]
   export default {
     created(){
-      let date = qs.parse(location.search).date
-      axios.post('/api/user/today?readToday=' + (date || formatDate(Date.now()))).then((response) => {
-        this.appData = response.data.data
-        bus.$emit("done", this.appData);
-        if(this.appData.paper && this.appData.paper.semesterId) {
-          check(this.appData.paper.semesterId).then( res => {
-            this.hasTested = res.data.test;
-            if(!this.hasTested) {
-
-            }
-          })
-        }
-      }).catch((error) => {
-        if(error.response) {
-          let res = error.response
-          if(res.status == 404 && res.data.code == 4042) {
-            this.needTest = true
-            bus.$emit("needTest", true);
-//            this.$router.replace('/testLand')
-          }
-        }
-      });
+      this.initData();
     },
     mounted(){
       wx.ready(function(res){
@@ -104,23 +83,44 @@
             jsApiList: ['chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'getNetworkType'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
         })
+      },
+      initData() {
+        let date = qs.parse(location.search).date
+        axios.post('/api/user/today?readToday=' + (date || formatDate(Date.now()))).then((response) => {
+          this.appData = response.data.data
+          bus.$emit("done", this.appData);
+          if(this.appData.paper && this.appData.paper.semesterId) {
+            check(this.appData.paper.semesterId).then( res => {
+              this.hasTested = res.data.test;
+            })
+          }
+        }).catch((error) => {
+          if(error.response) {
+            let res = error.response
+            if(res.status == 404 && res.data.code == 4042) {
+              this.needTest = true
+              bus.$emit("needTest", true);
+            }
+          }
+        });
       }
     },
     watch:{
       $route(){
-        console.log('$route change');
+        console.log('$route change', this.$route);
         this.currentPage = this.$router.currentRoute.path
         if(extraPages.indexOf(this.currentPage) >= 0){
           this.navHidden = true
         } else {
           this.navHidden = false
         }
-        setTimeout(()=>{
-          this.appData && bus.$emit("done", this.appData);
-          if(this.needTest == true) {
-            bus.$emit("needTest", true);
-          }
-        })
+//        setTimeout(()=>{
+//          this.appData && bus.$emit("done", this.appData);
+//          if(this.needTest == true) {
+//            bus.$emit("needTest", true);
+//          }
+//        })
+        this.initData();
         this.refreshSignature()
       }
     }

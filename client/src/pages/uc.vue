@@ -44,10 +44,10 @@
             </template>
           </v-time-picker>
         </v-dialog>
-      </div><div class="uc-block block-2">
+      </div><div class="uc-block block-2"><a class="uc-link" :href="helpLink">
         <img src="../assets/group5Copy7@2x.png" width="70px" height="70px">
         <div class="f14 bold mb-1">常见问题</div>
-        <div>使用方法、打卡、<br>活动等</div>
+        <div>使用方法、打卡、<br>活动等</div></a>
       </div>
         <div class="uc-block block-3" dark @click.stop="dialog=true">
           <img src="../assets/group5Copy5@2x.png" width="70px" height="70px">
@@ -118,7 +118,8 @@
         remindTime: localStorage.getItem('remindTime'),
         modal2: false,
         statistical: [],
-        badge: 0
+        badge: 0,
+        helpLink: 'http://mp.weixin.qq.com/mp/homepage?__biz=MzU0NzMzMjk1NA==&hid=1&sn=505097b07b26b8bbe920dad355777580#wechat_redirect'
       }
     },
     methods: {

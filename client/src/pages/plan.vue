@@ -22,15 +22,15 @@
           <div class="day-title" v-for="(date, index) in emptyDates"></div>
           <div class="day-title" v-for="(date, index) in dates">
             <div class="day"
-                 @click="viewDetail(date)"
+                 @click="viewDetail(date, '/read')"
                  :class="dateStatus(date, statistical)">{{index + 1}}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="btn-link mt-5 mb-4" v-if="paper">
-      <v-btn round class="orange white--text btn__orange" @click="viewDetail(today)">开始学习</v-btn>
-      <a href="javascript:;" @click="viewDetail(today)">&lt; 点击日期  进入当日阅读</a>
+      <v-btn round class="orange white--text btn__orange" @click="viewDetail(today, '/wordList')">开始学习</v-btn>
+      <a href="javascript:;" @click="viewDetail(today, '/read')">&lt; 点击日期  进入当日阅读</a>
     </div>
     <div class="book-list">
       <div class="book-item" v-if="book && book.id">
@@ -130,7 +130,7 @@
         return f ? 'finished' : 'unfinished'
       },
 
-      viewDetail(date) {
+      viewDetail(date, path) {
         let dateStr = formatDate(date.getTime())
         if(!this.semester || (dateStr > formatDate(this.endDate) || dateStr < formatDate(this.beginDate))) {
           return;
@@ -138,7 +138,7 @@
         if(dateStr > formatDate(Date.now())) {
           return
         }
-        this.$router.push('/read?date=' + formatDate(date.getTime()));
+        this.$router.push(path + '?date=' + formatDate(date.getTime()));
       }
     }
   }
