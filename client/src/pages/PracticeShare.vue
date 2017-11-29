@@ -32,7 +32,7 @@
           长按识别二维码关注<br>【法棍阅读】
         </p>
         <div class="">
-          <img src="../assets/group@2x.png" alt="扫描二维码" height="200px" width="200px"/>
+          <img src="../assets/group@2x.png" alt="扫描二维码" width="200px" style="padding-bottom: 80px"/>
         </div>
         <p style="line-height: 2">
           爱法语，怎能不阅读？<br>

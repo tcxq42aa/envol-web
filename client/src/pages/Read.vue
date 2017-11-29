@@ -1,25 +1,29 @@
 <template>
   <v-container class="read-container">
     <div class="card pa-3 mb-3" v-if="paper && paper.summary">
+      <router-link :to="'/handout?date=' + today">
+        <div class="read-handout-entry orange">查看本章讲义</div>
+      </router-link>
       <div class="subheading bold mb-3">前情提要</div>
       <div>{{paper.summary}}</div>
     </div>
     <div class="card pa-3 mb-3" v-if="tractate">
       <div v-html="tractate"></div>
       <div class="btn__test-wrap">
-        <v-btn round class="orange white--text btn__orange btn__test"
-               :class="{'btn--disabled': !finished}"
-               :href="'/practice?date=' + today">读完了，去测试</v-btn>
+        <router-link :to="'/practice?date=' + today">
+          <v-btn round class="orange white--text btn__orange btn__test"
+                 :class="{'btn--disabled': !finished}">读完了，去测试</v-btn>
+        </router-link>
       </div>
     </div>
-    <div class="audio-wrap">
+    <div class="audio-wrap" v-if="paper && paper.audio">
       <div class="audio-progress">
         <div class="audio-progress-point" v-bind:style="{ left: percent + '%' }"></div>
         <div class="audio-progress-line" v-bind:style="{ width: percent + '%' }"></div>
       </div>
       <audio ref="audio"
              @loadedmetadata="loadedmetadata" preload="metadata"></audio>
-      <div class="audio-panel">
+      <div class="audio-panel" v-if="paper && paper.audio">
         <div>
           <div>Vitesse</div>
           <v-btn round fab :flat="speedType!=1" :outline="speedType==1" @click="speed(0.5, 1)">慢</v-btn>
@@ -33,31 +37,43 @@
         </div>
       </div>
     </div>
+    <div v-if="!paper || paper.wordsTotal == 0">
+      今日没有课程
+    </div>
   </v-container>
 </template>
 
 <script>
   import { bus } from '../bus.vue'
+  import axios from 'axios'
   import '../stylus/read.styl'
   var qs = require('querystringify');
   export default {
     created(){
       document.title = '今日阅读';
-      this.handler = (data) => {
-        this.paper = data.paper;
+//      this.handler = (data) => {
+//        this.paper = data.paper;
+//        this.tractate = this.paper && this.paper.tractate;
+//        this.semesterId = this.paper && this.paper.semesterId;
+//        this.statistical = data.statistical;
+//        this.initAudio();
+//      }
+//      bus.$on('done', this.handler)
+      let date = qs.parse(location.search).date
+      axios.post('/api/user/today?readToday=' + (date || formatDate(Date.now()))).then((response) => {
+        let appData = response.data.data
+        this.paper = appData.paper;
         this.tractate = this.paper && this.paper.tractate;
         this.semesterId = this.paper && this.paper.semesterId;
-        this.statistical = data.statistical;
+        this.statistical = appData.statistical;
         this.initAudio();
-      }
-      bus.$on('done', this.handler)
-//      let self = this;
-//      wx.ready(function () {
-//        self.initAudio();
-//      });
+        if(!this.paper.audio) {
+          this.finished = true;
+        }
+      })
     },
     destroyed(){
-      bus.$off('done', this.handler)
+//      bus.$off('done', this.handler)
       this.timer && clearInterval(this.timer)
     },
     mounted(){

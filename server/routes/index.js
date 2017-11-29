@@ -7,7 +7,7 @@ var querystring = require('querystring');
 var config = require('../config/app.config');
 
 /* GET home page. */
-router.get(/^\/(index|plan|planDetail|uc|test|practice|practiceShare|read|appointment|testLand|testShare|paid|badge)?$/, function (req, res, next) {
+router.get(/^\/(index|plan|planDetail|uc|test|practice|practiceShare|read|appointment|testLand|testShare|paid|badge|wordList|handout)?$/, function (req, res, next) {
   var redirectUrl = 'http://www.envol.vip' + req.path;
   if(querystring.stringify(req.query)) {
     redirectUrl += '?' + querystring.stringify(req.query);

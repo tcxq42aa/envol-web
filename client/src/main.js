@@ -17,6 +17,8 @@ const TestShare = () => import('./pages/TestShare.vue')
 const Practice = () => import('./pages/Practice.vue')
 const PracticeShare = () => import('./pages/PracticeShare.vue')
 const Paid = () => import('./pages/PaySuccess')
+const WordList = () => import('./pages/wordList')
+const Handout = () => import('./pages/handout')
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
@@ -34,6 +36,8 @@ const routes = [
   { path: '/practiceShare', component: PracticeShare },
   { path: '/paid', component: Paid },
   { path: '/badge', component: Badge },
+  { path: '/wordList', component: WordList },
+  { path: '/handout', component: Handout },
   { path: '*', redirect: '/index' }
 ]
 const router = new VueRouter({

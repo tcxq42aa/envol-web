@@ -4,17 +4,17 @@
       <router-view></router-view>
     </main>
     <v-bottom-nav v-if="!navHidden" :value="true" :active.sync="currentPage" class="white">
-      <v-btn flat class="orange--text" value="/index" @click="switchTab('/index')">
+      <v-btn flat class="orange--text" value="/index" @click="switchTab('/index?date='+today)">
         <span>阅读首页</span>
         <img v-if="currentPage!='/index'" src="./assets/home4@2x.png" height="25px"/>
         <img v-if="currentPage=='/index'" src="./assets/home2@2x.png" height="25px"/>
       </v-btn>
-      <v-btn flat class="orange--text" value="/plan" @click="switchTab('/plan')">
+      <v-btn flat class="orange--text" value="/plan" @click="switchTab('/plan?date='+today)">
         <span>阅读计划</span>
         <img v-if="currentPage!='/plan'" src="./assets/plan4@2x.png" height="25px"/>
         <img v-if="currentPage=='/plan'" src="./assets/plan3@2x.png" height="25px"/>
       </v-btn>
-      <v-btn flat class="orange--text" value="/uc" @click="switchTab('/uc')">
+      <v-btn flat class="orange--text" value="/uc" @click="switchTab('/uc?date='+today)">
         <span>个人中心</span>
         <img v-if="currentPage!='/uc'" src="./assets/personal4@2x.png" height="25px"/>
         <img v-if="currentPage=='/uc'" src="./assets/personal3@2x.png" height="25px"/>
@@ -29,7 +29,11 @@
   import {formatDate} from './pages/util.vue'
   import axios from 'axios'
   var qs = require('querystringify');
-  const extraPages = ['/appointment', '/test','/practice', '/practiceShare', '/testLand', '/testShare', '/read', '/paid', '/badge']
+  const extraPages = [
+    '/appointment', '/test','/practice',
+    '/practiceShare', '/testLand', '/testShare',
+    '/read', '/paid', '/badge', '/wordList', '/handout'
+  ]
   export default {
     created(){
       let date = qs.parse(location.search).date
@@ -79,6 +83,11 @@
 //        text: '你好，今日没有课程哦'
       }
     },
+    computed: {
+      today() {
+        return qs.parse(location.search).date || ''
+      }
+    },
     methods: {
       switchTab(e) {
         this.$router.replace(e)
@@ -114,7 +123,6 @@
         })
         this.refreshSignature()
       }
-
     }
   }
 </script>

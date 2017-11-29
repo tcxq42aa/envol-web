@@ -64,10 +64,11 @@
         <span>让小伙伴试试</span>
         <!--<img src="../assets/share@2x.png" height="15px" style="margin-left: 8px"/>-->
       </v-btn>
-      <v-btn block round class="btn-test orange--text white" v-if="level=='n2'"
-             :href="'/appointment?active=true&semesterId=' + semesterId">
-        立即报名
-      </v-btn>
+      <router-link :to="'/appointment?active=true&semesterId=' + semesterId">
+        <v-btn block round class="btn-test orange--text white" v-if="level=='n2'">
+          立即报名
+        </v-btn>
+      </router-link>
     </div>
   </v-container>
 </template>

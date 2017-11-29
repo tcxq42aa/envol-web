@@ -77,6 +77,7 @@
         MONTH_MAP: MONTH_MAP,
         books: [0, 0],
         paper: null,
+        book: null,
         statistical: [],
         semester: null
       }
@@ -122,7 +123,6 @@
           return ''
         }
         if(f) {
-          console.log(f)
           if(formatDate(f.createTime) > dateStr) {
             return 'white-bg'
           }
@@ -138,7 +138,7 @@
         if(dateStr > formatDate(Date.now())) {
           return
         }
-        window.location.href = '/read?date=' + formatDate(date.getTime());
+        this.$router.push('/read?date=' + formatDate(date.getTime()));
       }
     }
   }
