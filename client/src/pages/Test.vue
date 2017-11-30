@@ -223,9 +223,9 @@
 
         this.initShare();
 
-        if(this.level == 'n2') {
+//        if(this.level == 'n2') {
           axios.post('/api/user/evaluation/' + this.evaluationId + '/save?grade=' + this.level.toUpperCase())
-        }
+//        }
       },
       select(item, index, idx) {
         item.testIdx = idx
