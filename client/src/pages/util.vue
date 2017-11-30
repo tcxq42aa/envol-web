@@ -1,6 +1,6 @@
 <script>
   export const todayStr = () => {
-    var monthArr = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
+    var monthArr = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juillet','Août','Sept.','Oct.','Nov.','Déc.'];
     var today = new Date();
     return monthArr[today.getMonth()] + ' ' + today.getDate()
   }

@@ -10,13 +10,13 @@
       <div class="calender-panel">
         <div class="month-title">{{MONTH_MAP[today.getMonth()]}}</div>
         <div class="week-wrap">
-          <div class="week-title">SUN</div>
-          <div class="week-title">MON</div>
-          <div class="week-title">TUE</div>
-          <div class="week-title">WED</div>
-          <div class="week-title">THU</div>
-          <div class="week-title">FRI</div>
-          <div class="week-title">SAT</div>
+          <div class="week-title">DIM</div>
+          <div class="week-title">LUN</div>
+          <div class="week-title">MAR</div>
+          <div class="week-title">MER</div>
+          <div class="week-title">JEU</div>
+          <div class="week-title">VEN</div>
+          <div class="week-title">SAM</div>
         </div>
         <div class="day-wrap">
           <div class="day-title" v-for="(date, index) in emptyDates"></div>
@@ -50,7 +50,7 @@
   import '../stylus/plan.styl'
   import { bus } from '../bus.vue'
   import { formatDate } from './util.vue'
-  const MONTH_MAP = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const MONTH_MAP = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juillet','Août','Sept.','Oct.','Nov.','Déc.'];
   export default {
     created(){
       document.title = '阅读计划';
