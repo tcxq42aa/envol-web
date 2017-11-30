@@ -38,7 +38,7 @@
     created(){
       this.code = qs.parse(location.search).code || '';
       this.state = qs.parse(location.search).state || '';
-      this.initData();
+//      this.initData();
     },
     mounted(){
       wx.ready(function(res){
