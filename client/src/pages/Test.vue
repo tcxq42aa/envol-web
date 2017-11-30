@@ -70,7 +70,7 @@
         </v-btn>
       </router-link>
     </div>
-    <img v-if="level!='n2'" src="../assets/vovo.jpg" width="80%" style="display: block;margin: 0 auto"/>
+    <!--<img v-if="level!='n2'" src="../assets/vovo.jpg" width="80%" style="display: block;margin: 0 auto"/>-->
   </v-container>
 </template>
 

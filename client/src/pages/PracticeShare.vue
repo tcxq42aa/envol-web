@@ -47,6 +47,7 @@
   var qs = require('querystringify');
   export default {
     created() {
+      document.getElementById('qrcode').src=require('../assets/group@2x.png');
       this.search = qs.parse(location.search);
     },
     mounted(){
