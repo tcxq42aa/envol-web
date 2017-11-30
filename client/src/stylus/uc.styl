@@ -73,7 +73,53 @@
     opacity 1
   }
 }
+.dialog
+  box-shadow none
 .uc-link
   color inherit
   & > img
     outline none
+.dialog-footer
+  border-top 1px solid #eeeeee
+  .btn-cancel,.btn-submit
+    display inline-block
+    width 50%
+    height 48px
+    line-height 48px
+    text-align center
+    font-size 16px
+  .btn-submit
+    color rgb(255, 119, 79)
+    border-left 1px solid #eeeeee
+    margin-left -1px
+.setting-body
+  justify-content center
+  display flex
+  padding 24px 0
+  & > .ampm
+    font-size 16px
+    align-self center
+    text-align center
+    color rgba(0,0,0,.3)
+    & > div
+      line-height 28px
+      height 28px
+    & > .is-active
+      color rgb(255, 119, 79)
+  & > *
+    flex-basis 68px
+  ul
+    list-style none
+    max-height 135px
+    overflow auto
+    padding 0
+    li:active
+      background #e9e9e9
+    li
+      line-height 28px
+      height 28px
+      text-align center
+      font-size 16px
+      color rgba(0,0,0,.3)
+      &.is-active
+        color rgb(255, 119, 79)

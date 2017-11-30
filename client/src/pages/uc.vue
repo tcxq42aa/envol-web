@@ -23,28 +23,13 @@
     </div>
 
     <div class="uc-block-wrap white--text">
-      <div class="uc-block block-1">
-        <v-dialog
-          persistent
-          v-model="modal2"
-          lazy
-        >
-          <div slot="activator" v-model="remindTime">
-            <img src="../assets/group6@2x.png" width="70px" height="70px">
-            <div class="f14 bold mb-1">阅读提醒设置</div>
-            <div class="mb-2">每天</div>
-            <div class="remind-time f14">{{remindTime}}</div>
-          </div>
-          <v-time-picker v-model="remindTime" actions format="24hr">
-            <template scope="{ save, cancel }">
-              <v-card-actions>
-                <v-btn flat primary @click.native="cancel()">取消</v-btn>
-                <v-btn flat primary @click.native="save()">确定</v-btn>
-              </v-card-actions>
-            </template>
-          </v-time-picker>
-        </v-dialog>
-      </div><div class="uc-block block-2"><a class="uc-link" :href="helpLink">
+      <div class="uc-block block-1" @click.stop="settingDialog=true">
+        <img src="../assets/group6@2x.png" width="70px" height="70px">
+        <div class="f14 bold mb-1">阅读提醒设置</div>
+        <div class="mb-2">每天</div>
+        <div class="remind-time f14">{{remindTime}}</div>
+      </div>
+      <div class="uc-block block-2"><a class="uc-link" :href="helpLink">
         <img src="../assets/group5Copy7@2x.png" width="70px" height="70px">
         <div class="f14 bold mb-1">常见问题</div>
         <div>使用方法、打卡、<br>活动等</div></a>
@@ -65,6 +50,25 @@
         <img src="../assets/vovo.jpg" width="100%">
       </v-card>
     </v-dialog>
+    <v-dialog v-model="settingDialog" >
+      <v-card>
+        <div class="setting-body">
+          <div class="ampm">
+            <div @click="am=true" :class="{'is-active': am}">上午</div>
+            <div @click="am=false" :class="{'is-active': !am}">下午</div>
+          </div>
+          <ul>
+            <li v-for="h in hours" @click="hour=h" :class="{'is-active': hour==h}">{{h}}</li>
+          </ul>
+          <ul>
+            <li v-for="m in minutes" @click="minute=m" :class="{'is-active': minute==m}">{{m}}</li>
+          </ul>
+        </div>
+        <div class="dialog-footer">
+          <div class="btn-cancel" @click="settingDialog=false">取消</div><div @click="handleRemindTime" class="btn-submit">确认</div>
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -75,6 +79,9 @@
   import axios from 'axios'
   export default {
     created(){
+      let remindTime = localStorage.getItem('remindTime') || '9:00';
+      this.hour = parseInt(remindTime.split(':')[0]);
+      this.minute = remindTime.split(':')[1];
       document.title = '个人中心';
       this.handler = (data) => {
         this.paper = data.paper;
@@ -114,12 +121,17 @@
     data() {
       return {
         dialog:false,
+        settingDialog:false,
         userInfo: userInfo || {},
-        remindTime: localStorage.getItem('remindTime'),
         modal2: false,
         statistical: [],
         badge: 0,
-        helpLink: 'http://mp.weixin.qq.com/mp/homepage?__biz=MzU0NzMzMjk1NA==&hid=1&sn=505097b07b26b8bbe920dad355777580#wechat_redirect'
+        helpLink: 'http://mp.weixin.qq.com/mp/homepage?__biz=MzU0NzMzMjk1NA==&hid=1&sn=505097b07b26b8bbe920dad355777580#wechat_redirect',
+        am: true,
+        hours: [0,1,2,3,4,5,6,7,8,9,10,11],
+        minutes: ['00','05','15','20','25','30','35','40','45','50','55'],
+        hour: '',
+        minute: ''
       }
     },
     methods: {
@@ -127,18 +139,32 @@
         this.$router.replace('/testLand')
       },
       save(e){
-        console.log(e)
+      },
+      handleRemindTime() {
+        let h = this.am ? this.hour : this.hour + 12;
+        let m = this.minute;
+        if(h < 10) {
+          h = '0' + h;
+        }
+        let time = h + ':' + m;
+        localStorage.setItem('remindTime', time)
+        let differenceMinute = (new Date()).getTimezoneOffset()
+        axios.put(`/api/user/setting?reminderHour=${h}&reminderMinute=${m}&differenceMinute=${differenceMinute}`)
+        this.settingDialog = false;
       }
     },
     watch:{
-      remindTime:function (val) {
-        localStorage.setItem('remindTime', val)
-        let [reminderHour, reminderMinute] = val.split(':')
-        let differenceMinute = (new Date()).getTimezoneOffset()
-        axios.put(`/api/user/setting?reminderHour=${reminderHour}&reminderMinute=${reminderMinute}&differenceMinute=${differenceMinute}`)
-      }
+
     },
     computed: {
+      remindTime() {
+        let h = this.am ? this.hour : this.hour + 12;
+        let m = this.minute;
+        if(h < 10) {
+          h = '0' + h;
+        }
+        return h + ':' + m;
+      },
       wordsTotalStr(){
         return this.statistical.map(function(item) { return item.wordsTotal}).reduceRight(function(a,b){return (a+b)}, 0)
       }

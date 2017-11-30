@@ -109,6 +109,8 @@
             success: function (res) {
               var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
               self.$refs.audio.src = 'http://support.envol.vip' + self.paper.audio;
+              self.$refs.audio.play();
+              self.$refs.audio.pause();
             }
           });
         }
