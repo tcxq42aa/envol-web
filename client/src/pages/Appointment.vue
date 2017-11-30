@@ -82,7 +82,8 @@
         const reg = /^\d{11,12}$/
         const self = this
         if(this.$route.query.active=='true'){
-          this.requestPay()
+          this.requestPay();
+          this.dialog = false;
           return
         }
         if(this.userReservation){

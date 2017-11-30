@@ -93,7 +93,7 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.LoaderOptionsPlugin({
       minimize: true
     }),
-    new ExtractTextPlugin("styles.css"),
+    new ExtractTextPlugin("styles.css?[contenthash]"),
   ])
   module.exports.module.rules = (module.exports.module.rules || []).concat([
     {
