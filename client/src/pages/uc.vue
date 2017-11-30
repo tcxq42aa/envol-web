@@ -75,7 +75,6 @@
   import axios from 'axios'
   export default {
     created(){
-      document.getElementById('qrcode').src=require('../assets/vovo.jpg');
       document.title = '个人中心';
       this.handler = (data) => {
         this.paper = data.paper;

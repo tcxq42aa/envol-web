@@ -44,7 +44,7 @@
           请点击【报名】<br>
           一起享受法语阅读的乐趣吧！
           <div class="mt-3 bold f16">
-            <span>告诉小伙伴<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>
+            <span>让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>
           </div>
         </div>
         <div v-if="level=='n3'" style="line-height: 2">
@@ -60,17 +60,20 @@
           达人级别阅读课程吧！
         </div>
       </div>
-      <v-btn block round class="btn-test orange--text white" v-if="level!='n2'">
-        <span>让小伙伴试试</span>
-        <!--<img src="../assets/share@2x.png" height="15px" style="margin-left: 8px"/>-->
+      <v-btn block round class="btn-test orange--text white" v-if="level!='n2'" @click.stop="dialog=true">
+        <span>咨询老师</span>
       </v-btn>
-      <router-link :to="'/appointment?active=true&semesterId=' + semesterId">
-        <v-btn block round class="btn-test orange--text white" v-if="level=='n2'">
+      <router-link v-if="level=='n2'" :to="'/appointment?active=true&semesterId=' + semesterId">
+        <v-btn block round class="btn-test orange--text white">
           立即报名
         </v-btn>
       </router-link>
     </div>
-    <!--<img v-if="level!='n2'" src="../assets/vovo.jpg" width="80%" style="display: block;margin: 0 auto"/>-->
+    <v-dialog v-model="dialog">
+      <v-card>
+        <img src="../assets/vovo.jpg" width="100%">
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -121,6 +124,7 @@
     },
     data() {
       return {
+        dialog: false,
         evaluationId: '',
         semesterId: '',
         todayStr: todayStr(),

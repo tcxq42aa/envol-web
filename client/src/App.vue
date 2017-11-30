@@ -4,17 +4,17 @@
       <router-view></router-view>
     </main>
     <v-bottom-nav v-if="!navHidden" :value="true" :active.sync="currentPage" class="white">
-      <v-btn flat class="orange--text" value="/index" @click="switchTab('/index?date='+today)">
+      <v-btn flat class="orange--text" value="/index" @click="switchTab('/index')">
         <span>阅读首页</span>
         <img v-if="currentPage!='/index'" src="./assets/home4@2x.png" height="25px"/>
         <img v-if="currentPage=='/index'" src="./assets/home2@2x.png" height="25px"/>
       </v-btn>
-      <v-btn flat class="orange--text" value="/plan" @click="switchTab('/plan?date='+today)">
+      <v-btn flat class="orange--text" value="/plan" @click="switchTab('/plan')">
         <span>阅读计划</span>
         <img v-if="currentPage!='/plan'" src="./assets/plan4@2x.png" height="25px"/>
         <img v-if="currentPage=='/plan'" src="./assets/plan3@2x.png" height="25px"/>
       </v-btn>
-      <v-btn flat class="orange--text" value="/uc" @click="switchTab('/uc?date='+today)">
+      <v-btn flat class="orange--text" value="/uc" @click="switchTab('/uc')">
         <span>个人中心</span>
         <img v-if="currentPage!='/uc'" src="./assets/personal4@2x.png" height="25px"/>
         <img v-if="currentPage=='/uc'" src="./assets/personal3@2x.png" height="25px"/>
@@ -36,6 +36,8 @@
   ]
   export default {
     created(){
+      this.code = qs.parse(location.search).code || '';
+      this.state = qs.parse(location.search).state || '';
       this.initData();
     },
     mounted(){
@@ -52,6 +54,8 @@
     },
     data () {
       return {
+        code: '',
+        state: '',
         navHidden: false,
         currentPage: '/index',
 //        snackbar: true,
@@ -69,7 +73,11 @@
     },
     methods: {
       switchTab(e) {
-        this.$router.replace(e)
+        if(e=='/uc'){
+          window.location.href = e + '?date=' + this.today;
+        }else{
+          this.$router.replace(e + '?date=' + this.today + '&code=' + this.code + '&state=' + this.state)
+        }
       },
       refreshSignature(){
         signature(encodeURIComponent(location.href.split('#')[0])).then(function(res){
