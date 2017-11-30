@@ -29,8 +29,8 @@
       </div>
     </div>
     <div class="btn-link mt-5 mb-4" v-if="paper">
-      <v-btn round class="orange white--text btn__orange" @click="viewDetail(today, '/wordList')">开始学习</v-btn>
-      <a href="javascript:;" @click="viewDetail(today, '/read')">&lt; 点击日期  进入当日阅读</a>
+      <v-btn round class="orange white--text btn__orange" @click="viewDetail(today, '/read')">开始学习</v-btn>
+      <a href="javascript:;">&lt; 点击日期  进入当日阅读</a>
     </div>
     <div class="book-list">
       <div class="book-item" v-if="book && book.id">

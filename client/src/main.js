@@ -19,6 +19,7 @@ const PracticeShare = () => import('./pages/PracticeShare.vue')
 const Paid = () => import('./pages/PaySuccess')
 const WordList = () => import('./pages/wordList')
 const Handout = () => import('./pages/handout')
+const MailBox = () => import('./pages/mailBox')
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
@@ -38,6 +39,7 @@ const routes = [
   { path: '/badge', component: Badge },
   { path: '/wordList', component: WordList },
   { path: '/handout', component: Handout },
+  { path: '/mailBox', component: MailBox },
   { path: '*', redirect: '/index' }
 ]
 const router = new VueRouter({

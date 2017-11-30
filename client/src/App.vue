@@ -32,7 +32,7 @@
   const extraPages = [
     '/appointment', '/test','/practice',
     '/practiceShare', '/testLand', '/testShare',
-    '/read', '/paid', '/badge', '/wordList', '/handout'
+    '/read', '/paid', '/badge', '/wordList', '/handout', '/mailBox'
   ]
   export default {
     created(){

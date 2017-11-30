@@ -26,9 +26,9 @@
       <div class="audio-panel" v-if="paper && paper.audio">
         <div>
           <div>Vitesse</div>
-          <v-btn round fab :flat="speedType!=1" :outline="speedType==1" @click="speed(0.5, 1)">慢</v-btn>
+          <v-btn round fab :flat="speedType!=1" :outline="speedType==1" @click="speed(0.8, 1)">慢</v-btn>
           <v-btn round fab :flat="speedType!=2" :outline="speedType==2" @click="speed(1, 2)">常</v-btn>
-          <v-btn round fab :flat="speedType!=3" :outline="speedType==3" @click="speed(1.6, 3)">快</v-btn>
+          <v-btn round fab :flat="speedType!=3" :outline="speedType==3" @click="speed(1.3, 3)">快</v-btn>
         </div>
         <div>
           <span class="grey--text audio-current">{{currentTime}} / {{duration}}</span>
@@ -46,6 +46,7 @@
 <script>
   import { bus } from '../bus.vue'
   import axios from 'axios'
+  import { formatDate } from './util.vue'
   import '../stylus/read.styl'
   var qs = require('querystringify');
   export default {
