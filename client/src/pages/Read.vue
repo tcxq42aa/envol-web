@@ -10,25 +10,25 @@
     <div class="card pa-3 mb-3" v-if="tractate">
       <div v-html="tractate"></div>
       <div class="btn__test-wrap">
-        <router-link :to="'/practice?date=' + today">
-          <v-btn round class="orange white--text btn__orange btn__test"
-                 :class="{'btn--disabled': !finished}">读完了，去测试</v-btn>
+        <router-link v-if="finished" :to="'/practice?date=' + today">
+          <v-btn round class="orange white--text btn__orange btn__test">读完了，去测试</v-btn>
         </router-link>
+        <v-btn v-if="!finished" round class="orange white--text btn__orange btn__test btn--disabled">读完了，去测试</v-btn>
       </div>
     </div>
     <div class="audio-wrap" v-if="paper && paper.audio">
-      <div class="audio-progress">
-        <div class="audio-progress-point" v-bind:style="{ left: percent + '%' }"></div>
-        <div class="audio-progress-line" v-bind:style="{ width: percent + '%' }"></div>
+      <div class="audio-progress" @click.stop="handleSkip">
+        <div class="audio-progress-point" v-bind:style="{ left: left + 'px' }" @touchmove.stop="handleTouchMove"></div>
+        <div class="audio-progress-line" v-bind:style="{ width: left + 'px' }"></div>
       </div>
       <audio ref="audio"
              @loadedmetadata="loadedmetadata" preload="metadata"></audio>
       <div class="audio-panel" v-if="paper && paper.audio">
         <div>
           <div>Vitesse</div>
-          <v-btn round fab :flat="speedType!=1" :outline="speedType==1" @click="speed(0.8, 1)">慢</v-btn>
+          <v-btn round fab :flat="speedType!=1" :outline="speedType==1" @click="speed(0.9, 1)">慢</v-btn>
           <v-btn round fab :flat="speedType!=2" :outline="speedType==2" @click="speed(1, 2)">常</v-btn>
-          <v-btn round fab :flat="speedType!=3" :outline="speedType==3" @click="speed(1.3, 3)">快</v-btn>
+          <v-btn round fab :flat="speedType!=3" :outline="speedType==3" @click="speed(1.2, 3)">快</v-btn>
         </div>
         <div>
           <span class="grey--text audio-current">{{currentTime}} / {{duration}}</span>
@@ -71,6 +71,9 @@
         if(!this.paper.audio) {
           this.finished = true;
         }
+        if(localStorage.getItem('audio_' + this.paper.id)){
+          this.finished = true;
+        }
       })
     },
     destroyed(){
@@ -78,7 +81,6 @@
       this.timer && clearInterval(this.timer)
     },
     mounted(){
-
     },
     data() {
       return {
@@ -93,6 +95,7 @@
         audioRef: null,
         timer: null,
         percent: 0,
+        left: 0,
         speedType: '2',
       }
     },
@@ -121,8 +124,10 @@
         this.timer = setInterval(()=>{
           this.currentTime = this.formatTime(this.audioRef.currentTime)
           this.percent = this.audioRef.currentTime / this.audioRef.duration * 100
+          this.left = (document.body.clientWidth - 57) * this.percent / 100;
           if(this.percent == 100){
             this.finished = true;
+            localStorage.setItem('audio_' + this.paper.id, '1');
             this.percent = 0;
             this.pause();
           }
@@ -162,6 +167,26 @@
           sec = '0' + sec;
         }
         return min + ':' + sec
+      },
+      handleTouchMove(e) {
+        if(this.finished) {
+          let max = (document.body.clientWidth - 57);
+          this.left = Math.min(Math.max(e.touches[0].clientX - 28, 0), max);
+          let p = this.left / (document.body.clientWidth - 57);
+          this.audioRef.currentTime = this.audioRef.duration * p;
+        }
+      },
+      handleSkip(e) {
+        let target = e.target;
+        if(target.className == 'audio-progress-line') {
+          target = target.parentElement;
+        }
+        if(this.finished) {
+//          let max = (document.body.clientWidth - 57);
+//          this.left = Math.min(Math.max(e.touches[0].clientX - 28, 0), max);
+          let p = e.offsetX / target.offsetWidth;
+          this.audioRef.currentTime = this.audioRef.duration * p;
+        }
       }
     }
   }

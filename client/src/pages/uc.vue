@@ -50,13 +50,9 @@
         <img src="../assets/vovo.jpg" width="100%">
       </v-card>
     </v-dialog>
-    <v-dialog v-model="settingDialog" >
+    <v-dialog v-model="settingDialog" @touchmove.stop="noop">
       <v-card>
         <div class="setting-body">
-          <div class="ampm">
-            <div @click="am=true" :class="{'is-active': am}">上午</div>
-            <div @click="am=false" :class="{'is-active': !am}">下午</div>
-          </div>
           <ul>
             <li v-for="h in hours" @click="hour=h" :class="{'is-active': hour==h}">{{h}}</li>
           </ul>
@@ -127,8 +123,7 @@
         statistical: [],
         badge: 0,
         helpLink: 'http://mp.weixin.qq.com/mp/homepage?__biz=MzU0NzMzMjk1NA==&hid=1&sn=505097b07b26b8bbe920dad355777580#wechat_redirect',
-        am: true,
-        hours: [0,1,2,3,4,5,6,7,8,9,10,11],
+        hours: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
         minutes: ['00','05','15','20','25','30','35','40','45','50','55'],
         hour: '',
         minute: ''
@@ -141,7 +136,7 @@
       save(e){
       },
       handleRemindTime() {
-        let h = this.am ? this.hour : this.hour + 12;
+        let h = this.hour;
         let m = this.minute;
         if(h < 10) {
           h = '0' + h;
@@ -151,14 +146,15 @@
         let differenceMinute = (new Date()).getTimezoneOffset()
         axios.put(`/api/user/setting?reminderHour=${h}&reminderMinute=${m}&differenceMinute=${differenceMinute}`)
         this.settingDialog = false;
-      }
+      },
+      noop(){}
     },
     watch:{
 
     },
     computed: {
       remindTime() {
-        let h = this.am ? this.hour : this.hour + 12;
+        let h = this.hour;
         let m = this.minute;
         if(h < 10) {
           h = '0' + h;

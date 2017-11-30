@@ -8,7 +8,11 @@
     <div class="plan-panel card orange">
       <div class="calender-year">{{today.getFullYear()}}</div>
       <div class="calender-panel">
-        <div class="month-title">{{MONTH_MAP[today.getMonth()]}}</div>
+        <div class="month-title">
+          <span @click="prevMonth" class="prev">&lt;</span>
+          <span>{{MONTH_MAP[today.getMonth()]}}</span>
+          <span @click="nextMonth" class="next">&gt;</span>
+        </div>
         <div class="week-wrap">
           <div class="week-title">DIM</div>
           <div class="week-title">LUN</div>
@@ -54,7 +58,7 @@
   export default {
     created(){
       document.title = '阅读计划';
-      this.initCalender()
+      this.initCalender(new Date())
       this.handler = (data) => {
         this.paper = data.paper;
         this.book = data.book;
@@ -79,7 +83,8 @@
         paper: null,
         book: null,
         statistical: [],
-        semester: null
+        semester: null,
+        diff: 0
       }
     },
     computed: {
@@ -91,14 +96,36 @@
       }
     },
     methods: {
+      prevMonth(){
+        if(this.diff <= -2) {
+          return;
+        }
+        this.diff = this.diff - 1;
+        this.today.setMonth(this.today.getMonth() - 1);
+        this.initCalender(this.today, this.diff);
+      },
+      nextMonth(){
+        if(this.diff == 0) {
+          return;
+        }
+        this.diff = this.diff + 1;
+        this.today.setMonth(this.today.getMonth() + 1);
+        this.initCalender(this.today, this.diff);
+      },
       handleRedirect(){
         this.$router.replace('/testLand')
       },
-      initCalender() {
+      initCalender(curDate, diff) {
         let d1 = new Date()
+        if(curDate) {
+          d1 = curDate;
+        }
         d1.setDate(1)
         d1 = d1.getDay()
         let d2 = new Date()
+        if(diff < 0) {
+          d2.setMonth(d2.getMonth() + diff);
+        }
         d2.setMonth(d2.getMonth() + 1)
         d2.setDate(0)
         let count = d2.getDate()
@@ -106,6 +133,9 @@
         let dates = new Array(count).fill(0)
         dates = dates.map((date, idx)=>{
           let d = new Date()
+          if(diff < 0) {
+            d.setMonth(d.getMonth() + diff);
+          }
           d.setDate(idx + 1)
           return d
         })
