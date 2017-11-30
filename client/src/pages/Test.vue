@@ -30,13 +30,16 @@
         <img v-if="level=='n2'" src="../assets/n2@2x.png" width="118px" height="135px">
         <img v-if="level=='n3'" src="../assets/n3@2x.png" width="118px" height="135px">
         <img v-if="level=='n4'" src="../assets/n4@2x.png" width="118px" height="135px">
-        <p v-if="level=='n1'" style="line-height: 2">
+        <div v-if="level=='n1'" style="line-height: 2">
           好可惜，<br>
           你现在的学习等级暂不适合参加<br>
           本期课程，<br>
           再加把劲学习法语，<br>
           或期待入门阅读课程上线！
-        </p>
+          <div class="mt-3 bold f16">
+            <span>测试有疑问</span>
+          </div>
+        </div>
         <div v-if="level=='n2'" style="line-height: 2">
           Bravo！<br>
           等的就是你，<br>
@@ -52,12 +55,18 @@
           你的阅读水平已超过一般水平，<br>
           水平较高，<br>
           请等待我们更高级的阅读课程吧！
+          <div class="mt-3 bold f16">
+            <span>测试有疑问</span>
+          </div>
         </div>
         <div v-if="level=='n4'" style="line-height: 2">
           哇，<br>
           你的法语阅读水平已达到B2+等级，<br>
           敬请期待我们的<br>
           达人级别阅读课程吧！
+          <div class="mt-3 bold f16">
+            <span>测试有疑问</span>
+          </div>
         </div>
       </div>
       <v-btn block round class="btn-test orange--text white" v-if="level!='n2'" @click.stop="dialog=true">
