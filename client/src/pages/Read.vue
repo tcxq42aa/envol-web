@@ -10,9 +10,7 @@
     <div class="card pa-3 mb-3" v-if="tractate">
       <div v-html="tractate"></div>
       <div class="btn__test-wrap">
-        <router-link v-if="finished" :to="'/practice?date=' + today">
-          <v-btn round class="orange white--text btn__orange btn__test">读完了，去测试</v-btn>
-        </router-link>
+        <v-btn v-if="finished" :href="'/practice?date=' + today" round class="orange white--text btn__orange btn__test">读完了，去测试</v-btn>
         <v-btn v-if="!finished" round class="orange white--text btn__orange btn__test btn--disabled">读完了，去测试</v-btn>
       </div>
     </div>

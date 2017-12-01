@@ -67,7 +67,7 @@
         </div>
         <div class="bl-orange">
           <div class="grey--text">全部已读</div>
-          <div class="f18 mt-2">{{wordsTotal}}字</div>
+          <div class="f18 mt-2">{{ hasRead ? wordsTotal : wordsTotal + todayWordsTotal}}字</div>
         </div>
       </div>
       <div class="card pa-3 mb-3">
@@ -83,6 +83,7 @@
   import '../stylus/practice.styl'
   import { bus } from '../bus.vue'
   import { todayStr, formatDate } from './util.vue'
+  import { refreshSignature } from '../service/user.vue'
   import axios from 'axios'
   var qs = require('querystringify');
 
@@ -100,17 +101,16 @@
         }
         this.book = data.book;
         this.statistical = data.statistical;
-        this.wordsTotal = this.statistical.map(i => i.wordsTotal).reduceRight((a, b)=>{
+        this.wordsTotal = this.statistical.map((i)=>{
+            if(i.paperId == this.paper.id) {
+              this.hasRead = true;
+            }
+            return i.wordsTotal;
+          }).reduceRight((a, b)=>{
           return a + b
         }, 0)
       }
       bus.$on('done', this.handler)
-//      wx.ready((res) => {
-//        this.initShare()
-//      });
-//      wx.error((err)=>{
-//        console.log(err)
-//      });
     },
     destroyed(){
       bus.$off('done', this.handler)
@@ -119,6 +119,7 @@
     },
     data() {
       return {
+        hasRead: false,
         todayStr: todayStr(),
         showResult: false,
         current: 0,
@@ -132,8 +133,8 @@
     methods: {
       initShare(){
         const { nickname, headimgurl } = this.userInfo;
-        const day = this.statistical ? this.statistical.length : 0;
-        const word = this.paper.wordsTotal;
+        const day = this.statistical ? (this.hasRead ? this.statistical.length : this.statistical.length + 1) : 0;
+        const word = this.hasRead ? this.wordsTotal : this.wordsTotal + this.todayWordsTotal;
         const book = this.book ? this.book.name : '';
         const cover = this.book ? this.book.coverUrl : '';
 
@@ -146,26 +147,6 @@
           title: `${nickname}在法棍阅读已坚持完成${day}天${word}字`, // 分享标题
           desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
           link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
-          type: 'link' // 分享类型,music、video或link，不填默认为link
-        });
-      },
-      bindEvent() {
-        const { nickname, headimgurl } = this.userInfo;
-        const day = this.statistical ? this.statistical.length : 0;
-        const word = this.paper.wordsTotal;
-        const book = this.book ? this.book.name : '';
-        const cover = this.book ? this.book.coverUrl : '';
-
-        wx.onMenuShareTimeline({
-          title: `${nickname}在法棍阅读已坚持完成${day}天${word}单词`, // 分享标题
-          link: `http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg' // 分享图标
-        });
-        wx.onMenuShareAppMessage({
-          title: `${nickname}在法棍阅读已坚持完成${day}天${word}单词`, // 分享标题
-          desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
-          link: `http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           type: 'link' // 分享类型,music、video或link，不填默认为link
         });

@@ -13,13 +13,12 @@ router.get(/^\/(index|plan|planDetail|uc|test|practice|practiceShare|read|appoin
     redirectUrl += '?' + querystring.stringify(req.query);
   }
 
-  if(!req.query.code){
-    var url = encodeURIComponent(redirectUrl)
-    res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe073c9d18b45b0ca&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo#wechat_redirect')
-    return;
-  }
-
   if(!req.session.userInfo) {
+    if(!req.query.code){
+      var url = encodeURIComponent(redirectUrl)
+      res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe073c9d18b45b0ca&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo#wechat_redirect')
+      return;
+    }
     var code = req.query.code;
     axios.get(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.appid}&secret=${config.secret}&code=${code}&grant_type=authorization_code`).then(function(response){
       if(response.data.errcode) {
