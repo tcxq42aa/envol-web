@@ -70,9 +70,7 @@
             </div>
           </v-card-title>
           <v-card-actions class="justify-center">
-            <router-link :to="'/practice?date=' + today">
-              <v-btn v-if="paper" round class="orange white--text btn__orange">开始测试</v-btn>
-            </router-link>
+            <v-btn :href="'/practice?date=' + today" v-if="paper" round class="orange white--text btn__orange">开始测试</v-btn>
           </v-card-actions>
         </v-flex>
       </v-layout>

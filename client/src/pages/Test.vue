@@ -70,7 +70,7 @@
         </div>
       </div>
       <v-btn block round class="btn-test orange--text white" v-if="level!='n2'" @click.stop="dialog=true">
-        <span>咨询老师</span>
+        <span>我要找咨询老师</span>
       </v-btn>
       <router-link v-if="level=='n2'" :to="'/appointment?active=true&semesterId=' + semesterId">
         <v-btn block round class="btn-test orange--text white">
