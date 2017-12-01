@@ -9,21 +9,19 @@
         >
           <img :src="search.headimgurl">
         </v-avatar>
-        <div class="mt-2 mb-3 subheading">{{search.nickname}}</div>
-        <p style="line-height: 2">
+        <div class="mt-2 subheading">{{search.nickname}}</div>
+        <p style="line-height: 2" class="mt-1">
           已在【法棍阅读】测试法语阅读水平，<br>
-          他的水平是{{search.level}}，相当于欧标{{europeLevel}}
+          他的水平是<span class="orange--text">{{search.level}}</span>，相当于欧标<span class="orange--text">{{europeLevel}}</span>
         </p>
       </div>
       <div class="share-card-bottom">
-        <p style="line-height: 2">
+        <p style="line-height: 2; margin: 10px 0">
           长按识别二维码关注<br>
           【法棍阅读】测测你的阅读水平
         </p>
-        <div class="">
-          <img src="../assets/group@2x.png" alt="扫描二维码" height="200px" width="200px"/>
-        </div>
-        <p style="line-height: 2">
+        <img src="../assets/group@2x.png" alt="扫描二维码" height="130px" width="130px" style="margin: auto"/>
+        <p style="line-height: 2;margin-top: -10px">
           爱法语，怎能不阅读？<br>
           开始法语阅读，不再做个肤浅法语人。
         </p>

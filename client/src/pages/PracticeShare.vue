@@ -25,16 +25,14 @@
           </div>
         </div>
         <p class="orange--text">我在读{{search.book}}</p>
-        <img v-if="search.cover" :src="'http://support.envol.vip' + search.cover" alt="" class="mb-2" style="max-width: 50%;min-height: 100px;min-width: 75px"/>
+        <img v-if="search.cover" :src="'http://support.envol.vip' + search.cover" alt="" class="mb-2" style="max-height: 88px"/>
       </div>
       <div class="share-card-bottom">
-        <p style="line-height: 2">
+        <p style="font-size: 11px" class="ma-0">
           长按识别二维码关注<br>【法棍阅读】
         </p>
-        <div class="">
-          <img src="../assets/group@2x.png" alt="扫描二维码" width="200px"/>
-        </div>
-        <p style="line-height: 2">
+        <img src="../assets/group@2x.png" alt="扫描二维码" width="90px" style="margin: 0 auto"/>
+        <p style="font-size: 11px;margin-top: -10px" class="mb-0">
           爱法语，怎能不阅读？<br>
           开始法语阅读，不再做个肤浅法语人。
         </p>
