@@ -101,7 +101,7 @@
       document.title = '今日测试'
       this.handler = (data) => {
         this.ready = true;
-        this.days = data.statistical ? data.statistical.length + 20 : 0;
+        this.days = data.statistical ? data.statistical.length : 0;
       }
       bus.$on('done', this.handler)
     },
