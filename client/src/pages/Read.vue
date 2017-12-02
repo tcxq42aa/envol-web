@@ -59,9 +59,14 @@
 //      }
 //      bus.$on('done', this.handler)
       let date = qs.parse(location.search).date
-      axios.post('/api/user/today?readToday=' + (date || formatDate(Date.now()))).then((response) => {
+      let readToday = (date || formatDate(Date.now()));
+      axios.post('/api/user/today?readToday=' + readToday).then((response) => {
         let appData = response.data.data
-        this.paper = appData.paper;
+        let paper = this.paper = appData.paper;
+        if(!paper || paper.wordsTotal == 0) {
+          location.replace('/practice?date=' + readToday);
+          return;
+        }
         this.tractate = this.paper && this.paper.tractate;
         this.semesterId = this.paper && this.paper.semesterId;
         this.statistical = appData.statistical;

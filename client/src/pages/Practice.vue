@@ -249,7 +249,7 @@
           title: `是时候开始法语阅读了，我在【法棍阅读】坚持了${day}天，已读${word}字`, // 分享标题
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           success: function (data) {
-            alert(JSON.stringify(data));
+            // todo 记录分享成功
           }
         });
         wx.onMenuShareAppMessage({
@@ -259,7 +259,7 @@
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           type: 'link', // 分享类型,music、video或link，不填默认为link
           success: function (data) {
-            alert(JSON.stringify(data));
+            // todo 记录分享成功
           }
         });
         if(!localStorage.getItem('badge_' + day)) {
