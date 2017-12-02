@@ -8,29 +8,29 @@
       </div>
       <div class="badge-body">
         <div class="badge-item">
-          <img src="../assets/badge1@2x.png" width="60px" height="60px">
+          <img src="../assets/badge/badge1@2x.png" width="60px" height="60px">
           <p>第一次打卡</p>
         </div>
         <div class="badge-item">
-          <img src="../assets/badge2@2x.png" width="60px" height="60px">
+          <img src="../assets/badge/badge2@2x.png" width="60px" height="60px">
           <p>连续 5 天</p>
         </div>
         <div class="badge-item">
-          <img src="../assets/badge3@2x.png" width="60px" height="60px">
+          <img src="../assets/badge/badge3@2x.png" width="60px" height="60px">
           <p>连续 10 天</p>
         </div>
       </div>
       <div class="badge-body">
         <div class="badge-item">
-          <img src="../assets/badge1-dark@2x.png" width="60px" height="60px">
+          <img src="../assets/badge/badge1-dark@2x.png" width="60px" height="60px">
           <p>连续 15 天</p>
         </div>
         <div class="badge-item">
-          <img src="../assets/badge2-dark@2x.png" width="60px" height="60px">
+          <img src="../assets/badge/badge2-dark@2x.png" width="60px" height="60px">
           <p>连续 21 天</p>
         </div>
         <div class="badge-item">
-          <img src="../assets/badge3-dark@2x.png" width="60px" height="60px">
+          <img src="../assets/badge/badge3-dark@2x.png" width="60px" height="60px">
           <p>连续 30 天</p>
         </div>
       </div>

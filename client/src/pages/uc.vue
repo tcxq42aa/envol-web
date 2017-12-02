@@ -85,28 +85,29 @@
         this.semesterId = this.paper && this.paper.semesterId;
         this.statistical = data.statistical;
 
-        let max = 0;
-        let current = 0;
-        let statistical = this.statistical;
-        let len = statistical.length;
-        for(let i = 0; i < len; i++){
-          if(i > 0) {
-            let l = new Date(statistical[i - 1].readToday);
-            l.setDate(l.getDate() + 1);
-            if(formatDate(l) == formatDate(statistical[i].readToday)) {
-              current++;
-              if(current > max) {
-                max = current;
-              }
-            } else {
-              current = 1;
-            }
-          } else {
-            current = 1;
-            max = 1;
-          }
-        }
-        this.badge = max;
+//        let max = 0;
+//        let current = 0;
+//        let statistical = this.statistical;
+//        let len = statistical.length;
+//        for(let i = 0; i < len; i++){
+//          if(i > 0) {
+//            let l = new Date(statistical[i - 1].readToday);
+//            l.setDate(l.getDate() + 1);
+//            if(formatDate(l) == formatDate(statistical[i].readToday)) {
+//              current++;
+//              if(current > max) {
+//                max = current;
+//              }
+//            } else {
+//              current = 1;
+//            }
+//          } else {
+//            current = 1;
+//            max = 1;
+//          }
+//        }
+//        this.badge = max;
+        this.badge = this.statistical.length;
       }
       bus.$on('done', this.handler)
       bus.$once('needTest', this.handleRedirect.bind(this))

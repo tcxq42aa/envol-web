@@ -24,7 +24,7 @@
               v-for="(answer, idx) in test.options">{{answer.content}}</li>
         </ul>
         <div class="btn__next-wrap">
-          <v-btn :disabled="test.testIdx == -1" round class="orange white--text btn__orange btn__next" @click="next()">{{current == data.length - 1 ? '完成测试' : '下一题'}}</v-btn>
+          <v-btn :disabled="test.testIdx == -1" round class="orange white--text btn__orange btn__next" @click.stop="next()">{{current == data.length - 1 ? '完成测试' : '下一题'}}</v-btn>
         </div>
       </div>
     </div>
@@ -76,6 +76,101 @@
       </div>
       <div class="orange btn-share">分享到朋友圈，完成打卡<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></div>
     </div>
+
+    <v-dialog v-model="showBadge" content-class="badge-dialog">
+      <img class="badge-img" v-if="badgeImgMap[badgeName]" :src="badgeImgMap[badgeName]" width="100px" height="100px">
+      <div class="badge-body" v-if="badgeName=='1'">
+        <div class="badge-header">埋下种子，<br>让法语阅读长出小芽。</div>
+        <div class="badge-content">
+          你已经坚持学习 <span class="orange--text">1</span> 天，不容易啊！<br>
+          迈出了艰难的第一步，<br>
+          从此，你跟法语阅读就紧密地连接<br>
+          在一起了，<br>
+          不可以轻易放手了哦！
+        </div>
+      </div>
+      <div class="badge-body" v-if="badgeName=='2'">
+        <div class="badge-header">收获麦穗，<br>是成长的开始。</div>
+        <div class="badge-content">
+          你已经坚持学习 <span class="orange--text">5</span> 天，<br>
+          我知道你不擅长坚持，<br>
+          但是5天了，已经很棒了！<br>
+          继续加油！
+        </div>
+      </div>
+      <div class="badge-body" v-if="badgeName=='3'">
+        <div class="badge-header">磨成粉末，<br>揉碎过去成为更好的自己。</div>
+        <div class="badge-content">
+          你已经坚持学习 <span class="orange--text">10</span> 天，Bravo！<br>
+          没想到自己竟然可以一天不落<br>
+          坚持10天学法语吧！<br>
+          给自己一个肯定，<br>
+          让更多人知道吧！
+        </div>
+      </div>
+      <div class="badge-body" v-if="badgeName=='4'">
+        <div class="badge-header">充分搅拌，<br>让内在更加丰盈。</div>
+        <div class="badge-content">
+          你已经坚持学习 <span class="orange--text">15</span> 天，状态不错嘛，<br>
+          学习开始渐入佳境了，<br>
+          每天学法语也不是想象中这么难吧，<br>
+          看好你！<br>
+          也别忘了和好友分享！
+        </div>
+      </div>
+      <div class="badge-body" v-if="badgeName=='5'">
+        <div class="badge-header">面团成型，<br>我已守住初心。</div>
+        <div class="badge-content">
+          你已经坚持学习 <span class="orange--text">21</span> 天，<br>
+          好样的！<br>
+          已经成功培养每天学法语的习惯啦，<br>
+          你努力的样子真好看！
+        </div>
+      </div>
+      <div class="badge-body" v-if="badgeName=='6'">
+        <div class="badge-header">稳稳发酵，<br>之前的努力不断掉。</div>
+        <div class="badge-content">
+          你已经坚持学习 <span class="orange--text">30</span> 天！<br>
+          整整一个月你都在坚持学习法语，<br>
+          实在太厉害啦！<br>
+          不晒晒这么优秀的自己<br>
+          说的过去吗？
+        </div>
+      </div>
+      <div class="badge-body" v-if="badgeName=='7'">
+        <div class="badge-header">精心雕刻，可能会有些疼，<br>但都是为了更好的蜕变。</div>
+        <div class="badge-content">
+          哇！你从30天跨到 <span class="orange--text">50</span> 天了！<br>
+          这个过程可能开始有些疲倦或痛苦，<br>
+          但这肯定是值得的。<br>
+          作为努力的回报，第一本书的内容<br>
+          你可以多保留30天了，<br>
+          相当于赚回一半学费！
+        </div>
+      </div>
+      <div class="badge-body" v-if="badgeName=='8'">
+        <div class="badge-header">高温烘培，犹如凤凰涅槃，<br>下一步就是真正重生。</div>
+        <div class="badge-content">
+          你已经坚持学习 <span class="orange--text">70</span> 天，<br>
+          完成77.8%的课程，<br>
+          离坚持90天只差一步了！<br>
+          完成下一个目标两本书都可获得90<br>
+          天的延长期哦！学费全赚回了！
+        </div>
+      </div>
+      <div class="badge-body" v-if="badgeName=='9'">
+        <div class="badge-header">完美绽放，<br>我已成为全新的自己。</div>
+        <div class="badge-content">
+          是不是都为自己的努力感动了！<br>
+          <span class="orange--text">90</span> 天！全！部！学！完！了！<br>
+          Félicitations！这届法棍阅读最佳<br>
+          努力奖非你莫属啊！<br>
+          像你这么坚持不懈的还有谁！<br>
+          快去分享你的获奖感言吧！
+        </div>
+      </div>
+      <v-btn round class="orange white--text btn__orange btn-timeline btn--disabled">去炫耀一下</v-btn>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -83,7 +178,6 @@
   import '../stylus/practice.styl'
   import { bus } from '../bus.vue'
   import { todayStr, formatDate } from './util.vue'
-  import { refreshSignature } from '../service/user.vue'
   import axios from 'axios'
   var qs = require('querystringify');
 
@@ -127,7 +221,20 @@
         data: [],
         userInfo: userInfo || {},
         wxReady: false,
-        debug: qs.parse(location.search).debug || false
+        debug: qs.parse(location.search).debug || false,
+        showBadge: false,
+        badgeName: '',
+        badgeImgMap: {
+          '1': require('../assets/badge/badge1@2x.png'),
+          '5': require('../assets/badge/badge2@2x.png'),
+          '10': require('../assets/badge/badge3@2x.png'),
+          '15': require('../assets/badge/badge4@2x.png'),
+          '21': require('../assets/badge/badge5@2x.png'),
+          '30': require('../assets/badge/badge6@2x.png'),
+          '50': require('../assets/badge/badge7@2x.png'),
+          '70': require('../assets/badge/badge8@2x.png'),
+          '90': require('../assets/badge/badge9@2x.png')
+        }
       }
     },
     methods: {
@@ -140,16 +247,28 @@
 
         wx.onMenuShareTimeline({
           title: `是时候开始法语阅读了，我在【法棍阅读】坚持了${day}天，已读${word}字`, // 分享标题
-          link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg' // 分享图标
+          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+          success: function (data) {
+            alert(JSON.stringify(data));
+          }
         });
         wx.onMenuShareAppMessage({
           title: `${nickname}在法棍阅读已坚持完成${day}天${word}字`, // 分享标题
           desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
           link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
-          type: 'link' // 分享类型,music、video或link，不填默认为link
+          type: 'link', // 分享类型,music、video或link，不填默认为link
+          success: function (data) {
+            alert(JSON.stringify(data));
+          }
         });
+        if(!localStorage.getItem('badge_' + day)) {
+          this.showBadge = this.badgeImgMap[day];
+          if(this.showBadge) {
+            this.badgeName = day;
+            localStorage.setItem('badge_' + day, 1);
+          }
+        }
       },
       next(){
         if(this.current < this.data.length - 1) {
