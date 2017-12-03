@@ -39,11 +39,13 @@
           <div class="f14 bold mb-1">我要找督导老师</div>
           <div>特殊问题</div>
         </div>
-      <div class="uc-block block-4">
-        <img src="../assets/group5Copy6@2x.png" width="70px" height="70px">
-        <div class="f14 bold mb-1">晒学习成果</div>
-        <div>学习使我快乐</div>
-      </div>
+      <router-link to="/badge">
+        <div class="uc-block block-4">
+          <img src="../assets/group5Copy6@2x.png" width="70px" height="70px">
+          <div class="f14 bold mb-1">晒学习成果</div>
+          <div>学习使我快乐</div>
+        </div>
+      </router-link>
     </div>
     <v-dialog v-model="dialog" >
       <v-card>

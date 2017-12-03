@@ -74,7 +74,8 @@
         <div class="subheading mb-4">今日解析</div>
         <div v-html="sentenceAnalysis"></div>
       </div>
-      <div class="orange btn-share">分享到朋友圈，完成打卡<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></div>
+      <div class="orange btn-share" v-if="!hasShared">分享到朋友圈，完成打卡<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></div>
+      <div class="orange btn-share" v-if="hasShared">分享成功</div>
     </div>
 
     <v-dialog v-model="showBadge" content-class="badge-dialog">
@@ -89,7 +90,7 @@
           不可以轻易放手了哦！
         </div>
       </div>
-      <div class="badge-body" v-if="badgeName=='2'">
+      <div class="badge-body" v-if="badgeName=='5'">
         <div class="badge-header">收获麦穗，<br>是成长的开始。</div>
         <div class="badge-content">
           你已经坚持学习 <span class="orange--text">5</span> 天，<br>
@@ -98,7 +99,7 @@
           继续加油！
         </div>
       </div>
-      <div class="badge-body" v-if="badgeName=='3'">
+      <div class="badge-body" v-if="badgeName=='10'">
         <div class="badge-header">磨成粉末，<br>揉碎过去成为更好的自己。</div>
         <div class="badge-content">
           你已经坚持学习 <span class="orange--text">10</span> 天，Bravo！<br>
@@ -108,7 +109,7 @@
           让更多人知道吧！
         </div>
       </div>
-      <div class="badge-body" v-if="badgeName=='4'">
+      <div class="badge-body" v-if="badgeName=='15'">
         <div class="badge-header">充分搅拌，<br>让内在更加丰盈。</div>
         <div class="badge-content">
           你已经坚持学习 <span class="orange--text">15</span> 天，状态不错嘛，<br>
@@ -118,7 +119,7 @@
           也别忘了和好友分享！
         </div>
       </div>
-      <div class="badge-body" v-if="badgeName=='5'">
+      <div class="badge-body" v-if="badgeName=='21'">
         <div class="badge-header">面团成型，<br>我已守住初心。</div>
         <div class="badge-content">
           你已经坚持学习 <span class="orange--text">21</span> 天，<br>
@@ -127,7 +128,7 @@
           你努力的样子真好看！
         </div>
       </div>
-      <div class="badge-body" v-if="badgeName=='6'">
+      <div class="badge-body" v-if="badgeName=='30'">
         <div class="badge-header">稳稳发酵，<br>之前的努力不断掉。</div>
         <div class="badge-content">
           你已经坚持学习 <span class="orange--text">30</span> 天！<br>
@@ -137,7 +138,7 @@
           说的过去吗？
         </div>
       </div>
-      <div class="badge-body" v-if="badgeName=='7'">
+      <div class="badge-body" v-if="badgeName=='50'">
         <div class="badge-header">精心雕刻，可能会有些疼，<br>但都是为了更好的蜕变。</div>
         <div class="badge-content">
           哇！你从30天跨到 <span class="orange--text">50</span> 天了！<br>
@@ -148,7 +149,7 @@
           相当于赚回一半学费！
         </div>
       </div>
-      <div class="badge-body" v-if="badgeName=='8'">
+      <div class="badge-body" v-if="badgeName=='70'">
         <div class="badge-header">高温烘培，犹如凤凰涅槃，<br>下一步就是真正重生。</div>
         <div class="badge-content">
           你已经坚持学习 <span class="orange--text">70</span> 天，<br>
@@ -158,7 +159,7 @@
           天的延长期哦！学费全赚回了！
         </div>
       </div>
-      <div class="badge-body" v-if="badgeName=='9'">
+      <div class="badge-body" v-if="badgeName=='90'">
         <div class="badge-header">完美绽放，<br>我已成为全新的自己。</div>
         <div class="badge-content">
           是不是都为自己的努力感动了！<br>
@@ -178,6 +179,7 @@
   import '../stylus/practice.styl'
   import { bus } from '../bus.vue'
   import { todayStr, formatDate } from './util.vue'
+  import { share } from '../service/user.vue'
   import axios from 'axios'
   var qs = require('querystringify');
 
@@ -214,6 +216,7 @@
     data() {
       return {
         hasRead: false,
+        hasShared: false,
         todayStr: todayStr(),
         showResult: false,
         current: 0,
@@ -244,12 +247,16 @@
         const word = this.hasRead ? this.wordsTotal : this.wordsTotal + this.todayWordsTotal;
         const book = this.book ? this.book.name : '';
         const cover = this.book ? this.book.coverUrl : '';
-
+        const self  = this;
         wx.onMenuShareTimeline({
           title: `是时候开始法语阅读了，我在【法棍阅读】坚持了${day}天，已读${word}字`, // 分享标题
+          link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           success: function (data) {
-            // todo 记录分享成功
+            self.hasShared = true;
+            share(self.paper.id);
+          },
+          cancel: function (data) {
           }
         });
         wx.onMenuShareAppMessage({
@@ -259,7 +266,9 @@
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           type: 'link', // 分享类型,music、video或link，不填默认为link
           success: function (data) {
-            // todo 记录分享成功
+            share(self.paper.id);
+          },
+          cancel: function (data) {
           }
         });
         if(!localStorage.getItem('badge_' + day)) {

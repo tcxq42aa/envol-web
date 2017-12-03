@@ -22,4 +22,8 @@ export const signature = (url)=>{
 export const check = (semesterId)=>{
   return instance.get('api/userSemester/' + semesterId + '/check')
 }
+
+export const share = (paperId)=>{
+  return instance.put('api/user/course/' + paperId + '/share')
+}
 </script>

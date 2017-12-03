@@ -98,7 +98,7 @@
 
   export default {
     created(){
-      document.title = '今日测试'
+      document.title = '徽章列表'
       this.handler = (data) => {
         this.ready = true;
         this.days = data.statistical ? data.statistical.length : 0;
