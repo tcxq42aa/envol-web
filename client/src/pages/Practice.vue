@@ -74,8 +74,15 @@
         <div class="subheading mb-4">今日解析</div>
         <div v-html="sentenceAnalysis"></div>
       </div>
-      <div class="orange btn-share" v-if="!hasShared">分享到朋友圈，完成打卡<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></div>
+      <div class="orange btn-share" @click="showLayer=true" v-if="!hasShared">分享到朋友圈，完成打卡<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></div>
       <div class="orange btn-share" v-if="hasShared">分享成功</div>
+      <div class="share-layer" v-if="showLayer" @click="showLayer=false">
+        <div class="share-content">
+          <img class="share-arrow" src="../assets/share-arrow@2x.png" width="68px" height="69px">
+          <p style="font-size: 16px;line-height: 22px;margin: 20px 24px 12px 0;color: rgb(252,147,61)">完成打卡，赢代金券</p>
+          <img class="share-arrow" src="../assets/share-gift@2x.png" width="145px" height="109px" style="margin-right: 38.5px;">
+        </div>
+      </div>
     </div>
 
     <v-dialog v-model="showBadge" content-class="badge-dialog">
@@ -219,6 +226,7 @@
         hasShared: false,
         todayStr: todayStr(),
         showResult: false,
+        showLayer: false,
         current: 0,
         testResult: '',
         data: [],
