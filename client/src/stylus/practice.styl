@@ -1,11 +1,59 @@
 main-color = rgb(252, 147, 61)
 .test-container
   overflow hidden
+  .audio-wrap
+    position fixed
+    bottom 0
+    left 0
+    width 100%
+    .btn--floating
+      width 32px
+  .audio-panel
+    background #fff
+    display flex
+    align-items center
+    padding 15px 30px
+    justify-content space-between
+  .audio-progress
+    position relative
+    height: 5px;
+    margin: 0;
+    background: rgb(216,216,216);
+    .audio-progress-line
+      position absolute
+      height 5px
+      background: rgb(252, 147, 61)
+      top 0
+      left 0
+      width  50%
+    .audio-progress-point
+      position absolute
+      display block
+      width 25px
+      height 25px
+      background rgb( 252, 147, 61)
+      box-shadow inset 0 0 0 5px #fff,0 1px 2px rgba(0,0,0,0.2)
+      border-radius 50%
+      top -11px
+      left 50%
+  //rgb 252 147 61
+  .audio-current
+    vertical-align middle
+  .audio-icon
+    font-size 30px
+  .hasAudio
+    padding-bottom: 100px;
+
 .test-list
   margin 43px -16px 0
   display flex
   align-items start
   transition transform .25s ease-out
+@media only screen and (max-height: 668px) {
+  .test-list {
+    margin-top: 16px;
+  }
+}
 .test-card
   background #fff
   border-radius  10px
@@ -15,6 +63,8 @@ main-color = rgb(252, 147, 61)
   margin-left 5%
   box-shadow 0 5px 20px rgb(252, 148, 60)
   padding 80px 0 30px
+  max-height: calc(85vh);
+  overflow-y auto
 .test-tag
   position absolute
   right 0
@@ -191,3 +241,4 @@ main-color = rgb(252, 147, 61)
     text-align: right;
   }
 }
+

@@ -9,39 +9,39 @@
       <div class="badge-body">
           <div class="badge-item" v-if="days >= 1">
             <img src="../assets/badge/badge1@2x.png" width="60px" height="60px">
-            <p>第一次打卡</p>
+            <p>连续 1 天</p>
           </div>
           <div class="badge-item" v-if="days >= 5">
             <img src="../assets/badge/badge2@2x.png" width="60px" height="60px">
-            <p>连续 5 天</p>
+            <p>阅读 5 天</p>
           </div>
           <div class="badge-item" v-if="days >= 10">
             <img src="../assets/badge/badge3@2x.png" width="60px" height="60px">
-            <p>连续 10 天</p>
+            <p>阅读 10 天</p>
           </div>
           <div class="badge-item" v-if="days >= 15">
             <img src="../assets/badge/badge4@2x.png" width="60px" height="60px">
-            <p>连续 15 天</p>
+            <p>阅读 15 天</p>
           </div>
           <div class="badge-item" v-if="days >= 21">
             <img src="../assets/badge/badge5@2x.png" width="60px" height="60px">
-            <p>连续 21 天</p>
+            <p>阅读 21 天</p>
           </div>
           <div class="badge-item" v-if="days >= 30">
             <img src="../assets/badge/badge6@2x.png" width="60px" height="60px">
-            <p>连续 30 天</p>
+            <p>阅读 30 天</p>
           </div>
           <div class="badge-item" v-if="days >= 50">
             <img src="../assets/badge/badge7@2x.png" width="60px" height="60px">
-            <p>连续 50 天</p>
+            <p>阅读 50 天</p>
           </div>
           <div class="badge-item" v-if="days >= 70">
             <img src="../assets/badge/badge8@2x.png" width="60px" height="60px">
-            <p>连续 70 天</p>
+            <p>阅读 70 天</p>
           </div>
           <div class="badge-item" v-if="days >= 90">
             <img src="../assets/badge/badge9@2x.png" width="60px" height="60px">
-            <p>连续 90 天</p>
+            <p>阅读 90 天</p>
           </div>
         </div>
 
@@ -57,35 +57,35 @@
         </div>
         <div class="badge-item" v-if="days < 5">
           <img src="../assets/badge/badge2-dark@2x.png" width="60px" height="60px">
-          <p>连续 5 天</p>
+          <p>阅读 5 天</p>
         </div>
         <div class="badge-item" v-if="days < 10">
           <img src="../assets/badge/badge3-dark@2x.png" width="60px" height="60px">
-          <p>连续 10 天</p>
+          <p>阅读 10 天</p>
         </div>
         <div class="badge-item" v-if="days < 15">
           <img src="../assets/badge/badge4-dark@2x.png" width="60px" height="60px">
-          <p>连续 15 天</p>
+          <p>阅读 15 天</p>
         </div>
         <div class="badge-item" v-if="days < 21">
           <img src="../assets/badge/badge5-dark@2x.png" width="60px" height="60px">
-          <p>连续 21 天</p>
+          <p>阅读 21 天</p>
         </div>
         <div class="badge-item" v-if="days < 30">
           <img src="../assets/badge/badge6-dark@2x.png" width="60px" height="60px">
-          <p>连续 30 天</p>
+          <p>阅读 30 天</p>
         </div>
         <div class="badge-item" v-if="days < 50">
           <img src="../assets/badge/badge7-dark@2x.png" width="60px" height="60px">
-          <p>连续 50 天</p>
+          <p>阅读 50 天</p>
         </div>
         <div class="badge-item" v-if="days < 70">
           <img src="../assets/badge/badge8-dark@2x.png" width="60px" height="60px">
-          <p>连续 70 天</p>
+          <p>阅读 70 天</p>
         </div>
         <div class="badge-item" v-if="days < 90">
           <img src="../assets/badge/badge9-dark@2x.png" width="60px" height="60px">
-          <p>连续 90 天</p>
+          <p>阅读 90 天</p>
         </div>
       </div>
     </div>

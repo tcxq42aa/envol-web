@@ -1,30 +1,47 @@
 <template>
-  <v-container :class="{'orange': !showResult, 'test-container': !showResult}">
-    <div class="test-list"
-         v-if="!showResult"
-         :style="{transform: 'translateX(-' + 95 * current + '%)'}">
-      <div class="test-card" v-for="(test, index) in data">
-        <div class="test-tag">{{index + 1}}/{{data.length}}</div>
-        <!-- 题目要求 -->
-        <div v-if="test.desc" class="test-title" v-html="test.desc"></div>
-        <!-- 填空题题目答案选区 -->
-        <ul class="qa-answers" v-if="test.type == 3">
-          <li v-for="(answer, idx) in test.options">
-            <v-btn small round outline class="orange orange--text" @click="activateAnswer(answer.content)">{{answer.content}}</v-btn>
-          </li>
-        </ul>
-        <!-- 题目内容 -->
-        <div @click="proxyChildren($event, test)" @input="proxyChildrenInput($event, test)"
-             v-if="test.type == 2 || test.type == 3" class="test-title test-title-wide" v-html="replaceEmpty(test.title, test.type)"></div>
-        <div v-if="test.type != 2 && test.type != 3" class="test-title" v-html="test.title"></div>
-        <!-- 选择题题目答案选区 -->
-        <ul class="test-detail" v-if="test.type == 1">
-          <li @click="select(test, index, idx)"
-              :class="{active: test.testIdx == idx}"
-              v-for="(answer, idx) in test.options">{{answer.content}}</li>
-        </ul>
-        <div class="btn__next-wrap">
-          <v-btn :disabled="test.testIdx == -1" round class="orange white--text btn__orange btn__next" @click.stop="next()">{{current == data.length - 1 ? '完成测试' : '下一题'}}</v-btn>
+  <v-container :class="{'orange': !showResult, 'hasAudio': !showResult, 'test-container': !showResult}">
+    <div v-if="!showResult">
+      <div class="test-list"
+           v-if="!showResult"
+           :style="{transform: 'translateX(-' + 95 * current + '%)'}">
+        <div class="test-card" v-for="(test, index) in data">
+          <div class="test-tag">{{index + 1}}/{{data.length}}</div>
+          <!-- 题目要求 -->
+          <div v-if="test.desc" class="test-title" v-html="test.desc"></div>
+          <!-- 填空题题目答案选区 -->
+          <ul class="qa-answers" v-if="test.type == 3">
+            <li v-for="(answer, idx) in test.options">
+              <v-btn small round outline class="orange orange--text" @click="activateAnswer(answer.content)">{{answer.content}}</v-btn>
+            </li>
+          </ul>
+          <!-- 题目内容 -->
+          <div @click="proxyChildren($event, test)" @input="proxyChildrenInput($event, test)"
+               v-if="test.type == 2 || test.type == 3" class="test-title test-title-wide" v-html="replaceEmpty(test.title, test.type)"></div>
+          <div v-if="test.type != 2 && test.type != 3" class="test-title" v-html="test.title"></div>
+          <!-- 选择题题目答案选区 -->
+          <ul class="test-detail" v-if="test.type == 1">
+            <li @click="select(test, index, idx)"
+                :class="{active: test.testIdx == idx}"
+                v-for="(answer, idx) in test.options">{{answer.content}}</li>
+          </ul>
+          <div class="btn__next-wrap">
+            <v-btn :disabled="test.testIdx == -1" round class="orange white--text btn__orange btn__next" @click.stop="next()">{{current == data.length - 1 ? '完成测试' : '下一题'}}</v-btn>
+          </div>
+        </div>
+      </div>
+      <div class="audio-wrap" v-if="paper && paper.audio && showAudio">
+        <div class="audio-progress">
+          <div class="audio-progress-point" v-bind:style="{ left: left + 'px' }"></div>
+          <div class="audio-progress-line" v-bind:style="{ width: left + 'px' }"></div>
+        </div>
+        <audio ref="audio"
+               @loadedmetadata="loadedmetadata" preload="metadata"></audio>
+        <div class="audio-panel" v-if="paper && paper.audio">
+          <div>
+            <span class="grey--text audio-current">{{currentTime}} / {{duration}}</span>
+            <v-icon class="orange--text audio-icon" @click="play()" v-if="!isPlay">play_arrow</v-icon>
+            <v-icon class="orange--text audio-icon" @click="pause()" v-if="isPlay">pause</v-icon>
+          </div>
         </div>
       </div>
     </div>
@@ -183,6 +200,7 @@
 </template>
 
 <script>
+  import '../stylus/read.styl'
   import '../stylus/practice.styl'
   import { bus } from '../bus.vue'
   import { todayStr, formatDate } from './util.vue'
@@ -212,6 +230,13 @@
           }).reduceRight((a, b)=>{
           return a + b
         }, 0)
+        if(this.paper.audio && !this.tractate) {
+          this.showAudio = true;
+          this.initAudio();
+          if(localStorage.getItem('testAudio_' + this.paper.id)){
+            this.finished = true;
+          }
+        }
       }
       bus.$on('done', this.handler)
     },
@@ -222,6 +247,7 @@
     },
     data() {
       return {
+        showAudio: false,
         hasRead: false,
         hasShared: false,
         todayStr: todayStr(),
@@ -229,6 +255,7 @@
         showLayer: false,
         current: 0,
         testResult: '',
+        paper: null,
         data: [],
         userInfo: userInfo || {},
         wxReady: false,
@@ -245,7 +272,15 @@
           '50': require('../assets/badge/badge7@2x.png'),
           '70': require('../assets/badge/badge8@2x.png'),
           '90': require('../assets/badge/badge9@2x.png')
-        }
+        },
+        finished: false,
+        isPlay: false,
+        currentTime: '00:00',
+        duration: '00:00',
+        audioRef: null,
+        timer: null,
+        percent: 0,
+        left: 0
       }
     },
     methods: {
@@ -365,6 +400,65 @@
             op.isCorrect = false
           }
         }
+      },
+
+      // 录音相关
+      initAudio(){
+        var self = this;
+        if(this.paper) {
+          wx.getNetworkType({
+            success: function (res) {
+              var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+              self.$refs.audio.src = 'http://support.envol.vip' + self.paper.audio;
+              self.$refs.audio.play();
+              self.$refs.audio.pause();
+            }
+          });
+        }
+      },
+      loadedmetadata(e){
+        this.audioRef = e.target;
+        this.duration = this.formatTime(e.target.duration)
+        this.timer = setInterval(()=>{
+          this.currentTime = this.formatTime(this.audioRef.currentTime)
+          this.percent = this.audioRef.currentTime / this.audioRef.duration * 100
+          this.left = (document.body.clientWidth - 25) * this.percent / 100;
+          if(this.percent == 100){
+            this.finished = true;
+            localStorage.setItem('testAudio_' + this.paper.id, '1');
+            this.percent = 0;
+            this.pause();
+          }
+        }, 1000)
+      },
+      play(){
+        if(!this.audioRef)
+          return
+        if(this.isPlay) {
+          this.pause()
+        } else {
+          this.isPlay = true
+          this.audioRef.play()
+        }
+      },
+      pause(){
+        this.isPlay = false
+        this.audioRef.pause()
+      },
+      formatTime(second){
+        let min = (second / 60).toFixed(0);
+        let sec = (second % 60).toFixed(0);
+        if(min == 0){
+          min = '00';
+        }else if(min < 10){
+          min = '0' + min;
+        }
+        if(sec == 0){
+          sec = '00';
+        }else if(sec < 10){
+          sec = '0' + sec;
+        }
+        return min + ':' + sec
       }
     }
   }
