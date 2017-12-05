@@ -67,7 +67,7 @@
           敬请期待我们的<br>
           达人级别阅读课程吧！
           <div class="mt-3 bold f16">
-            <span>测试有疑问</span>
+            <span>让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>
           </div>
         </div>
       </div>

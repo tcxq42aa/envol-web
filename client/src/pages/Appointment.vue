@@ -72,11 +72,12 @@
     },
     methods: {
       onSubmit() {
-        if(this.userBind) {
-          this.bindPhone();
-        } else {
-          this.dialog = true;
-        }
+        window.location.href = '/testLand?semesterId=' + this.$route.query.semesterId;
+//        if(this.userBind) {
+//          this.bindPhone();
+//        } else {
+//          this.dialog = true;
+//        }
       },
       bindPhone() {
         const reg = /^\d{11,12}$/
@@ -91,23 +92,22 @@
           return;
         }
         if(this.userBind || reg.test(this.mobilePhone)) {
-//          bind(this.$route.query.semesterId, this.mobilePhone).then( res => {
-//            if(res.data.status == 200) {
-//              self.dialog = false;
-//              self.successDialog = true;
-//              self.failDialog = false;
-//            } else {
-//              self.dialog = false;
-//              self.successDialog = false;
-//              self.failDialog = true;
-//              self.failMessage = res.data.message;
-//            }
-//          }).catch((e)=>{
-//            self.dialog = false;
-//            self.successDialog = false;
-//            self.failDialog = true;
-//          })
-          window.location.href = '/testLand?semesterId=' + this.$route.query.semesterId;
+          bind(this.$route.query.semesterId, this.mobilePhone).then( res => {
+            if(res.data.status == 200) {
+              self.dialog = false;
+              self.successDialog = true;
+              self.failDialog = false;
+            } else {
+              self.dialog = false;
+              self.successDialog = false;
+              self.failDialog = true;
+              self.failMessage = res.data.message;
+            }
+          }).catch((e)=>{
+            self.dialog = false;
+            self.successDialog = false;
+            self.failDialog = true;
+          })
         }
       },
       requestPay(){
