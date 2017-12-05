@@ -1,7 +1,7 @@
 <template>
   <v-container :class="{'orange': !showResult, 'test-container': !showResult}">
     <div class="test-list"
-         v-if="!showResult"
+         v-if="!showResult && ready"
          :style="{transform: 'translateX(-' + 95 * current + '%)'}">
       <div class="test-card" v-for="(test, index) in data">
         <div class="test-tag">{{index + 1}}/{{data.length}}</div>
@@ -37,7 +37,8 @@
           再加把劲学习法语，<br>
           或期待入门阅读课程上线！
           <div class="mt-3 bold f16">
-            <span>测试有疑问</span>
+            对结果有异议，<br>
+            如何操作？
           </div>
         </div>
         <div v-if="level=='n2'" style="line-height: 2">
@@ -56,7 +57,8 @@
           水平较高，<br>
           请等待我们更高级的阅读课程吧！
           <div class="mt-3 bold f16">
-            <span>测试有疑问</span>
+            我仍然想参加，<br>
+            如何操作？
           </div>
         </div>
         <div v-if="level=='n4'" style="line-height: 2">
@@ -69,18 +71,38 @@
           </div>
         </div>
       </div>
-      <v-btn block round class="btn-test orange--text white" v-if="level!='n2'" @click.stop="dialog=true">
+      <v-btn block round class="btn-test orange--text white" v-if="level!='n2'" href="/land">
         <span>咨询老师</span>
       </v-btn>
-      <router-link v-if="level=='n2'" :to="'/appointment?active=true&semesterId=' + semesterId">
-        <v-btn block round class="btn-test orange--text white">
-          立即报名
-        </v-btn>
-      </router-link>
+      <v-btn v-if="level=='n2'" block round class="btn-test orange--text white" @click="goPay()">
+        立即报名
+      </v-btn>
     </div>
     <v-dialog v-model="dialog">
       <v-card>
         <img src="../assets/vovo.jpg" width="100%">
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="phoneDialog" persistent width="80%">
+      <v-card>
+        <v-card-title>
+          <span class="headline">绑定手机号</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm6 md4>
+                <v-text-field v-model="mobilePhone" :rules="emailRules" label="手机号" required></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="blue--text darken-1" flat @click.native="phoneDialog = false">取消</v-btn>
+          <v-btn class="blue--text darken-1" flat @click.native="bindPhone()">确认</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-container>
@@ -89,7 +111,7 @@
 <script>
   import '../stylus/test.styl'
   import { todayStr } from './util.vue'
-  import {check} from '../service/user'
+  import {check, enroll} from '../service/user'
   import axios from 'axios'
   export default {
     created(){
@@ -113,7 +135,15 @@
           if(this.semesterId) {
             check(this.semesterId).then( res => {
               this.userEnroll = res.data.enroll;
+              this.userBind = res.data.bind;
+              this.level = res.data.grade.toLowerCase();
+              if(this.level) {
+                this.showResult = true;
+              }
+              this.ready = true;
             })
+          } else {
+            this.ready = true;
           }
         })
         .catch((error) => {
@@ -133,6 +163,17 @@
     },
     data() {
       return {
+        userBind: false, // 是否绑定手机
+        phoneDialog: false,
+        mobilePhone: '',
+        emailRules: [
+          (v) => !!v || '请填写您的手机号码',
+          (v) => /^\d{11,12}$/.test(v) || '您的手机号码有误',
+            (v) => {
+            return !this.errMsg || this.errMsg
+          }
+        ],
+        ready: false,
         dialog: false,
         evaluationId: '',
         semesterId: '',
@@ -144,7 +185,8 @@
         testResult: '',
         data: [],
         userInfo: userInfo || {},
-        userEnroll: false //是否已报名
+        userEnroll: false, //是否已报名
+        userGrade: false //是否已测试
       }
     },
     methods: {
@@ -177,6 +219,34 @@
               // 用户取消分享后执行的回调函数
             }
         });
+      },
+      bindPhone() {
+        if(/^\d{11,12}$/.test(this.mobilePhone)) {
+          this.goPay(true);
+        }
+      },
+      goPay(flag) {
+        if(!flag && !this.userBind) {
+          this.phoneDialog = true;
+          return;
+        }
+        enroll(this.semesterId, this.mobilePhone).then(res => {
+          var data = res.data;
+          wx.chooseWXPay({
+            timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+            nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+            package: data.pkg, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+            signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+            paySign: data.paySign, // 支付签名
+            success: function (res) {
+              // 支付成功后的回调函数
+              window.location.href = '/paid';
+            }
+          });
+          this.phoneDialog = false;
+        }).catch((e)=>{
+          console.log(e)
+        })
       },
       next(){
         if(this.current < this.data.length - 1) {

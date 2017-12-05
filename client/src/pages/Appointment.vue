@@ -91,22 +91,23 @@
           return;
         }
         if(this.userBind || reg.test(this.mobilePhone)) {
-          bind(this.$route.query.semesterId, this.mobilePhone).then( res => {
-            if(res.data.status == 200) {
-              self.dialog = false;
-              self.successDialog = true;
-              self.failDialog = false;
-            } else {
-              self.dialog = false;
-              self.successDialog = false;
-              self.failDialog = true;
-              self.failMessage = res.data.message;
-            }
-          }).catch((e)=>{
-            self.dialog = false;
-            self.successDialog = false;
-            self.failDialog = true;
-          })
+//          bind(this.$route.query.semesterId, this.mobilePhone).then( res => {
+//            if(res.data.status == 200) {
+//              self.dialog = false;
+//              self.successDialog = true;
+//              self.failDialog = false;
+//            } else {
+//              self.dialog = false;
+//              self.successDialog = false;
+//              self.failDialog = true;
+//              self.failMessage = res.data.message;
+//            }
+//          }).catch((e)=>{
+//            self.dialog = false;
+//            self.successDialog = false;
+//            self.failDialog = true;
+//          })
+          window.location.href = '/testLand?semesterId=' + this.$route.query.semesterId;
         }
       },
       requestPay(){
@@ -120,7 +121,7 @@
             paySign: data.paySign, // 支付签名
             success: function (res) {
               // 支付成功后的回调函数
-              window.location.replace('/paid')
+              window.location.href = '/paid';
             }
           });
         }).catch((e)=>{

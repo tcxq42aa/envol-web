@@ -15,9 +15,7 @@
           具体入学相关事宜将由督导Vovo<br>
           给大家说明。</span>
       </p>
-      <div class="qrcodeWrap">
-        <img src="../assets/group@2x.png" alt="扫描二维码" height="135px" width="135px"/>
-      </div>
+      <img src="../assets/vovoqrcode@2x.png" alt="扫描二维码" height="135px" width="135px"/>
     </div>
   </v-container>
 </template>

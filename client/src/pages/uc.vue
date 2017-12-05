@@ -125,7 +125,7 @@
         modal2: false,
         statistical: [],
         badge: 0,
-        helpLink: 'http://mp.weixin.qq.com/mp/homepage?__biz=MzU0NzMzMjk1NA==&hid=1&sn=505097b07b26b8bbe920dad355777580#wechat_redirect',
+        helpLink: 'https://shimo.im/doc/d6a4P8lVlPUxXgIl?r=YRL1ML/',
         hours: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
         minutes: ['00','05','15','20','25','30','35','40','45','50','55'],
         hour: '',
