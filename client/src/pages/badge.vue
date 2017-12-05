@@ -9,7 +9,7 @@
       <div class="badge-body">
           <div class="badge-item" v-if="days >= 1">
             <img src="../assets/badge/badge1@2x.png" width="60px" height="60px">
-            <p>连续 1 天</p>
+            <p>阅读第1天</p>
           </div>
           <div class="badge-item" v-if="days >= 5">
             <img src="../assets/badge/badge2@2x.png" width="60px" height="60px">

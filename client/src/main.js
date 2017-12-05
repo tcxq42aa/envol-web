@@ -20,27 +20,29 @@ const Paid = () => import('./pages/PaySuccess')
 const WordList = () => import('./pages/wordList')
 const Handout = () => import('./pages/handout')
 const MailBox = () => import('./pages/mailBox')
+const Land = () => import('./pages/land')
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/index', component: Index },
-  { path: '/plan', component: Plan },
+  // { path: '/index', component: Index },
+  // { path: '/plan', component: Plan },
   { path: '/uc', component: UC },
   { path: '/appointment', component: Appointment },
   { path: '/test', component: Test },
   { path: '/testLand', component: TestLand },
   { path: '/testShare', component: TestShare },
-  { path: '/read', component: Read },
-  { path: '/practice', component: Practice },
+  // { path: '/read', component: Read },
+  // { path: '/practice', component: Practice },
   { path: '/practiceShare', component: PracticeShare },
   { path: '/paid', component: Paid },
   { path: '/badge', component: Badge },
-  { path: '/wordList', component: WordList },
-  { path: '/handout', component: Handout },
-  { path: '/mailBox', component: MailBox },
-  { path: '*', redirect: '/index' }
+  // { path: '/wordList', component: WordList },
+  // { path: '/handout', component: Handout },
+  // { path: '/mailBox', component: MailBox },
+  { path: '/land', component: Land },
+  { path: '*', redirect: '/uc' }
 ]
 const router = new VueRouter({
   mode: 'history',

@@ -34,15 +34,15 @@
         <div class="f14 bold mb-1">常见问题</div>
         <div>使用方法、打卡、<br>活动等</div></a>
       </div>
-        <div class="uc-block block-3" dark @click.stop="dialog=true">
-          <img src="../assets/group5Copy5@2x.png" width="70px" height="70px">
-          <div class="f14 bold mb-1">我要找督导老师</div>
-          <div>特殊问题</div>
-        </div>
+      <div class="uc-block block-3" dark><a class="uc-link" href="/land">
+        <img src="../assets/group5Copy5@2x.png" width="70px" height="70px">
+        <div class="f14 bold mb-1">我要找督导老师</div>
+        <div>特殊问题</div></a>
+      </div>
       <router-link to="/badge">
         <div class="uc-block block-4">
           <img src="../assets/group5Copy6@2x.png" width="70px" height="70px">
-          <div class="f14 bold mb-1">晒学习成果</div>
+          <div class="f14 bold mb-1">我的学习成就</div>
           <div>学习使我快乐</div>
         </div>
       </router-link>

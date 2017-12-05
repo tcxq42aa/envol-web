@@ -1,0 +1,27 @@
+.land-container {
+  text-align: center;
+}
+.land-line {
+  display: inline-block;
+  position: relative;
+}
+.land-line::before {
+  position: absolute;
+  content: ' ';
+  display: block;
+  height: 1px;
+  width: 19px;
+  left: -29px;
+  background: #fc933d;
+  top: 10px;
+}
+.land-line::after {
+  position: absolute;
+  content: ' ';
+  display: block;
+  height: 1px;
+  width: 19px;
+  right: -29px;
+  background: #fc933d;
+  top: 10px;
+}
