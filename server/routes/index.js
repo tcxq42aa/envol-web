@@ -42,15 +42,42 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
         }).catch(function (error) {
           console.log(error);
         });
-        res.render('index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo)});
+        checkUser(req, function(){
+          res.render('index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo)});
+        }, function(msg){
+          res.render('invalid', { msg });
+        });
       })
     })
   } else {
     console.log('openid=' + req.session.userInfo.openid)
-    res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
+    checkUser(req, function(){
+      res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
+    }, function(msg){
+      res.render('invalid', { msg });
+    });
   }
-
 });
+
+function checkUser(req, success, fail) {
+  var urls = ['/', '/index', '/plan', '/uc', '/practice', '/read', '/paid', '/badge', '/wordList', '/handout'];
+  if(urls.indexOf(req.path) >=0) {
+    axios.post(config.serverHost + 'api/user/today?readToday=&openId=' + req.session.userInfo.openid).then((res)=>{
+      success();
+    }).catch(function (error) {
+      if(error.response.data.code == 4041 || error.response.data.code == 4042) {
+        console.log('today接口校验结果 ->', error.response.data);
+        fail(error.response.data.msg);
+      } else {
+        fail();
+        console.log('后端接口异常 ->', error.response.data);
+      }
+    });
+  } else {
+    success();
+  }
+}
+
 /* GET user center page. */
 router.all('/wx', function (req, res, next) {
   var q = req.query;

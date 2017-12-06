@@ -226,6 +226,9 @@
         }
       },
       goPay(flag) {
+        if(this.userEnroll) {
+          return;
+        }
         if(!flag && !this.userBind) {
           this.phoneDialog = true;
           return;
