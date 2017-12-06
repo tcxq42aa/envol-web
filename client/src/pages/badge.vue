@@ -90,6 +90,14 @@
       </div>
     </div>
 
+    <div class="share-layer" v-if="showLayer" @click="showLayer=false">
+      <div class="share-content">
+        <img class="share-arrow" src="../assets/share-arrow@2x.png" width="68px" height="69px">
+        <p style="font-size: 16px;line-height: 22px;margin: 20px 24px 12px 0;color: rgb(252,147,61)">完成打卡，赢代金券</p>
+        <img class="share-arrow" src="../assets/share-gift@2x.png" width="145px" height="109px" style="margin-right: 38.5px;">
+      </div>
+    </div>
+
     <v-dialog v-model="showBadge" content-class="badge-dialog">
       <img class="badge-img" v-if="badgeImgMap[badgeName]" :src="badgeImgMap[badgeName]" width="100px" height="100px">
       <div class="badge-body" v-if="badgeName=='1'">
@@ -182,7 +190,7 @@
           快去分享你的获奖感言吧！
         </div>
       </div>
-      <v-btn round class="orange white--text btn__orange btn-timeline btn--disabled">去炫耀一下</v-btn>
+      <v-btn round class="orange white--text btn__orange btn-timeline" @click.stop="showLayer=true">去炫耀一下</v-btn>
     </v-dialog>
   </v-container>
 </template>
@@ -231,6 +239,7 @@
         ready: false,
         days: 0,
         userInfo: userInfo || {},
+        showLayer: false,
         showBadge: false,
         badgeName: '',
         badgeImgMap: {
