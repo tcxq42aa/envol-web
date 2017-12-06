@@ -23,11 +23,13 @@
     </div>
 
     <div class="uc-block-wrap white--text">
-      <div class="uc-block block-1" @click.stop="settingDialog=true">
+      <!--<div class="uc-block block-1 is-disabled" @click.stop="settingDialog=true">-->
+      <div class="uc-block block-1 is-disabled">
         <img src="../assets/group6@2x.png" width="70px" height="70px">
         <div class="f14 bold mb-1">阅读提醒设置</div>
-        <div class="mb-2">每天</div>
-        <div class="remind-time f14">{{remindTime}}</div>
+        <!--<div class="mb-2">每天</div>-->
+        <div class="mb-2">提醒功能暂未开启</div>
+        <!--<div class="remind-time f14">{{remindTime}}</div>-->
       </div>
       <div class="uc-block block-2"><a class="uc-link" :href="helpLink">
         <img src="../assets/group5Copy7@2x.png" width="70px" height="70px">
