@@ -101,6 +101,7 @@
           if(this.appData.paper && this.appData.paper.semesterId) {
             check(this.appData.paper.semesterId).then( res => {
               this.hasTested = res.data.test;
+              bus.$emit("checked", res.data);
             })
           }
         }).catch((error) => {

@@ -100,7 +100,7 @@ if (process.env.NODE_ENV === 'production') {
       test: /\.styl$/,
       loader: ExtractTextPlugin.extract({
         fallback: "style-loader",
-        use: ["css-loader", "stylus-loader"]
+        use: ["css-loader", "postcss-loader", "stylus-loader"]
       })
     },
     {

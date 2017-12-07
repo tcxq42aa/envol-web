@@ -17,7 +17,7 @@
   import '../stylus/test.styl';
   import { todayStr } from './util.vue'
   import { bus } from '../bus.vue'
-  import { check } from '../service/user'
+  import { check, getWordList } from '../service/user'
   import axios from 'axios'
 
   export default {
@@ -25,15 +25,28 @@
       document.title = '今日词表'
       this.handler = (data) => {
         this.paper = data.paper;
+        this.semester = data.semester;
         if(this.paper){
           this.wordList = JSON.parse(this.paper.wordList);
         }
-        console.log(this.wordList);
+        console.log(data.semester);
       }
       bus.$on('done', this.handler)
+      bus.$on('checked', (res)=>{
+        console.log(res);
+        if(res.grade) {
+          getWordList({
+            semesterId: this.semester.id,
+            grade: res.grade
+          }).then(data => {
+            console.log(data.data);
+          });
+        }
+      })
     },
     destroyed(){
       bus.$off('done', this.handler)
+      bus.$off('checked', this.handler)
     },
     data() {
       return {

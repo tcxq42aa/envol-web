@@ -23,7 +23,7 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
     axios.get(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.appid}&secret=${config.secret}&code=${code}&grant_type=authorization_code`).then(function(response){
       if(response.data.errcode) {
         console.log(response.data)
-        res.render('invalid', {errcode: response.data.errcode});
+        res.render('invalid', {msg: '', errcode: response.data.errcode});
         return
       }
       var access_token = response.data.access_token;
@@ -31,7 +31,7 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
       axios.get('https://api.weixin.qq.com/sns/userinfo?access_token=' + access_token + '&openid=' + openid + '&lang=zh_CN').then(function(resp){
         if(resp.data.errcode) {
           console.log(resp.data)
-          res.render('invalid', {errcode: resp.data.errcode});
+          res.render('invalid', {msg: '', errcode: resp.data.errcode});
           return
         }
         req.session.userInfo = resp.data;
@@ -60,22 +60,23 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
 });
 
 function checkUser(req, success, fail) {
-  var urls = ['/', '/index', '/plan', '/uc', '/practice', '/read', '/paid', '/badge', '/wordList', '/handout'];
-  if(urls.indexOf(req.path) >=0) {
-    axios.post(config.serverHost + 'api/user/today?readToday=&openId=' + req.session.userInfo.openid).then((res)=>{
-      success();
-    }).catch(function (error) {
-      if(error.response.data.code == 4041 || error.response.data.code == 4042) {
-        console.log('today接口校验结果 ->', error.response.data);
-        fail(error.response.data.msg);
-      } else {
-        fail();
-        console.log('后端接口异常 ->', error.response.data);
-      }
-    });
-  } else {
-    success();
-  }
+  success();
+  // var urls = ['/', '/index', '/plan', '/uc', '/practice', '/read', '/paid', '/badge', '/wordList', '/handout'];
+  // if(urls.indexOf(req.path) >=0) {
+  //   axios.post(config.serverHost + 'api/user/today?readToday=&openId=' + req.session.userInfo.openid).then((res)=>{
+  //     success();
+  //   }).catch(function (error) {
+  //     if(error.response.data.code == 4041 || error.response.data.code == 4042) {
+  //       console.log('today接口校验结果 ->', error.response.data);
+  //       fail(error.response.data.msg);
+  //     } else {
+  //       fail();
+  //       console.log('后端接口异常 ->', error.response.data);
+  //     }
+  //   });
+  // } else {
+  //   success();
+  // }
 }
 
 /* GET user center page. */
