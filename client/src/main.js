@@ -26,7 +26,7 @@ Vue.use(Vuetify)
 Vue.use(VueRouter)
 
 const routes = [
-  // { path: '/index', component: Index },
+  { path: '/index', component: Index },
   // { path: '/plan', component: Plan },
   { path: '/uc', component: UC },
   { path: '/appointment', component: Appointment },

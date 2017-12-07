@@ -19,7 +19,7 @@
         </div>
         <img src="../assets/vovoqrcode@2x.png" alt="扫描二维码" width="135px" style="margin: 0 auto"/>
         <div style="font-size: 14px;" class="mb-0">
-          人数可能较多，请耐心等待Vovo通过。<br>
+          人数可能较多，请耐心等待Vovo通过<br>
           大家可到个人中心提前阅读入学须知
         </div>
       </div>
@@ -30,6 +30,13 @@
   import '../stylus/share.styl'
   import '../stylus/land.styl'
   export default {
-
+    created() {
+    }
   }
+
 </script>
+<style>
+  canvas {
+    display: block;
+  }
+</style>
