@@ -80,7 +80,7 @@
 //        }
       },
       bindPhone() {
-        const reg = /^\d{11,12}$/
+        const reg = /^\d{11,13}$/
         const self = this
         if(this.$route.query.active=='true'){
           this.requestPay();
@@ -142,7 +142,7 @@
         mobilePhone: '',
         emailRules: [
           (v) => !!v || '请填写您的手机号码',
-          (v) => /^\d{11,12}$/.test(v) || '您的手机号码有误',
+          (v) => /^\d{11,13}$/.test(v) || '您的手机号码有误',
 //          (v) => /^1[34578]\d{9}$/.test(v) || '您的手机号码有误',
           (v) => {
             return !this.errMsg || this.errMsg

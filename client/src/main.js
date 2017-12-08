@@ -21,6 +21,7 @@ const WordList = () => import('./pages/wordList')
 const Handout = () => import('./pages/handout')
 const MailBox = () => import('./pages/mailBox')
 const Land = () => import('./pages/land')
+const Demo = () => import('./pages/demo')
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
@@ -42,6 +43,7 @@ const routes = [
   // { path: '/handout', component: Handout },
   // { path: '/mailBox', component: MailBox },
   { path: '/land', component: Land },
+  { path: '/demo', component: Demo },
   { path: '*', redirect: '/uc' }
 ]
 const router = new VueRouter({

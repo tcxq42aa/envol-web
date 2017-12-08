@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <div class="index-panel orange">
+    <div class="index-panel orange" id="index-header">
       <router-link :to="'/handout?date=' + today">
         <div class="handout-entry">今日讲义</div>
       </router-link>
@@ -80,6 +80,7 @@
 
 <script>
   import '../stylus/index.styl'
+  import SiriWave from '../service/sw';
   import { bus } from '../bus.vue'
   var qs = require('querystringify');
   export default {
@@ -95,6 +96,32 @@
     },
     destroyed(){
       bus.$off('done', this.handler)
+    },
+    mounted() {
+      const SW = new SiriWave({
+        width: document.body.clientWidth,
+        height: 130,
+        container: document.getElementById('index-header')
+      });
+      SW.setSpeed(0.006);
+      SW.start();
+      setInterval(function(){
+        SW.setNoise(0.15);
+      }, 0);
+
+      setTimeout(()=>{
+        const SW2 = new SiriWave({
+          width: document.body.clientWidth,
+          height: 170,
+          bgColor: 'rgba(255,255,255,0.04)',
+          container: document.getElementById('index-header')
+        });
+        SW2.setSpeed(0.004);
+        SW2.start();
+        setInterval(function(){
+          SW2.setNoise(0.1);
+        }, 0);
+      }, 300);
     },
     data() {
       return {

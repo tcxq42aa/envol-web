@@ -212,17 +212,18 @@
           this.lexicalAnalysis = this.paper.lexicalAnalysis;
           this.sentenceAnalysis = this.paper.sentenceAnalysis;
           this.todayWordsTotal = this.paper.wordsTotal;
+          this.statistical = data.statistical;
+          this.wordsTotal = this.statistical.map((i)=>{
+            if(i.paperId == this.paper.id) {
+              this.hasRead = true;
+            }
+            return i.wordsTotal;
+          }).reduceRight((a, b)=>{
+            return a + b
+          }, 0)
         }
         this.book = data.book;
-        this.statistical = data.statistical;
-        this.wordsTotal = this.statistical.map((i)=>{
-          if(i.paperId == this.paper.id) {
-            this.hasRead = true;
-          }
-          return i.wordsTotal;
-        }).reduceRight((a, b)=>{
-            return a + b
-        }, 0)
+
 
         var self = this;
         wx.ready(function(){
@@ -264,7 +265,7 @@
         const cover = this.book ? this.book.coverUrl : '';
         const self  = this;
         wx.onMenuShareTimeline({
-          title: `是时候开始法语阅读了，我在【法棍阅读】坚持了${day}天，已读${word}字`, // 分享标题
+          title: `是时候开始法语阅读了，我在【法棍阅读】坚持了${day}天，已读${word || 0}字`, // 分享标题
           link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           success: function (data) {
