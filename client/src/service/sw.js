@@ -5,7 +5,7 @@ function SiriWave(opt){
   this.opt = opt || {};
 
   this.K = 1;
-  this.F = 4;
+  this.F = 3;
   this.speed = this.opt.speed || 0.1;
   this.noise = this.opt.noise || 0;
   this.phase = this.opt.phase || 0;

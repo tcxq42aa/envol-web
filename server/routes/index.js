@@ -61,8 +61,22 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
 
 function checkUser(req, success, fail) {
   success();
-  // var urls = ['/', '/index', '/plan', '/uc', '/practice', '/read', '/paid', '/badge', '/wordList', '/handout'];
+  // var whiteList = [
+  //   'oWgFw09fOJE8AGgtxuwqVKGv54nI',
+  //   'oWgFw035PJFV5aMg7UtDCgqJ2TeU',//seb
+  //   'oWgFw0yATvtXCQWBF29XIaMKxH9Q',//漫
+  //   'oWgFw0yALbZNYF16jCQdNnpPvuMo',//jerry
+  //   'oWgFw0_Ga27csiD4wyp_jg6u6y5k'//Weina
+  // ];
+  //
+  // var urls = ['/index', '/plan', '/uc', '/practice', '/read', '/paid', '/badge', '/wordList', '/handout'];
   // if(urls.indexOf(req.path) >=0) {
+  //
+  //   if(whiteList.indexOf(req.session.userInfo.openid) < 0) {
+  //     fail('暂未开放，请耐心等待');
+  //     return;
+  //   }
+  //
   //   axios.post(config.serverHost + 'api/user/today?readToday=&openId=' + req.session.userInfo.openid).then((res)=>{
   //     success();
   //   }).catch(function (error) {
@@ -70,7 +84,7 @@ function checkUser(req, success, fail) {
   //       console.log('today接口校验结果 ->', error.response.data);
   //       fail(error.response.data.msg);
   //     } else {
-  //       fail();
+  //       fail('出错啦，请联系管理员～');
   //       console.log('后端接口异常 ->', error.response.data);
   //     }
   //   });
