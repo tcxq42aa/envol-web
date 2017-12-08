@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>11</h3>
+    <h3>1122</h3>
     <!--<router-link :to="'/test?semesterId=4'">-->
       <v-btn block round class="btn-test orange--text white" href="/test?semesterId=4">
         开始测试吧
@@ -22,5 +22,9 @@
   </div>
 </template>
 <script>
-  export default {}
+  export default {
+    mounted() {
+      console.log('demo');
+    }
+  }
 </script>
