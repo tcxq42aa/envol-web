@@ -215,7 +215,7 @@
           this.todayWordsTotal = this.paper.wordsTotal;
         }
         this.wordsTotal = this.statistical.map((i)=>{
-          if(this.paper && i.paperId == this.paper.id) {
+          if(!this.paper || (this.paper && i.paperId == this.paper.id)) {
             this.hasRead = true;
           }
           return i.wordsTotal;

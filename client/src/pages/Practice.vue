@@ -102,8 +102,7 @@
         <div class="subheading mb-4">今日解析</div>
         <div v-html="sentenceAnalysis"></div>
       </div>
-      <div class="orange btn-share" @click="showLayer=true" v-if="!hasShared">分享到朋友圈，完成打卡<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></div>
-      <div class="orange btn-share" v-if="hasShared">分享成功</div>
+      <div class="orange btn-share" @click="showLayer=true">分享到朋友圈，完成打卡<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></div>
       <div class="share-layer" v-if="showLayer" @click="showLayer=false">
         <div class="share-content">
           <img class="share-arrow" src="../assets/share-arrow@2x.png" width="68px" height="69px">
@@ -205,7 +204,7 @@
           快去分享你的获奖感言吧！
         </div>
       </div>
-      <v-btn round class="orange white--text btn__orange btn-timeline btn--disabled">去炫耀一下</v-btn>
+      <v-btn round class="orange white--text btn__orange btn-timeline" @click.stop="showLayer=true">去炫耀一下</v-btn>
     </v-dialog>
   </v-container>
 </template>
@@ -262,17 +261,20 @@
         hasRead: false,
         hasShared: false,
         todayStr: todayStr(),
-        showResult: false,
+        showResult: true,
         showLayer: false,
         current: 0,
         testResult: '',
         paper: null,
+        todayWordsTotal: 0,
+        wordsTotal: 0,
+        sentenceAnalysis: '',
         data: [],
         userInfo: userInfo || {},
         wxReady: false,
         debug: qs.parse(location.search).debug || false,
-        showBadge: false,
-        badgeName: '',
+        showBadge: true,
+        badgeName: '5',
         badgeImgMap: {
           '1': require('../assets/badge/badge1@2x.png'),
           '5': require('../assets/badge/badge2@2x.png'),
