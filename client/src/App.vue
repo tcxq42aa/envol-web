@@ -31,7 +31,7 @@
   var qs = require('querystringify');
   const extraPages = [
     '/appointment', '/test','/practice',
-    '/practiceShare', '/testLand', '/testShare',
+    '/practiceShare', '/testLand', '/testShare', '/overdue',
     '/read', '/paid', '/badge', '/wordList', '/handout', '/mailBox', '/land'
   ]
   export default {
@@ -75,7 +75,7 @@
     methods: {
       switchTab(e) {
         if(e=='/uc'){
-          window.location.href = e + '?date=' + this.today;
+          window.location.href = e + '?date=' + this.today + '&test=' + this.test;
         }else{
           this.$router.replace(e + '?date=' + this.today + '&code=' + this.code + '&state=' + this.state)
         }

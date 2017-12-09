@@ -7,7 +7,7 @@ var querystring = require('querystring');
 var config = require('../config/app.config');
 
 /* GET home page. */
-router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|demo)?$/, function (req, res, next) {
+router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
   var redirectUrl = 'http://www.envol.vip' + req.path;
   if(querystring.stringify(req.query)) {
     redirectUrl += '?' + querystring.stringify(req.query);
@@ -42,7 +42,7 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
         }).catch(function (error) {
           console.log(error);
         });
-        checkUser(req, function(){
+        checkUser(req, res, function(){
           res.render('index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo)});
         }, function(msg){
           res.render('invalid', { msg });
@@ -51,7 +51,7 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
     })
   } else {
     console.log('openid=' + req.session.userInfo.openid)
-    checkUser(req, function(){
+    checkUser(req, res, function(){
       res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
     }, function(msg){
       res.render('invalid', { msg });
@@ -59,7 +59,11 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
   }
 });
 
-function checkUser(req, success, fail) {
+function checkUser(req, res, success, fail) {
+  if(req.path == '/appointment') {
+    res.redirect('/overdue');
+    return;
+  }
   // success();
   var whiteList = [
     'oWgFw09fOJE8AGgtxuwqVKGv54nI',

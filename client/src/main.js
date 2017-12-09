@@ -23,6 +23,7 @@ const Handout = () => import('./pages/handout')
 const MailBox = () => import('./pages/mailBox')
 const Land = () => import('./pages/land')
 const Demo = () => import('./pages/demo')
+const Overdue = () => import('./pages/overdue')
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
@@ -44,6 +45,7 @@ const routes = [
   { path: '/handout', component: Handout },
   // { path: '/mailBox', component: MailBox },
   { path: '/land', component: Land },
+  { path: '/overdue', component: Overdue },
   { path: '/demo', component: Demo },
   { path: '*', redirect: '/uc' }
 ]

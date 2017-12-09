@@ -15,7 +15,7 @@
 </template>
 <script>
   import '../stylus/test.styl';
-  import { formatDate } from './util.vue'
+  import { formatDate, todayStr } from './util.vue'
   import { bus } from '../bus.vue'
   import { check, getWordList } from '../service/user'
   import axios from 'axios'
@@ -52,19 +52,14 @@
     },
     data() {
       return {
-        wordList: [],
         wordListArray: [],
         current: 0,
         x1: 0,
-        x2: 0
+        x2: 0,
+        todayStr: todayStr
       };
     },
     methods: {
-      todayStr(today){
-        today = new Date(today);
-        var monthArr = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juillet','Août','Sept.','Oct.','Nov.','Déc.'];
-        return monthArr[today.getMonth()] + ' ' + today.getDate()
-      },
       prev() {
         if(this.current > 0) {
           this.current = this.current - 1

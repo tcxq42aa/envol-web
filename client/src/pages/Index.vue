@@ -81,6 +81,7 @@
 <script>
   import '../stylus/index.styl'
   import SiriWave from '../service/sw';
+  import { todayFullStr } from './util.vue';
   import { bus } from '../bus.vue'
   var qs = require('querystringify');
   export default {
@@ -129,7 +130,8 @@
         wordsTotal: 0,
         tractate: '',
         statistical: [],
-        userInfo: userInfo || {}
+        userInfo: userInfo || {},
+        todayStr: todayFullStr()
       }
     },
     computed: {
@@ -138,11 +140,6 @@
       },
       tractateStr(){
         return this.tractate.replace(/\\r|\\n/g, '')
-      },
-      todayStr(){
-        var monthArr = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juillet','Août','Sept.','Oct.','Nov.','Déc.'];
-        var today = new Date();
-        return monthArr[today.getMonth()] + ' ' + today.getDate()
       },
       wordsTotalStr(){
         return this.statistical.map(function(item) { return item.wordsTotal}).reduceRight(function(a,b){return (a+b)}, 0)

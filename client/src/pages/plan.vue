@@ -54,7 +54,7 @@
   import '../stylus/plan.styl'
   import { bus } from '../bus.vue'
   import { formatDate } from './util.vue'
-  const MONTH_MAP = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juillet','Août','Sept.','Oct.','Nov.','Déc.'];
+  const MONTH_MAP = ['JANVIER','FÉVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'];
   export default {
     created(){
       document.title = '阅读计划';

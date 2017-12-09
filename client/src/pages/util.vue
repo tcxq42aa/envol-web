@@ -1,7 +1,19 @@
 <script>
-  export const todayStr = () => {
-    var monthArr = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juillet','Août','Sept.','Oct.','Nov.','Déc.'];
+  export const todayStr = (date) => {
+    var monthArr = ['JAN.','FÉV.','MARS','AVR.','MAI','JUIN','JUILLET','AOÛT','SEPT.','OCT.','NOV.','DÉC.'];
     var today = new Date();
+    if(date) {
+      today = new Date(date);
+    }
+    return monthArr[today.getMonth()] + ' ' + today.getDate()
+  }
+
+  export const todayFullStr = (date) => {
+    var monthArr = ['JANVIER','FÉVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'];
+    var today = new Date();
+    if(date) {
+      today = new Date(date);
+    }
     return monthArr[today.getMonth()] + ' ' + today.getDate()
   }
 
