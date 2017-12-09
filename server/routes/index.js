@@ -62,7 +62,7 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
 function checkUser(req, success, fail) {
   // success();
   var whiteList = [
-    // 'oWgFw09fOJE8AGgtxuwqVKGv54nI',
+    'oWgFw09fOJE8AGgtxuwqVKGv54nI',
     'oWgFw035PJFV5aMg7UtDCgqJ2TeU',//seb
     'oWgFw0yATvtXCQWBF29XIaMKxH9Q',//漫
     'oWgFw0yALbZNYF16jCQdNnpPvuMo',//jerry

@@ -1,10 +1,10 @@
 <template>
   <v-container class="orange test-container">
-    <div class="test-list">
-      <div class="test-card word-list-card">
-        <div class="test-tag">{{todayStr}}</div>
+    <div v-if="wordListArray.length > 0" class="test-list" :style="{transform: 'translateX(-' + 95 * current + '%)'}">
+      <div class="test-card" v-for="(item, index) in wordListArray" @touchmove="handleMove" @touchstart="handleStart" @touchend="handleEnd">
+        <div class="test-tag">{{todayStr(item.readToday)}}</div>
         <ul class="test-detail">
-          <li v-for="(word, index) in wordList">
+          <li v-for="(word, index) in JSON.parse(item.wordList)">
             <div class="text">{{word.text}}</div>
             <div class="comment">{{word.comment}}</div>
           </li>
@@ -15,7 +15,7 @@
 </template>
 <script>
   import '../stylus/test.styl';
-  import { todayStr } from './util.vue'
+  import { formatDate } from './util.vue'
   import { bus } from '../bus.vue'
   import { check, getWordList } from '../service/user'
   import axios from 'axios'
@@ -26,10 +26,11 @@
       this.handler = (data) => {
         this.paper = data.paper;
         this.semester = data.semester;
-        if(this.paper){
-          this.wordList = JSON.parse(this.paper.wordList);
-        }
-        console.log(data.semester);
+//        if(this.paper){
+//          console.log(11,this.paper.wordList);
+//          this.wordList = JSON.parse(this.paper.wordList);
+//        }
+//        console.log(data.semester);
       }
       bus.$on('done', this.handler)
       bus.$on('checked', (res)=>{
@@ -39,7 +40,8 @@
             semesterId: this.semester.id,
             grade: res.grade
           }).then(data => {
-            console.log(data.data);
+            this.wordListArray = data.data.reverse();
+            this.current = data.data.length - 1;
           });
         }
       })
@@ -51,12 +53,51 @@
     data() {
       return {
         wordList: [],
+        wordListArray: [],
         current: 0,
-        todayStr: todayStr()
+        x1: 0,
+        x2: 0
       };
+    },
+    methods: {
+      todayStr(today){
+        today = new Date(today);
+        var monthArr = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juillet','Août','Sept.','Oct.','Nov.','Déc.'];
+        return monthArr[today.getMonth()] + ' ' + today.getDate()
+      },
+      prev() {
+        if(this.current > 0) {
+          this.current = this.current - 1
+        }
+        window.scrollTo(0, 0);
+      },
+      next() {
+        if(this.current < this.wordListArray.length -1) {
+          this.current = this.current + 1
+        }
+        window.scrollTo(0, 0);
+      },
+      handleStart(e) {
+        this.x1 = e.touches[0].clientX;
+      },
+      handleEnd(e) {
+        console.log(this.x1 - this.x2);
+        if(this.x1 - this.x2 > 30) {
+          this.next();
+        }
+        if(this.x1 - this.x2 < -30) {
+          this.prev();
+        }
+      },
+      handleMove(e) {
+        this.x2 = e.touches[0].clientX;
+      }
     }
   };
 </script>
 <style>
-
+  .test-list {
+    margin-left: 0;
+    margin-right: 0;
+  }
 </style>

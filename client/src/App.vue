@@ -98,8 +98,8 @@
         axios.post('/api/user/today?readToday=' + (date || formatDate(Date.now()))).then((response) => {
           this.appData = response.data.data
           bus.$emit("done", this.appData);
-          if(this.appData.paper && this.appData.paper.semesterId) {
-            check(this.appData.paper.semesterId).then( res => {
+          if(this.appData.semester.id) {
+            check(this.appData.semester.id).then( res => {
               this.hasTested = res.data.test;
               bus.$emit("checked", res.data);
             })
