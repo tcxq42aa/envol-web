@@ -77,7 +77,7 @@
         if(e=='/uc'){
           window.location.href = e + '?date=' + this.today + '&test=' + this.test;
         }else{
-          this.$router.replace(e + '?date=' + this.today + '&code=' + this.code + '&state=' + this.state)
+          this.$router.replace(e + '?date=' + this.today + '&test=' + this.test + '&code=' + this.code + '&state=' + this.state)
         }
       },
       refreshSignature(){

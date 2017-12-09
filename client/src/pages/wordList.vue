@@ -19,6 +19,7 @@
   import { bus } from '../bus.vue'
   import { check, getWordList } from '../service/user'
   import axios from 'axios'
+  var qs = require('querystringify');
 
   export default {
     created(){
@@ -41,7 +42,12 @@
             grade: res.grade
           }).then(data => {
             this.wordListArray = data.data.reverse();
-            this.current = data.data.length - 1;
+
+            this.wordListArray = this.wordListArray.filter(wordList => {
+              return formatDate(wordList.readToday) <= this.today
+            });
+
+            this.current = this.wordListArray.length - 1;
           });
         }
       })
@@ -58,6 +64,11 @@
         x2: 0,
         todayStr: todayStr
       };
+    },
+    computed: {
+      today() {
+        return qs.parse(location.search).date || formatDate(new Date());
+      }
     },
     methods: {
       prev() {

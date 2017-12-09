@@ -131,7 +131,7 @@
         tractate: '',
         statistical: [],
         userInfo: userInfo || {},
-        todayStr: todayFullStr()
+        todayStr: todayFullStr(new Date(qs.parse(location.search).date || '').getTime())
       }
     },
     computed: {
