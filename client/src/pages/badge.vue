@@ -93,8 +93,7 @@
     <div class="share-layer" v-if="showLayer" @click="showLayer=false">
       <div class="share-content">
         <img class="share-arrow" src="../assets/share-arrow@2x.png" width="68px" height="69px">
-        <p style="font-size: 16px;line-height: 22px;margin: 20px 24px 12px 0;color: rgb(252,147,61)">完成打卡，赢代金券</p>
-        <img class="share-arrow" src="../assets/share-gift@2x.png" width="145px" height="109px" style="margin-right: 38.5px;">
+        <p style="font-size: 16px;line-height: 22px;margin: 10px 0px 12px 0;color: rgb(252,147,61)">别忘了跟好友分享炫耀哦！</p>
       </div>
     </div>
 

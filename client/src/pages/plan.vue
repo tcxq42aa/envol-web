@@ -162,6 +162,7 @@
 
       viewDetail(date, path) {
         let dateStr = formatDate(date.getTime())
+        console.log(dateStr);
         if(!this.semester || (dateStr > formatDate(this.endDate) || dateStr < formatDate(this.beginDate))) {
           return;
         }

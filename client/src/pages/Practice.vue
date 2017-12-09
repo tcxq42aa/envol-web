@@ -24,8 +24,19 @@
                 :class="{active: test.testIdx == idx}"
                 v-for="(answer, idx) in test.options">{{answer.content}}</li>
           </ul>
-          <div class="btn__next-wrap">
-            <v-btn :disabled="test.testIdx == -1" round class="orange white--text btn__orange btn__next" @click.stop="next()">{{current == data.length - 1 ? '完成测试' : '下一题'}}</v-btn>
+          <div class="btn__next-wrap" v-if="!showAudio">
+            <v-btn round class="orange white--text btn__orange btn__next" @click.stop="next()">{{current == data.length - 1 ? '完成测试' : '下一题'}}</v-btn>
+          </div>
+          <div class="btn__nav-wrap" v-if="showAudio">
+            <v-btn v-if="current < data.length - 1" outline round color="orange" @click.stop="next()">
+              下一题
+            </v-btn>
+            <v-btn v-if="current >= data.length - 1" outline round color="orange" @click.stop="next()">
+              提交答案
+            </v-btn>
+            <v-btn v-if="current > 0" outline round color="orange" :disabled="test.testIdx == -1" @click.stop="prev()">
+              上一题
+            </v-btn>
           </div>
         </div>
       </div>
@@ -212,6 +223,8 @@
     created(){
       document.title = '今日测试'
       this.handler = (data) => {
+        this.book = data.book;
+        this.statistical = data.statistical;
         this.paper = data.paper;
         if(this.paper){
           this.tractate = this.paper.tractate;
@@ -219,22 +232,20 @@
           this.lexicalAnalysis = this.paper.lexicalAnalysis;
           this.sentenceAnalysis = this.paper.sentenceAnalysis;
           this.todayWordsTotal = this.paper.wordsTotal;
-        }
-        this.book = data.book;
-        this.statistical = data.statistical;
-        this.wordsTotal = this.statistical.map((i)=>{
+          this.wordsTotal = this.statistical.map((i)=>{
             if(i.paperId == this.paper.id) {
               this.hasRead = true;
             }
             return i.wordsTotal;
           }).reduceRight((a, b)=>{
-          return a + b
-        }, 0)
-        if(this.paper.audio && !this.tractate) {
-          this.showAudio = true;
-          this.initAudio();
-          if(localStorage.getItem('testAudio_' + this.paper.id)){
-            this.finished = true;
+            return a + b
+          }, 0)
+          if(this.paper.audio && !this.tractate) {
+            this.showAudio = true;
+            this.initAudio();
+            if(localStorage.getItem('testAudio_' + this.paper.id)){
+              this.finished = true;
+            }
           }
         }
       }
@@ -320,6 +331,12 @@
             this.badgeName = day;
             localStorage.setItem('badge_' + day, 1);
           }
+        }
+      },
+      prev(){
+        if(this.current > 0) {
+          this.current = this.current - 1
+          window.scrollTo(0, 0)
         }
       },
       next(){
