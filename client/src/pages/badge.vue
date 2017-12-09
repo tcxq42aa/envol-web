@@ -205,24 +205,23 @@
         this.ready = true;
         this.days = data.statistical ? data.statistical.length : 0;
         this.paper = data.paper;
+        this.book = data.book;
+        this.statistical = data.statistical;
         if(this.paper){
           this.tractate = this.paper.tractate;
           this.data = JSON.parse(this.paper.content);
           this.lexicalAnalysis = this.paper.lexicalAnalysis;
           this.sentenceAnalysis = this.paper.sentenceAnalysis;
           this.todayWordsTotal = this.paper.wordsTotal;
-          this.statistical = data.statistical;
-          this.wordsTotal = this.statistical.map((i)=>{
-            if(i.paperId == this.paper.id) {
-              this.hasRead = true;
-            }
-            return i.wordsTotal;
-          }).reduceRight((a, b)=>{
-            return a + b
-          }, 0)
         }
-        this.book = data.book;
-
+        this.wordsTotal = this.statistical.map((i)=>{
+          if(this.paper && i.paperId == this.paper.id) {
+            this.hasRead = true;
+          }
+          return i.wordsTotal;
+        }).reduceRight((a, b)=>{
+          return a + b
+        }, 0)
 
         var self = this;
         wx.ready(function(){
@@ -238,6 +237,8 @@
       return {
         ready: false,
         days: 0,
+        todayWordsTotal: 0,
+        statistical: [],
         userInfo: userInfo || {},
         showLayer: false,
         showBadge: false,

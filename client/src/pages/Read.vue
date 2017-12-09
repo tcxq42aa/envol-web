@@ -1,5 +1,10 @@
 <template>
   <v-container class="read-container">
+    <v-snackbar
+      :timeout="3000"
+      bottom
+      v-model="showAudioTooltip"
+    >第一遍不能拖动哦</v-snackbar>
     <div class="card pa-3 mb-3" v-if="paper && paper.summary">
       <router-link :to="'/handout?date=' + today">
         <div class="read-handout-entry orange">查看本章讲义</div>
@@ -87,6 +92,7 @@
     },
     data() {
       return {
+        showAudioTooltip: false,
         finished: false,
         isPlay: false,
         paper: {},
@@ -177,6 +183,8 @@
           this.left = Math.min(Math.max(e.touches[0].clientX - 28, 0), max);
           let p = this.left / (document.body.clientWidth - 57);
           this.audioRef.currentTime = this.audioRef.duration * p;
+        } else {
+          this.showAudioTooltip = true;
         }
       },
       handleSkip(e) {
