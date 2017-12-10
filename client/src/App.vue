@@ -95,7 +95,7 @@
       },
       initData() {
         let date = qs.parse(location.search).date
-        axios.post('/api/user/today?readToday=' + (date || formatDate(Date.now()))).then((response) => {
+        axios.post('/api/user/today?readToday=' + (date || formatDate(new Date(serverTime)))).then((response) => {
           this.appData = response.data.data
           bus.$emit("done", this.appData);
           if(this.appData.semester.id) {

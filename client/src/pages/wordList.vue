@@ -39,7 +39,7 @@
             this.wordListArray = data.data.reverse();
 
             this.wordListArray = this.wordListArray.filter(wordList => {
-              return wordList.wordList && wordList.wordList != '[]' &&  formatDate(wordList.readToday) <= this.today
+              return wordList.wordList && wordList.wordList != '[]' &&  formatDate(wordList.readToday, '-', true) <= this.today
             });
 
             this.current = this.wordListArray.length - 1;

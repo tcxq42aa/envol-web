@@ -145,15 +145,15 @@
 
       dateStatus(date){
         let dateStr = formatDate(date)
-        let f = this.statistical.find(item => formatDate(item.readToday) == dateStr)
-        if(dateStr > formatDate(Date.now())) {
+        let f = this.statistical.find(item => formatDate(item.readToday, '-', true) == dateStr)
+        if(dateStr > formatDate(new Date(serverTime))) {
           return ''
         }
-        if(!this.semester || (dateStr > formatDate(this.endDate) || dateStr < formatDate(this.beginDate))) {
+        if(!this.semester || (dateStr > formatDate(this.endDate, '-', true) || dateStr < formatDate(this.beginDate, '-', true))) {
           return ''
         }
         if(f) {
-          if(formatDate(f.createTime) > dateStr) {
+          if(formatDate(f.createTime, '-', true) > dateStr) {
             return 'white-bg'
           }
         }
@@ -163,10 +163,10 @@
       viewDetail(date, path) {
         let dateStr = formatDate(date.getTime())
         console.log(dateStr);
-        if(!this.semester || (dateStr > formatDate(this.endDate) || dateStr < formatDate(this.beginDate))) {
+        if(!this.semester || (dateStr > formatDate(this.endDate, '-', true) || dateStr < formatDate(this.beginDate, '-', true))) {
           return;
         }
-        if(dateStr > formatDate(Date.now())) {
+        if(dateStr > formatDate(new Date(serverTime))) {
           return
         }
         this.$router.push(path + '?date=' + formatDate(date.getTime()));

@@ -17,8 +17,17 @@
     return monthArr[today.getMonth()] + ' ' + today.getDate()
   }
 
-  export const formatDate = (date, sep) => {
-    var today = new Date(date);
+  export const formatDate = (date, sep, flag) => {
+    var today;
+    if(date) {
+      today = new Date(date);
+    } else {
+      today = new Date(serverTime);
+    }
+    if(flag) {
+      let a = today.getTimezoneOffset()*60000 + today.getTime() + 3600000*8;
+      today = new Date(a);
+    }
     var year = today.getFullYear()
     var month = today.getMonth() + 1
     var day = today.getDate()
