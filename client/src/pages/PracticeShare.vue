@@ -15,7 +15,7 @@
         <div class="statictis">
           <div>
             <span>{{search.day || 0}}</span>
-            <div class="hint">Jours</div>
+            <div class="hint">jours</div>
           </div>
           <div>
             <div>
