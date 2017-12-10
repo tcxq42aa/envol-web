@@ -8,6 +8,8 @@ var config = require('../config/app.config');
 
 /* GET home page. */
 router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
+  // res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
+  // return;
   var redirectUrl = 'http://www.envol.vip' + req.path;
   if(querystring.stringify(req.query)) {
     redirectUrl += '?' + querystring.stringify(req.query);

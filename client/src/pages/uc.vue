@@ -23,13 +23,13 @@
     </div>
 
     <div class="uc-block-wrap white--text">
-      <!--<div class="uc-block block-1 is-disabled" @click.stop="settingDialog=true">-->
-      <div class="uc-block block-1 is-disabled">
+      <div class="uc-block block-1" @click.stop="settingDialog=true">
+      <!--<div class="uc-block block-1 is-disabled">-->
         <img src="../assets/group6@2x.png" width="70px" height="70px">
         <div class="f14 bold mb-1">阅读提醒设置</div>
-        <!--<div class="mb-2">每天</div>-->
-        <div class="mb-2">提醒功能暂未开启</div>
-        <!--<div class="remind-time f14">{{remindTime}}</div>-->
+        <div class="mb-2">每天</div>
+        <!--<div class="mb-2">提醒功能暂未开启</div>-->
+        <div class="remind-time f14">{{remindTime}}</div>
       </div>
       <div class="uc-block block-2"><a class="uc-link" :href="helpLink">
         <img src="../assets/group5Copy7@2x.png" width="70px" height="70px">
@@ -54,14 +54,15 @@
         <img src="../assets/vovo.jpg" width="100%">
       </v-card>
     </v-dialog>
-    <v-dialog v-model="settingDialog" @touchmove.stop="noop">
+    <v-dialog v-model="settingDialog">
       <v-card>
         <div class="setting-body">
-          <ul>
-            <li v-for="h in hours" @click="hour=h" :class="{'is-active': hour==h}">{{h}}</li>
+          <div class="setting-box">:</div>
+          <ul @scroll="handleHourScroll">
+            <li v-for="h in hours" :class="{'is-active': hour==h}">{{h}}</li>
           </ul>
-          <ul>
-            <li v-for="m in minutes" @click="minute=m" :class="{'is-active': minute==m}">{{m}}</li>
+          <ul @scroll="handleMinuteScroll">
+            <li v-for="m in minutes" :class="{'is-active': minute==m}">{{m}}</li>
           </ul>
         </div>
         <div class="dialog-footer">
@@ -128,8 +129,8 @@
         statistical: [],
         badge: 0,
         helpLink: 'https://shimo.im/doc/d6a4P8lVlPUxXgIl?r=YRL1ML/',
-        hours: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
-        minutes: ['00','05','15','20','25','30','35','40','45','50','55'],
+        hours: ['','','00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','',''],
+        minutes: ['', '', '00','05','10','15','20','25','30','35','40','45','50','55', '', ''],
         hour: '',
         minute: ''
       }
@@ -151,6 +152,20 @@
         let differenceMinute = (new Date()).getTimezoneOffset()
         axios.put(`/api/user/setting?reminderHour=${h}&reminderMinute=${m}&differenceMinute=${differenceMinute}`)
         this.settingDialog = false;
+      },
+      handleHourScroll(e) {
+        let t = Math.round(e.target.scrollTop / 28);
+        if(t.length < 10) {
+          t = '0' + t;
+        }
+        this.hour = t;
+      },
+      handleMinuteScroll(e) {
+        let t = Math.round(e.target.scrollTop / 28) * 5;
+        if(t.length < 10) {
+          t = '0' + t;
+        }
+        this.minute = t;
       },
       noop(){}
     },
