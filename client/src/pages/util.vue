@@ -17,7 +17,7 @@
     return monthArr[today.getMonth()] + ' ' + today.getDate()
   }
 
-  export const formatDate = (date) => {
+  export const formatDate = (date, sep) => {
     var today = new Date(date);
     var year = today.getFullYear()
     var month = today.getMonth() + 1
@@ -28,6 +28,20 @@
     if(day < 10){
       day = '0' + day
     }
-    return `${year}-${month}-${day}`
+    return `${year}${sep||'-'}${month}${sep||'-'}${day}`
+  }
+
+  export const formatDateInverse = (date, sep) => {
+    var today = new Date(date);
+    var year = today.getFullYear()
+    var month = today.getMonth() + 1
+    var day = today.getDate()
+    if(month < 10){
+      month = '0' + month
+    }
+    if(day < 10){
+      day = '0' + day
+    }
+    return `${day}${sep||'-'}${month}${sep||'-'}${year}`
   }
 </script>

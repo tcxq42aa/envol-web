@@ -2,7 +2,7 @@
   <v-container class="orange test-container">
     <div v-if="wordListArray.length > 0" class="test-list" :style="{transform: 'translateX(-' + 95 * current + '%)'}">
       <div class="test-card" v-for="(item, index) in wordListArray" @touchmove="handleMove" @touchstart="handleStart" @touchend="handleEnd">
-        <div class="test-tag">{{todayStr(item.readToday)}}</div>
+        <div class="test-tag">{{todayStr(item.readToday, '/')}}</div>
         <ul class="test-detail">
           <li v-for="(word, index) in JSON.parse(item.wordList)">
             <div class="text">{{word.text}}</div>
@@ -15,7 +15,7 @@
 </template>
 <script>
   import '../stylus/test.styl';
-  import { formatDate, todayStr } from './util.vue'
+  import { formatDate, formatDateInverse } from './util.vue'
   import { bus } from '../bus.vue'
   import { check, getWordList } from '../service/user'
   import axios from 'axios'
@@ -27,11 +27,6 @@
       this.handler = (data) => {
         this.paper = data.paper;
         this.semester = data.semester;
-//        if(this.paper){
-//          console.log(11,this.paper.wordList);
-//          this.wordList = JSON.parse(this.paper.wordList);
-//        }
-//        console.log(data.semester);
       }
       bus.$on('done', this.handler)
       bus.$on('checked', (res)=>{
@@ -62,7 +57,7 @@
         current: 0,
         x1: 0,
         x2: 0,
-        todayStr: todayStr
+        todayStr: formatDateInverse
       };
     },
     computed: {
