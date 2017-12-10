@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <div class="index-panel orange" id="index-header">
-      <router-link :to="'/handout?date=' + today">
+      <router-link :to="'/handout?date=' + today" v-if="paper && paper.handout">
         <div class="handout-entry">今日讲义</div>
       </router-link>
 
@@ -81,7 +81,7 @@
 <script>
   import '../stylus/index.styl'
   import SiriWave from '../service/sw';
-  import { todayFullStr } from './util.vue';
+  import { formatDateInverse } from './util.vue';
   import { bus } from '../bus.vue'
   var qs = require('querystringify');
   export default {
@@ -131,7 +131,7 @@
         tractate: '',
         statistical: [],
         userInfo: userInfo || {},
-        todayStr: todayFullStr(new Date(qs.parse(location.search).date || '').getTime())
+        todayStr: formatDateInverse(qs.parse(location.search).date || '', '/')
       }
     },
     computed: {
