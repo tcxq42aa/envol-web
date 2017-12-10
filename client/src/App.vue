@@ -4,12 +4,12 @@
       <router-view></router-view>
     </main>
     <v-bottom-nav v-if="!navHidden" :value="true" :active.sync="currentPage" class="white">
-      <v-btn v-if="test" flat class="orange--text" value="/index" @click="switchTab('/index')">
+      <v-btn flat class="orange--text" value="/index" @click="switchTab('/index')">
         <span>阅读首页</span>
         <img v-if="currentPage!='/index'" src="./assets/home4@2x.png" height="25px"/>
         <img v-if="currentPage=='/index'" src="./assets/home2@2x.png" height="25px"/>
       </v-btn>
-      <v-btn v-if="test" flat class="orange--text" value="/plan" @click="switchTab('/plan')">
+      <v-btn flat class="orange--text" value="/plan" @click="switchTab('/plan')">
         <span>阅读计划</span>
         <img v-if="currentPage!='/plan'" src="./assets/plan4@2x.png" height="25px"/>
         <img v-if="currentPage=='/plan'" src="./assets/plan3@2x.png" height="25px"/>

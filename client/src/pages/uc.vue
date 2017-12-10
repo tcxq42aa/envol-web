@@ -80,8 +80,8 @@
   import axios from 'axios'
   export default {
     created(){
-      let remindTime = localStorage.getItem('remindTime') || '9:00';
-      this.hour = parseInt(remindTime.split(':')[0]);
+      let remindTime = localStorage.getItem('remindTime') || '09:00';
+      this.hour = remindTime.split(':')[0];
       this.minute = remindTime.split(':')[1];
       document.title = '个人中心';
       this.handler = (data) => {
@@ -120,6 +120,9 @@
     destroyed(){
       bus.$off('done', this.handler)
     },
+    mounted() {
+      console.log(this.hour, this.minute);
+    },
     data() {
       return {
         dialog:false,
@@ -144,9 +147,6 @@
       handleRemindTime() {
         let h = this.hour;
         let m = this.minute;
-        if(h < 10) {
-          h = '0' + h;
-        }
         let time = h + ':' + m;
         localStorage.setItem('remindTime', time)
         let differenceMinute = (new Date()).getTimezoneOffset()
@@ -155,14 +155,14 @@
       },
       handleHourScroll(e) {
         let t = Math.round(e.target.scrollTop / 28);
-        if(t.length < 10) {
+        if(t < 10) {
           t = '0' + t;
         }
         this.hour = t;
       },
       handleMinuteScroll(e) {
         let t = Math.round(e.target.scrollTop / 28) * 5;
-        if(t.length < 10) {
+        if(t < 10) {
           t = '0' + t;
         }
         this.minute = t;
@@ -176,9 +176,6 @@
       remindTime() {
         let h = this.hour;
         let m = this.minute;
-        if(h < 10) {
-          h = '0' + h;
-        }
         return h + ':' + m;
       },
       wordsTotalStr(){

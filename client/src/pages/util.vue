@@ -32,7 +32,12 @@
   }
 
   export const formatDateInverse = (date, sep) => {
-    var today = new Date(date);
+    var today;
+    if(date) {
+      today = new Date(date);
+    } else {
+      today = new Date();
+    }
     var year = today.getFullYear()
     var month = today.getMonth() + 1
     var day = today.getDate()

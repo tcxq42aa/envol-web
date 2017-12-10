@@ -34,7 +34,7 @@
         <img src="../assets/group@2x.png" alt="扫描二维码" width="90px" style="margin: 0 auto"/>
         <p style="font-size: 11px;margin-top: -10px" class="mb-0">
           爱法语，怎能不阅读？<br>
-          开始法语阅读，不再做个肤浅法语人。
+          开始法语阅读，做个更有深度的法语人。
         </p>
       </div>
     </div>

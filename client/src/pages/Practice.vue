@@ -213,7 +213,7 @@
   import '../stylus/read.styl'
   import '../stylus/practice.styl'
   import { bus } from '../bus.vue'
-  import { todayStr, formatDate } from './util.vue'
+  import { todayStr, formatDate, formatDateInverse } from './util.vue'
   import { share } from '../service/user.vue'
   import axios from 'axios'
   var qs = require('querystringify');
@@ -260,7 +260,7 @@
         showAudio: false,
         hasRead: false,
         hasShared: false,
-        todayStr: todayStr(),
+        todayStr: formatDateInverse(new Date().getTime(), '/'),
         showResult: false,
         showLayer: false,
         current: 0,
