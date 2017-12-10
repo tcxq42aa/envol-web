@@ -117,12 +117,16 @@
       },
       initCalender(curDate, diff) {
         let d1 = new Date(serverTime)
+        let a = d1.getTimezoneOffset()*60000 + d1.getTime() + 3600000*8;
+        d1 = new Date(a);
         if(curDate) {
           d1 = curDate;
         }
         d1.setDate(1)
         d1 = d1.getDay()
         let d2 = new Date(serverTime)
+        let b = d2.getTimezoneOffset()*60000 + d2.getTime() + 3600000*8;
+        d2 = new Date(b);
         if(diff < 0) {
           d2.setMonth(d2.getMonth() + diff);
         }
@@ -133,6 +137,8 @@
         let dates = new Array(count).fill(0)
         dates = dates.map((date, idx)=>{
           let d = new Date(serverTime)
+          let c = d.getTimezoneOffset()*60000 + d.getTime() + 3600000*8;
+          d = new Date(c);
           if(diff < 0) {
             d.setMonth(d.getMonth() + diff);
           }
@@ -146,7 +152,7 @@
       dateStatus(date){
         let dateStr = formatDate(date)
         let f = this.statistical.find(item => formatDate(item.readToday, '-', true) == dateStr)
-        if(dateStr > formatDate(new Date(serverTime))) {
+        if(dateStr > formatDate(new Date(serverTime).getTime())) {
           return ''
         }
         if(!this.semester || (dateStr > formatDate(this.endDate, '-', true) || dateStr < formatDate(this.beginDate, '-', true))) {
@@ -163,10 +169,10 @@
       viewDetail(date, path) {
         let dateStr = formatDate(date.getTime())
         console.log(dateStr);
-        if(!this.semester || (dateStr > formatDate(this.endDate, '-', true) || dateStr < formatDate(this.beginDate, '-', true))) {
+        if(!this.semester || (dateStr > formatDate(this.endDate, '-', true) || dateStr < formatDate(this.beginDate))) {
           return;
         }
-        if(dateStr > formatDate(new Date(serverTime))) {
+        if(dateStr > formatDate(new Date(serverTime).getTime())) {
           return
         }
         this.$router.push(path + '?date=' + formatDate(date.getTime()));

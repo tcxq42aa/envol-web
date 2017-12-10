@@ -39,6 +39,10 @@
       this.code = qs.parse(location.search).code || '';
       this.state = qs.parse(location.search).state || '';
       this.test = qs.parse(location.search).test || '';
+      if(this.test) {
+        console.log(1111);
+        var vConsole = new VConsole();
+      }
 //      this.initData();
     },
     mounted(){
@@ -95,7 +99,7 @@
       },
       initData() {
         let date = qs.parse(location.search).date
-        axios.post('/api/user/today?readToday=' + (date || formatDate(new Date(serverTime)))).then((response) => {
+        axios.post('/api/user/today?readToday=' + (date || formatDate(new Date(serverTime).getTime()))).then((response) => {
           this.appData = response.data.data
           bus.$emit("done", this.appData);
           if(this.appData.semester.id) {

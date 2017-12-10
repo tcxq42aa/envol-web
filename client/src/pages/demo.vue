@@ -24,7 +24,21 @@
 <script>
   export default {
     mounted() {
-      console.log('demo');
+      var today = new Date(serverTime);
+      console.log(today.getTimezoneOffset());
+      let a = today.getTimezoneOffset()*60000 + today.getTime() + 3600000*8;
+      today =new Date(a);
+//      console.log(today);
+      var year = today.getFullYear()
+      var month = today.getMonth() + 1
+      var day = today.getDate()
+      if(month < 10){
+        month = '0' + month
+      }
+      if(day < 10){
+        day = '0' + day
+      }
+      console.log(`${year}${'-'}${month}${'-'}${day}`);
     }
   }
 </script>

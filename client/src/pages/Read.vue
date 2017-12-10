@@ -64,7 +64,7 @@
 //      }
 //      bus.$on('done', this.handler)
       let date = qs.parse(location.search).date
-      let readToday = (date || formatDate(new Date(serverTime)));
+      let readToday = (date || formatDate(new Date(serverTime).getTime()));
       axios.post('/api/user/today?readToday=' + readToday).then((response) => {
         let appData = response.data.data
         let paper = this.paper = appData.paper;
