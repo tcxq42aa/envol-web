@@ -58,7 +58,7 @@
   export default {
     created(){
       document.title = '阅读计划';
-      this.initCalender(new Date())
+      this.initCalender(new Date(serverTime))
       this.handler = (data) => {
         this.paper = data.paper;
         this.book = data.book;
@@ -77,7 +77,7 @@
       return {
         emptyDates: [],
         dates: [],
-        today: new Date(),
+        today: new Date(serverTime),
         MONTH_MAP: MONTH_MAP,
         books: [0, 0],
         paper: null,
@@ -116,13 +116,13 @@
         this.$router.replace('/testLand')
       },
       initCalender(curDate, diff) {
-        let d1 = new Date()
+        let d1 = new Date(serverTime)
         if(curDate) {
           d1 = curDate;
         }
         d1.setDate(1)
         d1 = d1.getDay()
-        let d2 = new Date()
+        let d2 = new Date(serverTime)
         if(diff < 0) {
           d2.setMonth(d2.getMonth() + diff);
         }
@@ -132,7 +132,7 @@
         let emptyDates = new Array(d1).fill(0)
         let dates = new Array(count).fill(0)
         dates = dates.map((date, idx)=>{
-          let d = new Date()
+          let d = new Date(serverTime)
           if(diff < 0) {
             d.setMonth(d.getMonth() + diff);
           }

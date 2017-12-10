@@ -260,7 +260,7 @@
         showAudio: false,
         hasRead: false,
         hasShared: false,
-        todayStr: formatDateInverse(new Date().getTime(), '/'),
+        todayStr: formatDateInverse(new Date(serverTime).getTime(), '/'),
         showResult: false,
         showLayer: false,
         current: 0,

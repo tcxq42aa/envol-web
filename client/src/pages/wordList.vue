@@ -62,7 +62,7 @@
     },
     computed: {
       today() {
-        return qs.parse(location.search).date || formatDate(new Date());
+        return qs.parse(location.search).date || formatDate(new Date(serverTime));
       }
     },
     methods: {

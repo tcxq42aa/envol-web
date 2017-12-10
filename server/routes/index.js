@@ -45,7 +45,11 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
           console.log(error);
         });
         checkUser(req, res, function(){
-          res.render('index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo)});
+          res.render('index', {
+            title: '法棍阅读',
+            userInfo: JSON.stringify(req.session.userInfo),
+            serverTime: formatDate(Date.now())
+          });
         }, function(msg){
           res.render('invalid', { msg });
         });
@@ -54,7 +58,11 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
   } else {
     console.log('openid=' + req.session.userInfo.openid)
     checkUser(req, res, function(){
-      res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
+      res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {
+        title: '法棍阅读',
+        userInfo: JSON.stringify(req.session.userInfo || {}),
+        serverTime: formatDate(Date.now())
+      });
     }, function(msg){
       res.render('invalid', { msg });
     });
@@ -205,6 +213,20 @@ function encrypt(source) {
   // console.log(dec);
 
   return enc;
+}
+
+function formatDate(date, sep) {
+  var today = new Date(date);
+  var year = today.getFullYear()
+  var month = today.getMonth() + 1
+  var day = today.getDate()
+  if(month < 10){
+    month = '0' + month
+  }
+  if(day < 10){
+    day = '0' + day
+  }
+  return `${year}${sep||'-'}${month}${sep||'-'}${day}`
 }
 
 getAccessToken(getJsapiTicket)

@@ -1,7 +1,7 @@
 <script>
   export const todayStr = (date) => {
     var monthArr = ['JAN.','FÉV.','MARS','AVR.','MAI','JUIN','JUILLET','AOÛT','SEPT.','OCT.','NOV.','DÉC.'];
-    var today = new Date();
+    var today = new Date(serverTime);
     if(date) {
       today = new Date(date);
     }
@@ -10,7 +10,7 @@
 
   export const todayFullStr = (date) => {
     var monthArr = ['JANVIER','FÉVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'];
-    var today = new Date();
+    var today = new Date(serverTime);
     if(date) {
       today = new Date(date);
     }
@@ -36,7 +36,7 @@
     if(date) {
       today = new Date(date);
     } else {
-      today = new Date();
+      today = new Date(serverTime);
     }
     var year = today.getFullYear()
     var month = today.getMonth() + 1
