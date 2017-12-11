@@ -141,6 +141,9 @@
           this.percent = this.audioRef.currentTime / this.audioRef.duration * 100
           this.left = (document.body.clientWidth - 57) * this.percent / 100;
           if(this.percent == 100){
+            if(this.isPlay) {
+              window.scrollTo(0,999999);
+            }
             this.finished = true;
             localStorage.setItem('audio_' + this.paper.id, '1');
             this.percent = 0;
