@@ -70,10 +70,10 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
 });
 
 function checkUser(req, res, success, fail) {
-  if(req.path == '/testLand' || req.path == '/test') {
-    res.redirect('/overdue');
-    return;
-  }
+  // if(req.path == '/testLand' || req.path == '/test') {
+  //   res.redirect('/overdue');
+  //   return;
+  // }
   // success();
   var whiteList = [
     'oWgFw09fOJE8AGgtxuwqVKGv54nI',
