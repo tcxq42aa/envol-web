@@ -122,7 +122,13 @@
               var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
               self.$refs.audio.src = 'http://support.envol.vip' + self.paper.audio;
               self.$refs.audio.play();
-              self.$refs.audio.pause();
+              function onPlay() {
+                self.$refs.audio.removeEventListener('play', onPlay);
+                setTimeout(()=>{
+                  self.$refs.audio.pause();
+                }, 100);
+              }
+              self.$refs.audio.addEventListener('play', onPlay);
             }
           });
         }

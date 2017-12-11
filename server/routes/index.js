@@ -42,7 +42,7 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|a
         axios.post(config.serverHost + 'api/user/subscribe', querystring.stringify(resp.data)).then((resp2)=>{
           console.log(resp2.data)
         }).catch(function (error) {
-          console.log(error);
+          console.log(error.response.data);
         });
         checkUser(req, res, function(){
           res.render('index', {
