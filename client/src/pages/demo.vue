@@ -18,7 +18,8 @@
         开始测试吧
         <img src="/dist/5a85ef4c381a64d5d35d2ab56b281b1e.png" height="15px" style="margin-left: 8px;"></div>
     </button>
-    <h3>44</h3>
+    <audio ref="audio" controls preload="metadata"></audio>
+    <h3>447</h3>
   </div>
 </template>
 <script>
@@ -39,6 +40,21 @@
         day = '0' + day
       }
       console.log(`${year}${'-'}${month}${'-'}${day}`);
+      var self = this;
+      wx.ready(function(){
+        wx.getNetworkType({
+          success: function (res) {
+            if(res.errMsg != 'getNetworkType:fail') {
+              this.showError = true;
+              alert(JSON.stringify(res));
+            }
+            self.$refs.audio.src = 'http://static.envol.vip/attach/20171019/2xRxVI7sSrJM7otUM9Bp5aMl7s5virCs.mp3';
+            self.$refs.audio.load();
+          }
+        });
+      })
+
+
     }
   }
 </script>

@@ -24,7 +24,7 @@
         <div class="audio-progress-point" v-bind:style="{ left: left + 'px' }" @touchmove.stop="handleTouchMove"></div>
         <div class="audio-progress-line" v-bind:style="{ width: left + 'px' }"></div>
       </div>
-      <audio ref="audio"
+      <audio ref="audio" controls
              @loadedmetadata="loadedmetadata" preload="metadata"></audio>
       <div class="audio-panel" v-if="paper && paper.audio">
         <div>
@@ -117,19 +117,17 @@
       initAudio(){
         var self = this;
         if(this.paper) {
-          wx.getNetworkType({
-            success: function (res) {
-              var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
-              self.$refs.audio.src = attachHost + self.paper.audio;
-              self.$refs.audio.play();
-              function onPlay() {
-                self.$refs.audio.removeEventListener('play', onPlay);
-                setTimeout(()=>{
-                  self.$refs.audio.pause();
-                }, 100);
+          wx.ready(()=>{
+            wx.getNetworkType({
+              success: function (res) {
+                var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+                self.$refs.audio.src = attachHost + self.paper.audio;
+                self.$refs.audio.load();
+                if(res.errMsg != 'getNetworkType:ok') {
+                  alert(JSON.stringify(res));
+                }
               }
-              self.$refs.audio.addEventListener('play', onPlay);
-            }
+            });
           });
         }
       },
