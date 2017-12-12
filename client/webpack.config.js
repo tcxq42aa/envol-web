@@ -2,12 +2,14 @@ var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ManifestPlugin = require('webpack-manifest-plugin');
+
 var env = process.env.NODE_ENV
 module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
+    publicPath: env != 'development' ? 'http://static.envol.vip/dist/': '/dist/',
     filename: env != 'development' ? 'build-[hash].js' : 'build.js'
   },
   resolve: {
@@ -94,6 +96,9 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true
     }),
     new ExtractTextPlugin("styles.css?[contenthash]"),
+    new ManifestPlugin({
+      publicPath: 'http://static.envol.vip/dist/'
+    })
   ])
   module.exports.module.rules = (module.exports.module.rules || []).concat([
     {
