@@ -120,7 +120,7 @@
           wx.getNetworkType({
             success: function (res) {
               var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
-              self.$refs.audio.src = 'http://support.envol.vip' + self.paper.audio;
+              self.$refs.audio.src = attachHost + self.paper.audio;
               self.$refs.audio.play();
               function onPlay() {
                 self.$refs.audio.removeEventListener('play', onPlay);

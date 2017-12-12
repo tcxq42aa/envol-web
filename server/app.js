@@ -69,6 +69,11 @@ app.use('/api', proxy({
   }
 }));
 
+app.use('/attach', proxy({
+  target: 'http://127.0.0.1:8080',
+  changeOrigin: true
+}));
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
