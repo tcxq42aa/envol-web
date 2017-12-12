@@ -150,8 +150,12 @@
         }, 1000)
       },
       play(){
-        if(!this.audioRef)
+        if(!this.audioRef) {
+          this.$refs.audio.src = attachHost + this.paper.audio;
+          this.$refs.audio.play();
+          this.isPlay = true
           return
+        }
         if(this.isPlay) {
           this.pause()
         } else {
@@ -160,6 +164,11 @@
         }
       },
       pause(){
+        if(!this.audioRef) {
+          this.$refs.audio.pause();
+          this.isPlay = false
+          return
+        }
         this.isPlay = false
         this.audioRef.pause()
       },
