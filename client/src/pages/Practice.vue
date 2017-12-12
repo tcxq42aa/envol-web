@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="audio-wrap" v-if="paper && paper.audio && showAudio">
+      <div class="audio-wrap" v-if="paper && paper.audio && showAudio" :style="{ visibility: current >= 5 ? 'visible' : 'hidden' }">
         <div class="audio-progress">
           <div class="audio-progress-point" v-bind:style="{ left: left + 'px' }"></div>
           <div class="audio-progress-line" v-bind:style="{ width: left + 'px' }"></div>
@@ -429,8 +429,10 @@
             success: function (res) {
               var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
               self.$refs.audio.src = attachHost + self.paper.audio;
-              self.$refs.audio.play();
-              self.$refs.audio.pause();
+              self.$refs.audio.load();
+              if(res.errMsg != 'getNetworkType:ok') {
+                alert(JSON.stringify(res));
+              }
             }
           });
         }
@@ -451,8 +453,12 @@
         }, 1000)
       },
       play(){
-        if(!this.audioRef)
+        if(!this.audioRef) {
+          this.$refs.audio.src = attachHost + this.paper.audio;
+          this.$refs.audio.play();
+          this.isPlay = true
           return
+        }
         if(this.isPlay) {
           this.pause()
         } else {
@@ -461,6 +467,11 @@
         }
       },
       pause(){
+        if(!this.audioRef) {
+          this.$refs.audio.pause();
+          this.isPlay = false
+          return
+        }
         this.isPlay = false
         this.audioRef.pause()
       },
