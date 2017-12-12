@@ -214,7 +214,7 @@
   import '../stylus/practice.styl'
   import { bus } from '../bus.vue'
   import { todayStr, formatDate, formatDateInverse } from './util.vue'
-  import { share } from '../service/user.vue'
+  import { share, signature } from '../service/user.vue'
   import axios from 'axios'
   var qs = require('querystringify');
 
@@ -297,43 +297,60 @@
       }
     },
     methods: {
+      refreshSignature(cb){
+        signature(encodeURIComponent(location.href.split('#')[0])).then(function(res){
+          var data = res.data;
+          wx.config({
+            debug: qs.parse(location.search).debug || false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: 'wxe073c9d18b45b0ca', // 必填，公众号的唯一标识
+            timestamp: data.timestamp, // 必填，生成签名的时间戳
+            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+            signature: data.signature,// 必填，签名，见附录1
+            jsApiList: ['chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'getNetworkType'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          });
+          cb && cb();
+          console.log('call wx.config');
+        })
+      },
       initShare(){
-        const { nickname, headimgurl } = this.userInfo;
-        const day = this.statistical ? (this.hasRead ? this.statistical.length : this.statistical.length + 1) : 0;
-        const word = this.hasRead ? this.wordsTotal : this.wordsTotal + this.todayWordsTotal;
-        const book = this.book ? this.book.name : '';
-        const cover = this.book ? this.book.coverUrl : '';
-        const self  = this;
-        wx.onMenuShareTimeline({
-          title: `是时候开始法语阅读了，我在【法棍阅读】坚持了${day}天，已读${word}字`, // 分享标题
-          link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
-          success: function (data) {
-            self.hasShared = true;
-            share(self.paper.id);
-          },
-          cancel: function (data) {
+        this.refreshSignature(()=>{
+          const { nickname, headimgurl } = this.userInfo;
+          const day = this.statistical ? (this.hasRead ? this.statistical.length : this.statistical.length + 1) : 0;
+          const word = this.hasRead ? this.wordsTotal : this.wordsTotal + this.todayWordsTotal;
+          const book = this.book ? this.book.name : '';
+          const cover = this.book ? this.book.coverUrl : '';
+          const self  = this;
+          wx.onMenuShareTimeline({
+            title: `是时候开始法语阅读了，我在【法棍阅读】坚持了${day}天，已读${word}字`, // 分享标题
+            link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+            success: function (data) {
+              self.hasShared = true;
+              share(self.paper.id);
+            },
+            cancel: function (data) {
+            }
+          });
+          wx.onMenuShareAppMessage({
+            title: `${nickname}在法棍阅读已坚持完成${day}天${word}字`, // 分享标题
+            desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
+            link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            success: function (data) {
+              share(self.paper.id);
+            },
+            cancel: function (data) {
+            }
+          });
+          if(!localStorage.getItem('badge_' + day)) {
+            this.showBadge = this.badgeImgMap[day];
+            if(this.showBadge) {
+              this.badgeName = day;
+              localStorage.setItem('badge_' + day, 1);
+            }
           }
         });
-        wx.onMenuShareAppMessage({
-          title: `${nickname}在法棍阅读已坚持完成${day}天${word}字`, // 分享标题
-          desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
-          link: encodeURI(`http://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
-          type: 'link', // 分享类型,music、video或link，不填默认为link
-          success: function (data) {
-            share(self.paper.id);
-          },
-          cancel: function (data) {
-          }
-        });
-        if(!localStorage.getItem('badge_' + day)) {
-          this.showBadge = this.badgeImgMap[day];
-          if(this.showBadge) {
-            this.badgeName = day;
-            localStorage.setItem('badge_' + day, 1);
-          }
-        }
       },
       prev(){
         if(this.current > 0) {
@@ -425,15 +442,17 @@
       initAudio(){
         var self = this;
         if(this.paper) {
-          wx.getNetworkType({
-            success: function (res) {
-              var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
-              self.$refs.audio.src = attachHost + self.paper.audio;
-              self.$refs.audio.load();
-              if(res.errMsg != 'getNetworkType:ok') {
-                alert(JSON.stringify(res));
+          wx.ready(()=>{
+            wx.getNetworkType({
+              success: function (res) {
+                var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+                self.$refs.audio.src = attachHost + self.paper.audio;
+                self.$refs.audio.load();
+                if(res.errMsg != 'getNetworkType:ok') {
+                  alert(JSON.stringify(res));
+                }
               }
-            }
+            });
           });
         }
       },
