@@ -46,12 +46,12 @@
           <div class="audio-progress-line" v-bind:style="{ width: left + 'px' }"></div>
         </div>
         <audio ref="audio"
-               @loadedmetadata="loadedmetadata" preload="metadata"></audio>
+               @loadedmetadata="loadedmetadata" preload="auto"></audio>
         <div class="audio-panel" v-if="paper && paper.audio">
           <div>
-            <span class="grey--text audio-current">{{currentTime}} / {{duration}}</span>
-            <v-icon class="orange--text audio-icon" @click="play()" v-if="!isPlay">play_arrow</v-icon>
-            <v-icon class="orange--text audio-icon" @click="pause()" v-if="isPlay">pause</v-icon>
+            <span class="grey--text audio-current mr-1">{{currentTime}} / {{duration}}</span>
+            <img style="vertical-align: middle" src="../assets/play.png" @click="play()" v-if="!isPlay" width="24px" height="24px">
+            <img style="vertical-align: middle" src="../assets/pause.png" @click="pause()" v-if="isPlay" width="24px" height="24px">
           </div>
         </div>
       </div>
@@ -65,30 +65,45 @@
           <div class="result-percent">{{testResult}}</div>
         </div>
       </div>
-      <div class="card result-card mb-3">
-        <div class="test-tag">{{todayStr}}</div>
+      <div class="card result-card mb-3" :style="{'padding-top': todayWordsTotal > 0 ? '50px': '20px'}">
+        <div v-if="todayWordsTotal > 0" class="test-tag">{{todayStr}}</div>
         <ul class="test-detail">
+          <div v-if="todayWordsTotal == 0" class="test-result-header orange--text">
+            提醒：<br>
+            测试答案没有回看功能，请记得截图保存哦～
+          </div>
           <div
               v-for="(test, index) in data">
-            <li class="result-item" v-if="test.type==1">
+            <li class="result-item" :class="{'test-result-item': todayWordsTotal == 0}" v-if="test.type==1">
               <div>{{index < 9 ? '0' + (index + 1) : index + 1}}</div>
-              <div>
-                <v-icon v-if="test.isCorrect" class="orange--text">check</v-icon>
-                <v-icon v-if="!test.isCorrect" class="black--text">close</v-icon>
+              <div v-if="todayWordsTotal > 0">
+                <img v-if="test.isCorrect" src="../assets/1.png" width="24px" height="28px"/>
+                <img v-if="!test.isCorrect" src="../assets/2.png" width="24px" height="28px"/>
+              </div>
+              <div v-if="todayWordsTotal == 0" class="test-result-detail">
+                <img v-if="test.isCorrect" src="../assets/1.png" width="24px" height="28px"/>
+                <img v-if="!test.isCorrect" src="../assets/2.png" width="24px" height="28px"/>
+                <div class="test-result-title" style="color: initial;" v-html="test.title"></div>
+                <div class="f14 mt-3" style="color: initial;">您选择的答案为：{{test.options[test.testIdx] ? test.options[test.testIdx].content : ''}}</div>
+                <div class="f14 mt-2" style="color: initial;"><span class="orange--text">正确答案为：</span>{{test.options[test.answer].content}}</div>
+                <div class="f14 mt-2" v-if="test.answerDesc">
+                  <div>答案解析：</div>
+                  <div>{{test.answerDesc}}</div>
+                </div>
               </div>
             </li>
-            <li class="result-item" v-if="test.type==2 || test.type==3" v-for="(option, idx) in test.options">
+            <li :class="{'test-result-item': todayWordsTotal == 0}" class="result-item" v-if="test.type==2 || test.type==3" v-for="(option, idx) in test.options">
               <div>{{index < 9 ? '0' + (index + 1) : index + 1}} - {{idx < 9 ? '0' + (idx + 1) : idx + 1}}</div>
               <div>
-                <v-icon v-if="option.isCorrect" class="orange--text">check</v-icon>
-                <v-icon v-if="!option.isCorrect" class="black--text">close</v-icon>
+                <img v-if="option.isCorrect" src="../assets/1.png" width="24px" height="28px"/>
+                <img v-if="!option.isCorrect" src="../assets/2.png" width="24px" height="28px"/>
               </div>
             </li>
           </div>
         </ul>
       </div>
 
-      <div class="card pa-3 mb-3 dis-flex">
+      <div class="card pa-3 mb-3 dis-flex" v-if="todayWordsTotal > 0">
         <div class="bl-orange">
           <div class="grey--text">今日已读</div>
           <div class="f18 mt-2">{{todayWordsTotal}}字</div>
@@ -98,7 +113,7 @@
           <div class="f18 mt-2">{{ hasRead ? wordsTotal : wordsTotal + todayWordsTotal}}字</div>
         </div>
       </div>
-      <div class="card pa-3 mb-3">
+      <div class="card pa-3 mb-3" v-if="todayWordsTotal > 0">
         <div class="subheading mb-4">今日解析</div>
         <div v-html="sentenceAnalysis"></div>
       </div>
@@ -447,7 +462,8 @@
               success: function (res) {
                 var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
                 self.$refs.audio.src = attachHost + self.paper.audio;
-                self.$refs.audio.load();
+                self.$refs.audio.play();
+                self.$refs.audio.pause();
                 if(res.errMsg != 'getNetworkType:ok') {
                   alert(JSON.stringify(res));
                 }
@@ -473,6 +489,7 @@
       },
       play(){
         if(!this.audioRef) {
+          this.$refs.audio.src = '';
           this.$refs.audio.src = attachHost + this.paper.audio;
           this.$refs.audio.play();
           this.isPlay = true

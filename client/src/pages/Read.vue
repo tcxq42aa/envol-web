@@ -25,7 +25,7 @@
         <div class="audio-progress-line" v-bind:style="{ width: left + 'px' }"></div>
       </div>
       <audio ref="audio" controls
-             @loadedmetadata="loadedmetadata" preload="metadata"></audio>
+             @loadedmetadata="loadedmetadata" preload="auto"></audio>
       <div class="audio-panel" v-if="paper && paper.audio">
         <div>
           <div>Vitesse</div>
@@ -34,9 +34,9 @@
           <v-btn round fab :flat="speedType!=3" :outline="speedType==3" @click="speed(1.2, 3)">快</v-btn>
         </div>
         <div>
-          <span class="grey--text audio-current">{{currentTime}} / {{duration}}</span>
-          <v-icon class="orange--text audio-icon" @click="play()" v-if="!isPlay">play_arrow</v-icon>
-          <v-icon class="orange--text audio-icon" @click="pause()" v-if="isPlay">pause</v-icon>
+          <span class="grey--text audio-current mr-1">{{currentTime}} / {{duration}}</span>
+          <img style="vertical-align: middle" src="../assets/play.png" @click="play()" v-if="!isPlay" width="24px" height="24px">
+          <img style="vertical-align: middle" src="../assets/pause.png" @click="pause()" v-if="isPlay" width="24px" height="24px">
         </div>
       </div>
     </div>
@@ -122,7 +122,8 @@
               success: function (res) {
                 var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
                 self.$refs.audio.src = attachHost + self.paper.audio;
-                self.$refs.audio.load();
+                self.$refs.audio.play();
+                self.$refs.audio.pause();
                 if(res.errMsg != 'getNetworkType:ok') {
                   alert(JSON.stringify(res));
                 }
@@ -151,6 +152,7 @@
       },
       play(){
         if(!this.audioRef) {
+          this.$refs.audio.src = '';
           this.$refs.audio.src = attachHost + this.paper.audio;
           this.$refs.audio.play();
           this.isPlay = true
