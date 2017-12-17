@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="audio-wrap" v-if="paper && paper.audio && showAudio" :style="{ visibility: current >= 5 ? 'visible' : 'hidden' }">
+      <div class="audio-wrap" v-if="paper && paper.audio && showAudio" :style="{ visibility: current >= 8 ? 'visible' : 'hidden' }">
         <div class="audio-progress">
           <div class="audio-progress-point" v-bind:style="{ left: left + 'px' }"></div>
           <div class="audio-progress-line" v-bind:style="{ width: left + 'px' }"></div>
@@ -74,25 +74,28 @@
           </div>
           <div
               v-for="(test, index) in data">
-            <li class="result-item" :class="{'test-result-item': todayWordsTotal == 0}" v-if="test.type==1">
+            <!--<li class="result-item" :class="{'test-result-item': todayWordsTotal == 0}" v-if="test.type==1">-->
+            <li class="result-item" v-if="test.type==1">
               <div>{{index < 9 ? '0' + (index + 1) : index + 1}}</div>
-              <div v-if="todayWordsTotal > 0">
-                <img v-if="test.isCorrect" src="../assets/1.png" width="24px" height="28px"/>
-                <img v-if="!test.isCorrect" src="../assets/2.png" width="24px" height="28px"/>
-              </div>
-              <div v-if="todayWordsTotal == 0" class="test-result-detail">
-                <img v-if="test.isCorrect" src="../assets/1.png" width="24px" height="28px"/>
-                <img v-if="!test.isCorrect" src="../assets/2.png" width="24px" height="28px"/>
-                <div class="test-result-title" style="color: initial;" v-html="test.title"></div>
-                <div class="f14 mt-3" style="color: initial;">您选择的答案为：{{test.options[test.testIdx] ? test.options[test.testIdx].content : ''}}</div>
-                <div class="f14 mt-2" style="color: initial;"><span class="orange--text">正确答案为：</span>{{test.options[test.answer].content}}</div>
-                <div class="f14 mt-2" v-if="test.answerDesc">
-                  <div>答案解析：</div>
-                  <div>{{test.answerDesc}}</div>
-                </div>
-              </div>
+              <img v-if="test.isCorrect" src="../assets/1.png" width="24px" height="28px"/>
+              <img v-if="!test.isCorrect" src="../assets/2.png" width="24px" height="28px"/>
+              <!--<div v-if="todayWordsTotal > 0">-->
+                <!--<img v-if="test.isCorrect" src="../assets/1.png" width="24px" height="28px"/>-->
+                <!--<img v-if="!test.isCorrect" src="../assets/2.png" width="24px" height="28px"/>-->
+              <!--</div>-->
+              <!--<div v-if="todayWordsTotal == 0" class="test-result-detail">-->
+                <!--<img v-if="test.isCorrect" src="../assets/1.png" width="24px" height="28px"/>-->
+                <!--<img v-if="!test.isCorrect" src="../assets/2.png" width="24px" height="28px"/>-->
+                <!--<div class="test-result-title" style="color: initial;" v-html="test.title"></div>-->
+                <!--<div class="f14 mt-3" style="color: initial;">您选择的答案为：{{test.options[test.testIdx] ? test.options[test.testIdx].content : ''}}</div>-->
+                <!--<div class="f14 mt-2" style="color: initial;"><span class="orange&#45;&#45;text">正确答案为：</span>{{test.options[test.answer].content}}</div>-->
+                <!--<div class="f14 mt-2" v-if="test.answerDesc">-->
+                  <!--<div>答案解析：</div>-->
+                  <!--<div>{{test.answerDesc}}</div>-->
+                <!--</div>-->
+              <!--</div>-->
             </li>
-            <li :class="{'test-result-item': todayWordsTotal == 0}" class="result-item" v-if="test.type==2 || test.type==3" v-for="(option, idx) in test.options">
+            <li class="result-item" v-if="test.type==2 || test.type==3" v-for="(option, idx) in test.options">
               <div>{{index < 9 ? '0' + (index + 1) : index + 1}} - {{idx < 9 ? '0' + (idx + 1) : idx + 1}}</div>
               <div>
                 <img v-if="option.isCorrect" src="../assets/1.png" width="24px" height="28px"/>
@@ -113,7 +116,7 @@
           <div class="f18 mt-2">{{ hasRead ? wordsTotal : wordsTotal + todayWordsTotal}}字</div>
         </div>
       </div>
-      <div class="card pa-3 mb-3" v-if="todayWordsTotal > 0">
+      <div class="card pa-3 mb-3">
         <div class="subheading mb-4">今日解析</div>
         <div v-html="sentenceAnalysis"></div>
       </div>

@@ -101,7 +101,7 @@ main-color = rgb(252, 147, 61)
     &:active,&.active
       color main-color
       background rgb(240,240,240)
-  li + li
+  li
     &::after
       display block
       content ' '
@@ -192,6 +192,10 @@ main-color = rgb(252, 147, 61)
 .result-item
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  &:active,&.active
+    color inherit!important
+    background inherit!important
 .bl-orange
   flex-grow 1
   line-height 1
