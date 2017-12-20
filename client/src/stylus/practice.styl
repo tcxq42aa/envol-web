@@ -101,12 +101,22 @@ main-color = rgb(252, 147, 61)
     &:active,&.active
       color main-color
       background rgb(240,240,240)
-  li
+  li + li
     &::after
       display block
       content ' '
       position absolute
       top 0
+      height 1px
+      left 45px
+      background #eee
+      right 0
+  li.bdt
+    &::after
+      display block
+      content ' '
+      position absolute
+      bottom 0
       height 1px
       left 45px
       background #eee

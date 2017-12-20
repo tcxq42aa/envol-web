@@ -75,7 +75,7 @@
           <div
               v-for="(test, index) in data">
             <!--<li class="result-item" :class="{'test-result-item': todayWordsTotal == 0}" v-if="test.type==1">-->
-            <li class="result-item" v-if="test.type==1">
+            <li class="result-item bdt" v-if="test.type==1">
               <div>{{index < 9 ? '0' + (index + 1) : index + 1}}</div>
               <img v-if="test.isCorrect" src="../assets/1.png" width="24px" height="28px"/>
               <img v-if="!test.isCorrect" src="../assets/2.png" width="24px" height="28px"/>
