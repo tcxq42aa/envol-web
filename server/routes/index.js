@@ -4,7 +4,7 @@ var axios = require('axios')
 var crypto = require('crypto');
 var sha1 = require('sha1');
 var querystring = require('querystring');
-var config = require('../config/app.' + process.env.NODE_ENV + '.config');
+var config = require('../config/app.' + (process.env.NODE_ENV || 'prod') + '.config');
 
 /* GET home page. */
 router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
