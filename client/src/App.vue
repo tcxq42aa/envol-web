@@ -40,7 +40,6 @@
       this.state = qs.parse(location.search).state || '';
       this.test = qs.parse(location.search).test || '';
       if(this.test) {
-        console.log(1111);
         var vConsole = new VConsole();
       }
 //      this.initData();
@@ -98,11 +97,36 @@
         })
       },
       initData() {
-        let date = qs.parse(location.search).date
-        axios.post('/api/user/today?readToday=' + (date || formatDate(new Date(serverTime).getTime()))).then((response) => {
+        let storageKey = 'today_' + formatDate(new Date(serverTime).getTime());
+        Object.keys(localStorage).filter( key => key.indexOf('today_') === 0).forEach(key => {
+          if(key !== storageKey) {
+            localStorage.removeItem(key);
+          }
+        });
+
+        if(this.currentPage !== '/read' && this.currentPage !== '/practice') {
+          if(localStorage.getItem(storageKey)){
+            let data = JSON.parse(localStorage.getItem(storageKey));
+            this.appData = data
+            setTimeout(()=>{
+              bus.$emit("done", this.appData);
+              if(this.appData.semester.id) {
+                check(this.appData.semester.id).then( res => {
+                  this.hasTested = res.data.test;
+                  bus.$emit("checked", res.data);
+                })
+              }
+            });
+            return;
+          }
+        }
+
+        let date = qs.parse(location.search).date || formatDate(new Date(serverTime).getTime());
+        axios.post('/api/user/today?readToday=' + date).then((response) => {
           this.appData = response.data.data
           bus.$emit("done", this.appData);
-          if(this.appData.semester.id) {
+          if(this.appData.semester && this.appData.semester.id) {
+            localStorage.setItem(storageKey, JSON.stringify(this.appData));
             check(this.appData.semester.id).then( res => {
               this.hasTested = res.data.test;
               bus.$emit("checked", res.data);
@@ -133,7 +157,9 @@
 //            bus.$emit("needTest", true);
 //          }
 //        })
-        this.initData();
+//        if(this.currentPage !== '/read') {
+          this.initData();
+//        }
         this.refreshSignature()
       }
     }

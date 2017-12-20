@@ -2,7 +2,7 @@
  * Created by charles on 2017/10/4.
  */
 var axios = require('axios')
-var config = require('../config/app.config');
+var config = require('../config/app.' + process.env.NODE_ENV + '.config');
 
 const sendTemplateMsg = (access_token, openid, templateId, data, url)=>{
   var payload = {

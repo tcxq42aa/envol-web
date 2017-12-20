@@ -55,18 +55,16 @@
   export default {
     created(){
       document.title = '今日阅读';
-//      this.handler = (data) => {
+      this.handler = (data) => {
 //        this.paper = data.paper;
 //        this.tractate = this.paper && this.paper.tractate;
 //        this.semesterId = this.paper && this.paper.semesterId;
 //        this.statistical = data.statistical;
 //        this.initAudio();
-//      }
-//      bus.$on('done', this.handler)
-      let date = qs.parse(location.search).date
-      let readToday = (date || formatDate(new Date(serverTime).getTime()));
-      axios.post('/api/user/today?readToday=' + readToday).then((response) => {
-        let appData = response.data.data
+
+        let date = qs.parse(location.search).date;
+        let readToday = (date || formatDate(new Date(serverTime).getTime()));
+        let appData = data
         let paper = this.paper = appData.paper;
         if(!paper || paper.wordsTotal == 0) {
           location.replace('/practice?date=' + readToday);
@@ -75,17 +73,37 @@
         this.tractate = this.paper && this.paper.tractate;
         this.semesterId = this.paper && this.paper.semesterId;
         this.statistical = appData.statistical;
+        this.finished = !!this.statistical.find((item) => item.paperId == this.paper.id);
         this.initAudio();
         if(!this.paper.audio) {
           this.finished = true;
         }
-        if(localStorage.getItem('audio_' + this.paper.id)){
-          this.finished = true;
-        }
-      })
+      }
+      bus.$on('done', this.handler)
+//      let date = qs.parse(location.search).date
+//      let readToday = (date || formatDate(new Date(serverTime).getTime()));
+//      axios.post('/api/user/today?readToday=' + readToday).then((response) => {
+//        let appData = response.data.data
+//        let paper = this.paper = appData.paper;
+//        if(!paper || paper.wordsTotal == 0) {
+//          location.replace('/practice?date=' + readToday);
+//          return;
+//        }
+//        this.tractate = this.paper && this.paper.tractate;
+//        this.semesterId = this.paper && this.paper.semesterId;
+//        this.statistical = appData.statistical;
+//        this.finished = !!(this.statistical.find((item)=> item.paperId == this.paper.id));
+//        this.initAudio();
+//        if(!this.paper.audio) {
+//          this.finished = true;
+//        }
+//        if(localStorage.getItem('audio_' + this.paper.id)){
+//          this.finished = true;
+//        }
+//      })
     },
     destroyed(){
-//      bus.$off('done', this.handler)
+      bus.$off('done', this.handler)
       this.timer && clearInterval(this.timer)
     },
     mounted(){
@@ -144,7 +162,7 @@
               window.scrollTo(0,999999);
             }
             this.finished = true;
-            localStorage.setItem('audio_' + this.paper.id, '1');
+//            localStorage.setItem('audio_' + this.paper.id, '1');
             this.percent = 0;
             this.pause();
           }

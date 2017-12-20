@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios')
-var config = require('../config/app.config');
+var config = require('../config/app.' + process.env.NODE_ENV + '.config');
 var wx = require('../service/wx');
 var getAccessToken = require('../routes/index').getAccessToken;
 

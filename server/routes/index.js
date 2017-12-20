@@ -4,7 +4,7 @@ var axios = require('axios')
 var crypto = require('crypto');
 var sha1 = require('sha1');
 var querystring = require('querystring');
-var config = require('../config/app.config');
+var config = require('../config/app.' + process.env.NODE_ENV + '.config');
 
 /* GET home page. */
 router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
@@ -83,15 +83,15 @@ function checkUser(req, res, success, fail) {
     'oWgFw0_Ga27csiD4wyp_jg6u6y5k'//Weina
   ];
 
-  var urls = ['/index', '/plan', '/uc', '/practice', '/read', '/paid', '/badge', '/wordList', '/handout'];
+  var urls = ['/', '/index', '/plan', '/uc', '/practice', '/read', '/paid', '/badge', '/wordList', '/handout'];
   if(urls.indexOf(req.path) >=0) {
-
     // if(whiteList.indexOf(req.session.userInfo.openid) < 0) {
     //   fail('暂未开放，请耐心等待');
     //   return;
     // }
 
-    axios.post(config.serverHost + 'api/user/today?readToday=&openId=' + req.session.userInfo.openid).then((res)=>{
+    axios.get(config.serverHost + 'api/user/check?readToday=&openId=' + req.session.userInfo.openid).then((res)=>{
+      console.log(res)
       success();
     }).catch(function (error) {
       if(error.response.data.code == 4041 || error.response.data.code == 4042) {
