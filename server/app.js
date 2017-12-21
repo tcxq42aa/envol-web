@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public'), {maxAge:1000*60*60}));
 app.use(session({
   store: new FileStore(),
   secret: 'keyboard cat',
-  cookie: { maxAge: 700000 },
+  cookie: { maxAge: 3600000 * 12 },
   resave: true,
   saveUninitialized: true
 }))
@@ -46,8 +46,8 @@ app.use('/api/userSemester', users);
 
 var serverHost = 'http://support.envol.vip'
 if(app.get('env') == 'dev') {
-  // serverHost = 'http://support.envol.vip'
-  serverHost = 'http://127.0.0.1:8080'
+  serverHost = 'http://support.envol.vip'
+  // serverHost = 'http://127.0.0.1:8080'
 }
 app.use('/api', proxy({
   target: serverHost,
@@ -58,6 +58,8 @@ app.use('/api', proxy({
       let qy = Object.assign({}, req.query);
       qy.openid = qy.openId = req.session.userInfo.openid;
       q = '?' + querystring.stringify(qy)
+    } else {
+      console.log('登录过期', path);
     }
     return req.path + q
   },
