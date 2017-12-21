@@ -98,35 +98,35 @@
       },
       initData() {
         let storageKey = 'today_' + formatDate(new Date(serverTime).getTime());
-        Object.keys(localStorage).filter( key => key.indexOf('today_') === 0).forEach(key => {
-          if(key !== storageKey) {
-            localStorage.removeItem(key);
-          }
-        });
+//        Object.keys(localStorage).filter( key => key.indexOf('today_') === 0).forEach(key => {
+//          if(key !== storageKey) {
+//            localStorage.removeItem(key);
+//          }
+//        });
 
-        if(this.currentPage !== '/read' && this.currentPage !== '/practice') {
-          if(localStorage.getItem(storageKey)){
-            let data = JSON.parse(localStorage.getItem(storageKey));
-            this.appData = data
-            setTimeout(()=>{
-              bus.$emit("done", this.appData);
-              if(this.appData.semester.id) {
-                check(this.appData.semester.id).then( res => {
-                  this.hasTested = res.data.test;
-                  bus.$emit("checked", res.data);
-                })
-              }
-            });
-            return;
-          }
-        }
+//        if(this.currentPage !== '/read' && this.currentPage !== '/practice') {
+//          if(localStorage.getItem(storageKey)){
+//            let data = JSON.parse(localStorage.getItem(storageKey));
+//            this.appData = data
+//            setTimeout(()=>{
+//              bus.$emit("done", this.appData);
+//              if(this.appData.semester.id) {
+//                check(this.appData.semester.id).then( res => {
+//                  this.hasTested = res.data.test;
+//                  bus.$emit("checked", res.data);
+//                })
+//              }
+//            });
+//            return;
+//          }
+//        }
 
         let date = qs.parse(location.search).date || formatDate(new Date(serverTime).getTime());
         axios.post('/api/user/today?readToday=' + date).then((response) => {
           this.appData = response.data.data
           bus.$emit("done", this.appData);
           if(this.appData.semester && this.appData.semester.id) {
-            localStorage.setItem(storageKey, JSON.stringify(this.appData));
+//            localStorage.setItem(storageKey, JSON.stringify(this.appData));
             check(this.appData.semester.id).then( res => {
               this.hasTested = res.data.test;
               bus.$emit("checked", res.data);
