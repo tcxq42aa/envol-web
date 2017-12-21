@@ -54,7 +54,6 @@
   var qs = require('querystringify');
   export default {
     created(){
-      console.log(userInfo.province);
       document.title = '今日阅读';
       this.handler = (data) => {
 //        this.paper = data.paper;
