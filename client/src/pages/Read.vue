@@ -75,7 +75,7 @@
         this.statistical = appData.statistical;
         this.finished = !!this.statistical.find((item) => item.paperId == this.paper.id);
         this.initAudio();
-        if(!this.paper.audio || userInfo.openid == 'oWgFw09fOJE8AGgtxuwqVKGv54nI') {
+        if(!this.paper.audio || userInfo.openid == 'oWgFw063YXy6SuOJF95VMLZYmi4g') {
           this.finished = true;
         }
       }
