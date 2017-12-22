@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="audio-wrap" v-if="paper && paper.audio && showAudio" :style="{ visibility: current >= 8 ? 'visible' : 'hidden' }">
+      <div class="audio-wrap" v-if="paper && paper.audio && showAudio" :style="{ visibility: audioVisible ? 'visible' : 'hidden' }">
         <div class="audio-progress">
           <div class="audio-progress-point" v-bind:style="{ left: left + 'px' }"></div>
           <div class="audio-progress-line" v-bind:style="{ width: left + 'px' }"></div>
@@ -272,6 +272,12 @@
       bus.$off('done', this.handler)
     },
     mounted(){
+    },
+    computed: {
+      audioVisible() {
+        let showAudio = this.data[this.current].showAudio;
+        return this.data[this.current].showAudio;
+      }
     },
     data() {
       return {
