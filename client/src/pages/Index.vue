@@ -114,7 +114,7 @@
         const SW2 = new SiriWave({
           width: document.body.clientWidth,
           height: 170,
-          bgColor: 'rgba(255,255,255,0.04)',
+          bgColor: 'rgba(255,255,255,0.035)',
           container: document.getElementById('index-header')
         });
         SW2.setSpeed(0.004);
