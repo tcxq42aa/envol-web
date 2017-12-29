@@ -91,7 +91,6 @@ function checkUser(req, res, success, fail) {
     // }
 
     axios.get(config.serverHost + 'api/user/check?readToday=&openId=' + req.session.userInfo.openid).then((res)=>{
-      console.log(res)
       success();
     }).catch(function (error) {
       if(error.response.data.code == 4041 || error.response.data.code == 4042) {
