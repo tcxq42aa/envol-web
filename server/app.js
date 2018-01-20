@@ -38,7 +38,11 @@ app.use(session({
 }))
 
 
-app.all(function(req, res, next){
+app.all('*', function(req, res, next){
+  res.set({
+    "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "1; mode=block"
+  });
   next()
 })
 app.use('/', routes);
