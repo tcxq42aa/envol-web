@@ -196,8 +196,8 @@
         console.log(level, nickname, headimgurl)
         wx.onMenuShareTimeline({
           title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是${level}`, // 分享标题
-          link: `http://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+          link: `https://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           success: function () {
             // 用户确认分享后执行的回调函数
           },
@@ -208,8 +208,8 @@
         wx.onMenuShareAppMessage({
             title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是${level}`, // 分享标题
             desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
-            link: `http://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: 'http://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+            link: `https://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
             type: 'link', // 分享类型,music、video或link，不填默认为link
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function () {
