@@ -6,10 +6,14 @@
         <div style="color: #000"><strong>每天</strong> <span style="font-size: 18px;color: #ffb531">¥5.5</span> <strong>尽享法语阅读</strong></div>
         <div style="color: rgb(153,153,153)">495元/期/90天</div>
       </div>
-      <div :class="{'orange': true, 'disabled': userEnroll}" style="flex-grow: 0;width: 120px;line-height: 54px;font-size: 15px;"
+      <div v-if="ready && mode==0" :class="{'orange': true, 'disabled': userReservation}" style="flex-grow: 0;width: 120px;line-height: 1.2;padding-top: 10px;font-size: 15px;"
            @click="onSubmit()">
         <span>{{buttonText}}</span>
-        <!--<br><span style="font-size: 12px;">预约立减 ¥20</span>-->
+        <br><span style="font-size: 12px;">预约立减 ¥20</span>
+      </div>
+      <div v-if="ready && mode==1" :class="{'orange': true, 'disabled': userEnroll}" style="flex-grow: 0;width: 120px;line-height: 54px;font-size: 15px;"
+           @click="onSubmit()">
+        <span>{{buttonText}}</span>
       </div>
     </div>
     <v-dialog v-model="dialog" persistent width="80%">
@@ -64,7 +68,12 @@
   import {bind, check, enroll} from '../service/user'
   export default {
     created(){
+      if(this.$route.query.active=='true'){
+        this.mode = 1;
+      }
       check(this.$route.query.semesterId).then( res => {
+        console.log(res);
+        this.ready = true;
         this.userBind = res.data.bind;
         this.userReservation = res.data.reservation;
         this.userEnroll = res.data.enroll;
@@ -72,12 +81,12 @@
     },
     methods: {
       onSubmit() {
-        window.location.href = '/testLand?semesterId=' + this.$route.query.semesterId;
-//        if(this.userBind) {
-//          this.bindPhone();
-//        } else {
-//          this.dialog = true;
-//        }
+//        window.location.href = '/testLand?semesterId=' + this.$route.query.semesterId;
+        if(this.userBind) {
+          this.bindPhone();
+        } else {
+          this.dialog = true;
+        }
       },
       bindPhone() {
         const reg = /^\d{11,13}$/
@@ -97,6 +106,13 @@
               self.dialog = false;
               self.successDialog = true;
               self.failDialog = false;
+
+              if(self.mode == 0) {
+                self.userReservation = true;
+              } else if(self.mode == 1) {
+                self.userEnroll = true;
+              }
+
             } else {
               self.dialog = false;
               self.successDialog = false;
@@ -131,6 +147,8 @@
     },
     data() {
       return {
+        ready: false, // 页面是否加载完成
+        mode: 0, // 0开启预约，1开启报名
         userBind: false, // 是否绑定手机
         userReservation: false,// 是否预约
         userEnroll: false,// 是否报名
@@ -153,15 +171,18 @@
     computed: {
       // 计算属性的 getter
       buttonText(){
-        if(this.userEnroll) {
-          return '已报名'
-        } else {
-//          if(this.userReservation) {
-//            return '立即报名'
-//          } else {
-//            return '立即预约'
-//          }
-          return '立即报名'
+        if(this.mode == 0) {
+          if(this.userReservation) {
+            return '已预约'
+          } else {
+            return '立即预约'
+          }
+        } else if(this.mode == 1) {
+          if(this.userEnroll) {
+            return '已报名'
+          } else {
+            return '立即报名'
+          }
         }
       }
     }

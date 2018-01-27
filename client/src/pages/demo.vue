@@ -48,7 +48,7 @@
               this.showError = true;
               alert(JSON.stringify(res));
             }
-            self.$refs.audio.src = 'http://static.envol.vip/attach/20171019/2xRxVI7sSrJM7otUM9Bp5aMl7s5virCs.mp3';
+            self.$refs.audio.src = 'https://static.envol.vip/attach/20171019/2xRxVI7sSrJM7otUM9Bp5aMl7s5virCs.mp3';
             self.$refs.audio.load();
           }
         });

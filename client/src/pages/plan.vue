@@ -39,7 +39,7 @@
     <div class="book-list">
       <div class="book-item" v-if="book && book.id">
         <div class="book-media">
-          <img :src="'http://support.envol.vip/' + book.coverUrl" alt="book">
+          <img :src="'https://static.envol.vip' + book.coverUrl" alt="book">
         </div>
         <div class="book-content">
           <div class="small">{{book.description}}</div>

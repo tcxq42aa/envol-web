@@ -25,7 +25,7 @@
           </div>
         </div>
         <p class="orange--text">我在读{{search.book}}</p>
-        <img v-if="search.cover" :src="'http://support.envol.vip' + search.cover" alt="" class="mb-2" style="max-height: 88px"/>
+        <img v-if="search.cover" :src="'https://static.envol.vip' + search.cover" alt="" class="mb-2" style="max-height: 88px"/>
       </div>
       <div class="share-card-bottom">
         <p style="font-size: 11px" class="ma-0">

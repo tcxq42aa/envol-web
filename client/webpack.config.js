@@ -9,7 +9,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: env != 'development' ? 'http://static.envol.vip/dist/': '/dist/',
+    publicPath: env != 'development' ? 'https://static.envol.vip/dist/': '/dist/',
     filename: env != 'development' ? 'build-[hash].js' : 'build.js'
   },
   resolve: {
