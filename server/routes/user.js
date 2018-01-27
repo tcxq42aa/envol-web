@@ -20,6 +20,9 @@ router.post('/:semesterId/reservation', function (req, res, next){
     if(status == 404) {
       message = '该课程还未开始预约～';
     }
+    if(status == 403) {
+      message = '当前有一个正在学习中的课程';
+    }
     if(status == 417) {
       message = '预约失败啦～';
     }

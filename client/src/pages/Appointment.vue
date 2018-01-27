@@ -46,7 +46,7 @@
         <v-card-text>{{failMessage || '已经预约过了'}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="blue--text darken-1" flat @click.native="failDialog = false">我知道了</v-btn>
+          <v-btn class="blue--text darken-1" flat @click.native="failDialog = false;failMessage=''">我知道了</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -71,6 +71,7 @@
       if(this.$route.query.active=='true'){
         this.mode = 1;
       }
+      this.semesterId = this.$route.query.semesterId;
       check(this.$route.query.semesterId).then( res => {
         console.log(res);
         this.ready = true;
@@ -78,6 +79,31 @@
         this.userReservation = res.data.reservation;
         this.userEnroll = res.data.enroll;
       })
+
+      var that = this;
+      wx.ready(function(){
+        wx.onMenuShareTimeline({
+          title: `一起读《悲惨世界》法语版——法棍阅读第2期`, // 分享标题
+          link: encodeURI(`https://www.envol.vip/appointment?semesterId=${that.semesterId}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+          success: function (data) {
+          },
+          cancel: function (data) {
+          }
+        });
+        wx.onMenuShareAppMessage({
+          title: `一起读《悲惨世界》法语版——法棍阅读第2期`, // 分享标题
+          desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
+          link: encodeURI(`https://www.envol.vip/appointment?semesterId=${that.semesterId}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+          type: 'link', // 分享类型,music、video或link，不填默认为link
+          success: function (data) {
+          },
+          cancel: function (data) {
+          }
+        });
+      });
+
     },
     methods: {
       onSubmit() {
@@ -141,6 +167,10 @@
             }
           });
         }).catch((e)=>{
+          if(e.response.status == 403) {
+            this.failDialog = true;
+            this.failMessage = '不能同时参加多个课程';
+          }
             console.log(e)
         })
       }
