@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="../../public/yuyue.jpg" alt="" width="100%">
+    <img src="../../public/yuyue-2.jpg" alt="" width="100%">
     <div class="btn-appoint">
       <div style="font-size: 12px;flex-grow: 1;background: #fff;justify-content: center;display: flex;flex-direction: column;text-align: right;padding-right: 16px;">
         <div style="color: #000"><strong>每天</strong> <span style="font-size: 18px;color: #ffb531">¥5.5</span> <strong>尽享法语阅读</strong></div>
