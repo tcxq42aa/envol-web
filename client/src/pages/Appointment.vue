@@ -115,7 +115,7 @@
         }
       },
       bindPhone() {
-        const reg = /^\d{11,13}$/
+        const reg = /^\d{8,18}$/
         const self = this
         if(this.$route.query.active=='true'){
           this.requestPay();
