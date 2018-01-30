@@ -58,7 +58,7 @@
   export default {
     created(){
       document.title = '阅读计划';
-      this.initCalender(new Date(serverTime))
+      this.initCalender()
       this.handler = (data) => {
         this.paper = data.paper;
         this.book = data.book;
@@ -101,37 +101,36 @@
           return;
         }
         this.diff = this.diff - 1;
+        this.today.setDate(1);
         this.today.setMonth(this.today.getMonth() - 1);
-        this.initCalender(this.today, this.diff);
+        this.initCalender(this.diff);
       },
       nextMonth(){
         if(this.diff == 0) {
           return;
         }
         this.diff = this.diff + 1;
+        this.today.setDate(1);
         this.today.setMonth(this.today.getMonth() + 1);
-        this.initCalender(this.today, this.diff);
+        this.initCalender(this.diff);
       },
       handleRedirect(){
         this.$router.replace('/testLand')
       },
-      initCalender(curDate, diff) {
+      initCalender(diff) {
         let d1 = new Date(serverTime)
         let a = d1.getTimezoneOffset()*60000 + d1.getTime() + 3600000*8;
         d1 = new Date(a);
-        if(curDate) {
-          d1 = curDate;
-        }
+        d1 = new Date(d1.getFullYear(), d1.getMonth()+1 + diff||0, 0);
         d1.setDate(1)
         d1 = d1.getDay()
         let d2 = new Date(serverTime)
         let b = d2.getTimezoneOffset()*60000 + d2.getTime() + 3600000*8;
         d2 = new Date(b);
-        if(diff < 0) {
-          d2.setMonth(d2.getMonth() + diff);
-        }
-        d2.setMonth(d2.getMonth() + 1)
-        d2.setDate(0)
+        d2 = new Date(d2.getFullYear(), d2.getMonth()+1 + diff||0, 0);
+//        d2.setDate(1);
+//        d2.setMonth(d2.getMonth() + 1 + diff||0)
+//        d2.setDate(0)
         let count = d2.getDate()
         let emptyDates = new Array(d1).fill(0)
         let dates = new Array(count).fill(0)
@@ -139,9 +138,9 @@
           let d = new Date(serverTime)
           let c = d.getTimezoneOffset()*60000 + d.getTime() + 3600000*8;
           d = new Date(c);
-          if(diff < 0) {
-            d.setMonth(d.getMonth() + diff);
-          }
+//          if(diff < 0) {
+            d.setMonth(d.getMonth() + diff||0);
+//          }
           d.setDate(idx + 1)
           return d
         })
@@ -168,7 +167,6 @@
 
       viewDetail(date, path) {
         let dateStr = formatDate(date.getTime())
-        console.log(dateStr);
         if(!this.semester || (dateStr > formatDate(this.endDate, '-', true) || dateStr < formatDate(this.beginDate))) {
           return;
         }
