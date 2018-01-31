@@ -121,13 +121,13 @@
         let d1 = new Date(serverTime)
         let a = d1.getTimezoneOffset()*60000 + d1.getTime() + 3600000*8;
         d1 = new Date(a);
-        d1 = new Date(d1.getFullYear(), d1.getMonth()+1 + diff||0, 0);
+        d1 = new Date(d1.getFullYear(), d1.getMonth()+1 + (diff||0), 0);
         d1.setDate(1)
         d1 = d1.getDay()
         let d2 = new Date(serverTime)
         let b = d2.getTimezoneOffset()*60000 + d2.getTime() + 3600000*8;
         d2 = new Date(b);
-        d2 = new Date(d2.getFullYear(), d2.getMonth()+1 + diff||0, 0);
+        d2 = new Date(d2.getFullYear(), d2.getMonth()+1 + (diff||0), 0);
 //        d2.setDate(1);
 //        d2.setMonth(d2.getMonth() + 1 + diff||0)
 //        d2.setDate(0)
@@ -139,7 +139,7 @@
           let c = d.getTimezoneOffset()*60000 + d.getTime() + 3600000*8;
           d = new Date(c);
 //          if(diff < 0) {
-            d.setMonth(d.getMonth() + diff||0);
+            d.setMonth(d.getMonth() + (diff||0));
 //          }
           d.setDate(idx + 1)
           return d
