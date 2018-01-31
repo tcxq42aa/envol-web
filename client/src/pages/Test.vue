@@ -71,12 +71,12 @@
           </div>
         </div>
       </div>
-      <v-btn block round class="btn-test orange--text white" href="/land">
+      <v-btn v-if="level!='n2'" block round class="btn-test orange--text white" href="/land">
         <span>咨询老师</span>
       </v-btn>
-      <!--<v-btn v-if="level=='n2'" block round class="btn-test orange&#45;&#45;text white" @click="goPay()">-->
-        <!--立即报名-->
-      <!--</v-btn>-->
+      <v-btn v-if="level=='n2'" block round class="btn-test orange--text white" @click="goPay()">
+        立即报名
+      </v-btn>
     </div>
     <v-dialog v-model="dialog">
       <v-card>
