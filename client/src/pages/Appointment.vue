@@ -6,7 +6,7 @@
         <div style="color: #000"><strong>每天</strong> <span style="font-size: 18px;color: #ffb531">¥5.5</span> <strong>尽享法语阅读</strong></div>
         <div style="color: rgb(153,153,153)">495元/期/90天</div>
       </div>
-      <div v-if="ready && mode==0" :class="{'orange': true, 'disabled': userReservation}" style="flex-grow: 0;width: 120px;line-height: 1.2;padding-top: 10px;font-size: 15px;"
+      <div v-if="ready && mode==0" class="disabled" :class="{'orange': true, 'disabled': userReservation}" style="flex-grow: 0;width: 120px;line-height: 1.2;padding-top: 10px;font-size: 15px;"
            @click="onSubmit()">
         <span>{{buttonText}}</span>
         <br><span style="font-size: 12px;">预约立减 ¥20</span>
@@ -68,6 +68,7 @@
   import {bind, check, enroll} from '../service/user'
   export default {
     created(){
+      this.$route.query.active = 'false';
       if(this.$route.query.active=='true'){
         this.mode = 1;
       }

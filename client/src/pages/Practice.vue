@@ -419,7 +419,7 @@
         let date = formatDate(this.paper.readToday);
         let storageKey = 'today_' + date;
         localStorage.removeItem(storageKey);
-        axios.post('/api/user/course/' + this.paper.id + '/save?readToday=' + formatDate(this.paper.readToday) + '&wordsTotal=' + this.paper.wordsTotal + '&score=' + Math.round(correntCnt / this.resultArray.length * 100))
+        axios.post('/api/user/course/' + this.paper.id + '/save?semesterId=' + this.paper.semesterId + '&readToday=' + formatDate(this.paper.readToday) + '&wordsTotal=' + this.paper.wordsTotal + '&score=' + Math.round(correntCnt / this.resultArray.length * 100))
       },
       select(item, index, idx) {
         item.testIdx = idx
