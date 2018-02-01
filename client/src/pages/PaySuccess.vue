@@ -11,8 +11,8 @@
         希望你从小小的farine慢慢发酵成一个外表金<br>
         黄、内心优雅有内涵的美丽baguette。<br>
           <span style="color: rgb( 252, 147, 61)">开课前，<br>
-          请务必扫码添加法小棍微信<br>
-          具体入学相关事宜将由法小棍<br>
+          请务必扫码添加Chef法小棍微信<br>
+          具体入学相关事宜将由Chef法小棍<br>
           给大家说明。</span>
       </p>
       <img v-if="grade && grade!='N2'" src="../assets/vovoqrcode@2x.png" alt="扫描二维码" height="135px" width="135px"/>

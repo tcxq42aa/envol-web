@@ -12,7 +12,7 @@
       </div>
       <div class="share-card-bottom">
         <p style="font-size: 14px" class="ma-0 mt-3 mb-2 orange--text">
-          长按二维码 添加法小棍微信
+          长按二维码 添加Chef法小棍微信
         </p>
         <div class="mb-3">
           2月4日前务必添加完成
