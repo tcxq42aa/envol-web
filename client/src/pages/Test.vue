@@ -131,7 +131,6 @@
           this.semesterId = response.data.semesterId;
           let content = response.data.content.replace(/\$\d+/g,'<span onclick=\\\"console.log(app.__vue__.$children[0])\\\" class=\\\"qa-underline\\\">&nbsp;</span>')
           this.data = JSON.parse(content)
-          this.initShare()
           if(this.semesterId) {
             check(this.semesterId).then( res => {
               this.userEnroll = res.data.enroll;
@@ -141,9 +140,11 @@
                 this.showResult = true;
               }
               this.ready = true;
+              this.initShare()
             })
           } else {
             this.ready = true;
+            this.initShare()
           }
         })
         .catch((error) => {
@@ -243,7 +244,9 @@
             paySign: data.paySign, // 支付签名
             success: function (res) {
               // 支付成功后的回调函数
-              window.location.href = '/paid';
+              setTimeout(function(){
+                window.location.href = '/paid';
+              }, 200);
             }
           });
           this.phoneDialog = false;
