@@ -13,6 +13,7 @@ const Badge = () => import('./pages/badge.vue')
 const Appointment = () => import('./pages/Appointment.vue')
 const Test = () => import('./pages/Test.vue')
 const Read = () => import('./pages/Read.vue')
+const Review = () => import('./pages/Review.vue')
 const TestLand = () => import('./pages/TestLand.vue')
 const TestShare = () => import('./pages/TestShare.vue')
 const Practice = () => import('./pages/Practice.vue')
@@ -37,6 +38,7 @@ const routes = [
   { path: '/testLand', component: TestLand },
   { path: '/testShare', component: TestShare },
   { path: '/read', component: Read },
+  { path: '/review', component: Review },
   { path: '/practice', component: Practice },
   { path: '/practiceShare', component: PracticeShare },
   { path: '/paid', component: Paid },

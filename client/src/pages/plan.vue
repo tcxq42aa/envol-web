@@ -1,9 +1,16 @@
 <template>
   <v-container fluid>
-    <v-layout row wrap class="pb-3">
+    <v-layout row wrap class="pb-1" v-if="mode==1">
       <v-flex xs4 class="plan-status"><span>当日已读</span> <div class="point"></div></v-flex>
       <v-flex xs4 class="plan-status"><span>补读</span> <div class="point-1"></div></v-flex>
       <v-flex xs4 class="plan-status"><span>未完成</span> <div class="point-2"></div></v-flex>
+    </v-layout>
+    <v-layout row wrap class="pb-1" v-if="mode==2">
+      <v-flex xs12 class="plan-status"><span>已复习</span> <div class="point"></div></v-flex>
+    </v-layout>
+    <v-layout row wrap style="position: relative;z-index: 1">
+      <v-flex xs6 class="plan-mode" :class="{'active': mode == 1}" @click="switchMode(1)"><span>Normal</span></v-flex>
+      <v-flex xs6 class="plan-mode" :class="{'active': mode == 2}" @click="switchMode(2)"><span>Révision</span></v-flex>
     </v-layout>
     <div class="plan-panel card orange">
       <div class="calender-year">{{today.getFullYear()}}</div>
@@ -26,14 +33,14 @@
           <div class="day-title" v-for="(date, index) in emptyDates"></div>
           <div class="day-title" v-for="(date, index) in dates">
             <div class="day"
-                 @click="viewDetail(date, '/read')"
+                 @click="viewDetail(date)"
                  :class="dateStatus(date, statistical)">{{index + 1}}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="btn-link mt-5 mb-4" v-if="paper">
-      <v-btn round class="orange white--text btn__orange" @click="viewDetail(today, '/read')">开始学习</v-btn>
+      <v-btn round class="orange white--text btn__orange" @click="viewDetail(today)">开始学习</v-btn>
       <a href="javascript:;">点击日期  进入当日阅读</a>
     </div>
     <div class="book-list">
@@ -47,10 +54,16 @@
         </div>
       </div>
     </div>
+    <v-snackbar
+      :timeout="4000"
+      bottom
+      v-model="showTooltip"
+    >{{tooltipMsg}}</v-snackbar>
   </v-container>
 </template>
 
 <script>
+  import axios from 'axios'
   import '../stylus/plan.styl'
   import { bus } from '../bus.vue'
   import { formatDate } from './util.vue'
@@ -84,7 +97,11 @@
         book: null,
         statistical: [],
         semester: null,
-        diff: 0
+        diff: 0,
+        showTooltip: false,
+        tooltipMsg: '',
+        reviewStatistical: [],
+        mode: 1 // 1: 正常, 2: 复习
       }
     },
     computed: {
@@ -149,24 +166,48 @@
       },
 
       dateStatus(date){
+        var statistical = []
+        if(this.mode == 1) {
+          statistical = this.statistical;
+        } else if(this.mode == 2) {
+          statistical = this.reviewStatistical;
+        }
         let dateStr = formatDate(date)
-        let f = this.statistical.find(item => formatDate(item.readToday, '-', true) == dateStr)
+        let f = statistical.find(item => formatDate(item.readToday, '-', true) == dateStr)
         if(dateStr > formatDate(new Date(serverTime).getTime())) {
           return ''
         }
         if(!this.semester || (dateStr > formatDate(this.endDate, '-', true) || dateStr < formatDate(this.beginDate, '-', true))) {
           return ''
         }
-        if(f) {
-          if(formatDate(f.createTime, '-', true) > dateStr) {
-            return 'white-bg'
+
+        if(this.mode == 1) {
+          if(f) {
+            if(formatDate(f.createTime, '-', true) > dateStr) {
+              return 'white-bg'
+            }
           }
+          return f ? 'finished' : 'unfinished';
+        } else if(this.mode == 2) {
+          return f ? 'finished' : '';
         }
-        return f ? 'finished' : 'unfinished'
+
       },
 
-      viewDetail(date, path) {
+      viewDetail(date) {
         let dateStr = formatDate(date.getTime())
+        var path = '/read';
+        if(this.mode == 1) {
+          path = '/read';
+        } else if(this.mode == 2) {
+          path = '/review';
+          let f = this.statistical.find(item => formatDate(item.readToday, '-', true) == dateStr)
+          if(!f) {
+            this.showTooltip = true;
+            this.tooltipMsg = 'Tu n’as pas fini la tâche de ce jour.';
+            return;
+          }
+        }
         if(!this.semester || (dateStr > formatDate(this.endDate, '-', true) || dateStr < formatDate(this.beginDate))) {
           return;
         }
@@ -174,6 +215,16 @@
           return
         }
         this.$router.push(path + '?date=' + formatDate(date.getTime()));
+      },
+
+      switchMode(mode) {
+        this.mode = mode;
+        if(mode==2) {
+          axios.get('/api/user/review/statistical?semesterId=' + this.semesterId).then((response) => {
+            this.reviewStatistical = response.data;
+            this.initCalender(this.diff);
+          })
+        }
       }
     }
   }

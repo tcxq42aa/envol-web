@@ -7,7 +7,7 @@ var querystring = require('querystring');
 var config = require('../config/app.' + (process.env.NODE_ENV || 'prod') + '.config');
 
 /* GET home page. */
-router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
+router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|review|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
   // res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {serverTime: formatDate(Date.now()), title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
   // return;
   var redirectUrl = 'https://www.envol.vip' + req.path;
@@ -83,7 +83,7 @@ function checkUser(req, res, success, fail) {
     'oWgFw0_Ga27csiD4wyp_jg6u6y5k'//Weina
   ];
 
-  var urls = ['/', '/index', '/plan', '/uc', '/practice', '/read', '/paid', '/badge', '/wordList', '/handout'];
+  var urls = ['/', '/index', '/plan', '/uc', '/practice', '/read', '/review', '/paid', '/badge', '/wordList', '/handout'];
   if(urls.indexOf(req.path) >=0) {
     // if(whiteList.indexOf(req.session.userInfo.openid) < 0) {
     //   fail('暂未开放，请耐心等待');
