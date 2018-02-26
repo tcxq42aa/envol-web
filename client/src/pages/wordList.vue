@@ -23,7 +23,8 @@
 
   export default {
     created(){
-      document.title = '今日词表'
+      var range = this.range = qs.parse(location.search).range;
+      document.title = range === 'all' ? '往期词表' : '今日词表';
       this.handler = (data) => {
         this.paper = data.paper;
         this.semester = data.semester;
@@ -35,7 +36,7 @@
           getWordList({
             semesterId: this.semester.id,
             grade: res.grade,
-            day: qs.parse(location.search).range === 'all' ? 120 : 7
+            day: this.range === 'all' ? 120 : 7
           }).then(data => {
             this.wordListArray = data.data.reverse();
 
