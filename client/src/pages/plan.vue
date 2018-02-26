@@ -227,7 +227,7 @@
         if(dateStr > formatDate(new Date(serverTime).getTime())) {
           return
         }
-        this.$router.push(path + '?date=' + formatDate(date.getTime()));
+        this.$router.push(path + '?range=all&date=' + formatDate(date.getTime()));
       },
 
       switchMode(mode) {

@@ -34,12 +34,13 @@
         if(res.grade) {
           getWordList({
             semesterId: this.semester.id,
-            grade: res.grade
+            grade: res.grade,
+            day: qs.parse(location.search).range === 'all' ? 120 : 7
           }).then(data => {
             this.wordListArray = data.data.reverse();
 
             this.wordListArray = this.wordListArray.filter(wordList => {
-              return wordList.wordList && wordList.wordList != '[]' &&  formatDate(wordList.readToday, '-', true) <= this.today
+              return wordList.wordList && wordList.wordList != '[]' && wordList.wordList !='[{"text":"","comment":""}]' &&  formatDate(wordList.readToday, '-', true) <= this.today
             });
 
             this.current = this.wordListArray.length - 1;
