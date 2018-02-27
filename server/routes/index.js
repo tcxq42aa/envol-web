@@ -48,7 +48,8 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|r
           res.render('index', {
             title: '法棍阅读',
             userInfo: JSON.stringify(req.session.userInfo),
-            serverTime: formatDate(Date.now())
+            serverTime: formatDate(Date.now()),
+            serverTimeStamp: Date.now()
           });
         }, function(msg){
           res.render('invalid', { msg });
@@ -61,7 +62,8 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|r
       res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {
         title: '法棍阅读',
         userInfo: JSON.stringify(req.session.userInfo || {}),
-        serverTime: formatDate(Date.now())
+        serverTime: formatDate(Date.now()),
+        serverTimeStamp: Date.now()
       });
     }, function(msg){
       res.render('invalid', { msg });
