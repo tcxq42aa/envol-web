@@ -10,7 +10,7 @@ var config = require('../config/app.' + (process.env.NODE_ENV || 'prod') + '.con
 router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|review|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
   // res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {serverTime: formatDate(Date.now()), title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
   // return;
-  var redirectUrl = 'https://www.envol.vip' + req.path;
+  var redirectUrl = 'http://qimeng.envol.vip' + req.path;
   if(querystring.stringify(req.query)) {
     redirectUrl += '?' + querystring.stringify(req.query);
   }
@@ -174,7 +174,7 @@ setInterval(function(){
 
 function getAccessToken(cb) {
   if(process.env.NODE_ENV=='dev') {
-    axios.get('https://www.envol.vip/accessToken').then((res)=>{
+    axios.get('http://qimeng.envol.vip/accessToken').then((res)=>{
       global.access_token = res.data;
       console.log('access_token=' + global.access_token);
       cb()

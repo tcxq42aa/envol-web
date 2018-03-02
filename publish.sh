@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-sshpass -p Welcome1 scp ./releases/www.envol.vip.tar.gz root@47.92.104.90:/root/envol-web/
-sshpass -p Welcome1 ssh -o StrictHostKeyChecking=no root@47.92.104.90 "source ~/.bash_profile && cd /root/envol-web && rm -rf www.envol.vip && tar -xzvf www.envol.vip.tar.gz && pm2 stop ./www.envol.vip/bin/www && NODE_ENV=prod pm2 start ./www.envol.vip/bin/www --log-date-format 'DD-MM HH:mm:ss.SSS'"
+sshpass -p Xuqi.321 scp ./releases/qimeng.envol.vip.tar.gz root@47.104.91.246:/root/envol-qimeng/
+sshpass -p Xuqi.321 ssh -o StrictHostKeyChecking=no root@47.104.91.246 "source /etc/profile && cd /root/envol-qimeng && rm -rf qimeng.envol.vip && tar -xzvf qimeng.envol.vip.tar.gz && pm2 stop ./qimeng.envol.vip/bin/www && NODE_ENV=prod pm2 start ./qimeng.envol.vip/bin/www --log-date-format 'DD-MM HH:mm:ss.SSS'"

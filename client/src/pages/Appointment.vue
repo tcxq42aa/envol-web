@@ -85,8 +85,8 @@
       wx.ready(function(){
         wx.onMenuShareTimeline({
           title: `一起读《悲惨世界》法语版——法棍阅读第2期`, // 分享标题
-          link: encodeURI(`https://www.envol.vip/appointment?semesterId=${that.semesterId}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+          link: encodeURI(`http://qimeng.envol.vip/appointment?semesterId=${that.semesterId}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: 'http://qimeng.envol.vip/imgs/headimg.jpeg', // 分享图标
           success: function (data) {
           },
           cancel: function (data) {
@@ -95,8 +95,8 @@
         wx.onMenuShareAppMessage({
           title: `一起读《悲惨世界》法语版——法棍阅读第2期`, // 分享标题
           desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
-          link: encodeURI(`https://www.envol.vip/appointment?semesterId=${that.semesterId}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
+          link: encodeURI(`http://qimeng.envol.vip/appointment?semesterId=${that.semesterId}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: 'http://qimeng.envol.vip/imgs/headimg.jpeg', // 分享图标
           type: 'link', // 分享类型,music、video或link，不填默认为link
           success: function (data) {
           },
