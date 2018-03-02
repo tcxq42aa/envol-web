@@ -18,7 +18,7 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|r
   if(!req.session.userInfo) {
     if(!req.query.code){
       var url = encodeURIComponent(redirectUrl)
-      res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe073c9d18b45b0ca&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo#wechat_redirect')
+      res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + config.appid + '&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo#wechat_redirect')
       return;
     }
     var code = req.query.code;
