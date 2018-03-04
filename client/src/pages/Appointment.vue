@@ -68,7 +68,7 @@
   import {bind, check, enroll} from '../service/user'
   export default {
     created(){
-      this.$route.query.active = 'false';
+//      this.$route.query.active = 'false';
       if(this.$route.query.active=='true'){
         this.mode = 1;
       }
