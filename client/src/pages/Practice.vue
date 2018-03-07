@@ -10,7 +10,7 @@
           <div v-if="test.desc" class="test-title" v-html="test.desc"></div>
           <!-- 填空题题目答案选区 -->
           <ul class="qa-answers" v-if="test.type == 3">
-            <li v-for="(answer, idx) in test.options">
+            <li v-for="(answer, idx) in test.options.shuffle()">
               <v-btn small round outline class="orange orange--text" @click="activateAnswer(answer.content)">{{answer.content}}</v-btn>
             </li>
           </ul>

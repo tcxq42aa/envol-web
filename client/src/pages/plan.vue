@@ -115,7 +115,7 @@
     },
     methods: {
       prevMonth(){
-        if(this.diff <= -2) {
+        if(this.diff <= -3) {
           return;
         }
         this.diff = this.diff - 1;
