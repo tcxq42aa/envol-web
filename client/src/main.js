@@ -41,7 +41,7 @@ const routes = [
   // { path: '/review', component: Review },
   // { path: '/practice', component: Practice },
   // { path: '/practiceShare', component: PracticeShare },
-  // { path: '/paid', component: Paid },
+  { path: '/paid', component: Paid },
   // { path: '/badge', component: Badge },
   // { path: '/wordList', component: WordList },
   // { path: '/handout', component: Handout },

@@ -85,7 +85,7 @@ function checkUser(req, res, success, fail) {
     'oWgFw0_Ga27csiD4wyp_jg6u6y5k'//Weina
   ];
 
-  var urls = ['/', '/index', '/plan', '/uc', '/practice', '/read', '/review', '/paid', '/badge', '/wordList', '/handout'];
+  var urls = ['/', '/index', '/plan', '/uc', '/practice', '/read', '/review', '/badge', '/wordList', '/handout'];
   if(urls.indexOf(req.path) >=0) {
     // if(whiteList.indexOf(req.session.userInfo.openid) < 0) {
     //   fail('暂未开放，请耐心等待');
