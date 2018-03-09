@@ -58,7 +58,7 @@ typings/
 .env
 .idea/
 package-lock.json
-qimeng.envol.vip/
+sz.envol.vip/
 releases/
 server/public/dist
 server/views/index.ejs

@@ -9,7 +9,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: env != 'development' ? 'http://static.qimeng.envol.vip/dist/': '/dist/',
+    publicPath: env != 'development' ? 'https://static.sz.envol.vip/dist/': '/dist/',
     filename: env != 'development' ? 'build-[hash].js' : 'build.js'
   },
   resolve: {
@@ -97,7 +97,7 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new ExtractTextPlugin("styles.css?[contenthash]"),
     new ManifestPlugin({
-      publicPath: 'http://qimeng.envol.vip/dist/'
+      publicPath: 'https://sz.envol.vip/dist/'
     })
   ])
   module.exports.module.rules = (module.exports.module.rules || []).concat([

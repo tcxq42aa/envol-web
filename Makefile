@@ -2,7 +2,7 @@ NAME := $(shell basename $(shell git config --get remote.origin.url) | sed 's/\.
 BRANCH := $(shell git symbolic-ref --short HEAD 2>/dev/null)
 VERSION := $(shell git log -1 --pretty=format:"%H")
 FEVERSION := $(shell date +'%Y%m%d%H%M%S')
-TMPDIR=qimeng.envol.vip
+TMPDIR=sz.envol.vip
 RELEASESDIR=releases
 
 default: all
