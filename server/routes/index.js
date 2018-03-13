@@ -37,37 +37,40 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|r
           return
         }
         req.session.userInfo = resp.data;
+        req.session.userInfo.platform = 1;//来自服务号
         req.session.save();
         //
         axios.post(config.serverHost + 'api/user/subscribe', querystring.stringify(resp.data)).then((resp2)=>{
-          console.log(resp2.data)
+          console.log('subscribe success', resp2.data);
         }).catch(function (error) {
           console.log(error.response.data);
         });
-        checkUser(req, res, function(){
-          res.render('index', {
-            title: '法棍阅读',
-            userInfo: JSON.stringify(req.session.userInfo),
-            serverTime: formatDate(Date.now()),
-            serverTimeStamp: Date.now()
-          });
-        }, function(msg){
-          res.render('invalid', { msg });
-        });
+        res.render('auth');
+        // checkUser(req, res, function(){
+        //   res.render('index', {
+        //     title: '法棍阅读',
+        //     userInfo: JSON.stringify(req.session.userInfo),
+        //     serverTime: formatDate(Date.now()),
+        //     serverTimeStamp: Date.now()
+        //   });
+        // }, function(msg){
+        //   res.render('invalid', { msg });
+        // });
       })
     })
   } else {
     console.log('openid=' + req.session.userInfo.openid)
-    checkUser(req, res, function(){
-      res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {
-        title: '法棍阅读',
-        userInfo: JSON.stringify(req.session.userInfo || {}),
-        serverTime: formatDate(Date.now()),
-        serverTimeStamp: Date.now()
-      });
-    }, function(msg){
-      res.render('invalid', { msg });
-    });
+    res.render('auth');
+    // checkUser(req, res, function(){
+    //   res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {
+    //     title: '法棍阅读',
+    //     userInfo: JSON.stringify(req.session.userInfo || {}),
+    //     serverTime: formatDate(Date.now()),
+    //     serverTimeStamp: Date.now()
+    //   });
+    // }, function(msg){
+    //   res.render('invalid', { msg });
+    // });
   }
 });
 
