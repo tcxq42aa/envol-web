@@ -22,7 +22,10 @@
           var t2 = new Date(parseInt(serverTimeStamp, 10));
           t1.setHours(21); //21点显示讲义解释
           if(t2 >= t1) {
-            this.handoutDesc = this.paper.handoutDesc;
+            var reg = /(<iframe[^>]+src=")https?:\/\/([^"]+)("[^>]+><\/iframe>)/g;
+            this.handoutDesc = this.paper.handoutDesc.replace(reg, function(a0,a1,a2,a3,a4){
+              return a1+"//"+a2+a3
+            })
           }
         }
       }
