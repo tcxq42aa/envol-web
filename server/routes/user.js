@@ -6,12 +6,10 @@ var router = express.Router();
 var axios = require('axios')
 var config = require('../config/app.' + (process.env.NODE_ENV || 'prod') + '.config');
 var wx = require('../service/wx');
-var getAccessToken = require('../routes/index').getAccessToken;
 
 router.post('/:semesterId/reservation', function (req, res, next){
   axios.post(config.serverHost + '/api/userSemester/' + req.params.semesterId + '/reservation?mobilePhone=' + req.query.mobilePhone + '&openId=' + req.session.userInfo.openid).then((response)=>{
     console.log('success', response.status)
-    // wx.sendAppointmentMsg(getAccessToken(), req.session.userInfo)
     res.send({status: response.status})
   }).catch(function (error) {
     var status = error.response.status;

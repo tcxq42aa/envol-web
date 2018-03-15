@@ -142,82 +142,82 @@ router.all('/wx', function (req, res, next) {
   }
 });
 
-router.get('/api/wx/signature', function(req, res, next){
-  var q = req.query;
-  var noncestr = 'ttp123';
-  var jsapi_ticket = global.jsapi_ticket;
-  var timestamp = Date.now();
-  var url = q.url;
-  var str = `jsapi_ticket=${jsapi_ticket}&noncestr=${noncestr}&timestamp=${timestamp}&url=${url}`;
-  var signature = sha1(str);
-  res.send({
-    url: url,
-    timestamp: timestamp,
-    nonceStr: noncestr,
-    signature: signature
-  })
-});
+// router.get('/api/wx/signature', function(req, res, next){
+//   var q = req.query;
+//   var noncestr = 'ttp123';
+//   var jsapi_ticket = global.jsapi_ticket;
+//   var timestamp = Date.now();
+//   var url = q.url;
+//   var str = `jsapi_ticket=${jsapi_ticket}&noncestr=${noncestr}&timestamp=${timestamp}&url=${url}`;
+//   var signature = sha1(str);
+//   res.send({
+//     url: url,
+//     timestamp: timestamp,
+//     nonceStr: noncestr,
+//     signature: signature
+//   })
+// });
 
-router.get('/accessToken', function (req, res, next) {
-  res.set('Content-Type', 'text/plain');
-  res.send(global.access_token);
-});
-router.get('/api/accessToken', function (req, res, next) {
-  res.set('Content-Type', 'text/plain');
-  res.send(encrypt(global.access_token));
-});
-router.get('/jsapiTicket', function (req, res, next) {
-  res.set('Content-Type', 'text/plain');
-  res.send(global.jsapi_ticket);
-});
+// router.get('/accessToken', function (req, res, next) {
+//   res.set('Content-Type', 'text/plain');
+//   res.send(global.access_token);
+// });
+// router.get('/api/accessToken', function (req, res, next) {
+//   res.set('Content-Type', 'text/plain');
+//   res.send(encrypt(global.access_token));
+// });
+// router.get('/jsapiTicket', function (req, res, next) {
+//   res.set('Content-Type', 'text/plain');
+//   res.send(global.jsapi_ticket);
+// });
 
-setInterval(function(){
-  getAccessToken(getJsapiTicket)
-}, 7000000)
+// setInterval(function(){
+//   getAccessToken(getJsapiTicket)
+// }, 7000000)
 
-function getAccessToken(cb) {
-  if(process.env.NODE_ENV=='dev') {
-    axios.get('http://qimeng.envol.vip/accessToken').then((res)=>{
-      global.access_token = res.data;
-      console.log('access_token=' + global.access_token);
-      cb()
-    });
-  } else {
-    axios.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.appid}&secret=${config.secret}`)
-      .then(function (response) {
-        global.access_token = response.data.access_token;
-        console.log('access_token=' + global.access_token);
-        cb()
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-}
-function getJsapiTicket() {
-  axios.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + global.access_token + '&type=jsapi')
-    .then(function (response) {
-      global.jsapi_ticket = response.data.ticket;
-      console.log('jsapi_ticket=' + global.jsapi_ticket);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
+// function getAccessToken(cb) {
+//   if(process.env.NODE_ENV=='dev') {
+//     axios.get('http://qimeng.envol.vip/accessToken').then((res)=>{
+//       global.access_token = res.data;
+//       console.log('access_token=' + global.access_token);
+//       cb()
+//     });
+//   } else {
+//     axios.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.appid}&secret=${config.secret}`)
+//       .then(function (response) {
+//         global.access_token = response.data.access_token;
+//         console.log('access_token=' + global.access_token);
+//         cb()
+//       })
+//       .catch(function (error) {
+//         console.log(error);
+//       });
+//   }
+// }
+// function getJsapiTicket() {
+//   axios.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + global.access_token + '&type=jsapi')
+//     .then(function (response) {
+//       global.jsapi_ticket = response.data.ticket;
+//       console.log('jsapi_ticket=' + global.jsapi_ticket);
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+// }
 
-function encrypt(source) {
-  var secret = 'jnl188**';
-  var cipher = crypto.createCipher('aes192', secret);
-  var enc = cipher.update(source, 'utf8', 'hex');//编码方式从utf-8转为hex;
-  enc += cipher.final('hex');//编码方式从转为hex;
-  //
-  // var decipher = crypto.createDecipher('aes192', secret);
-  // var dec = decipher.update(enc, 'hex', 'utf8');//编码方式从hex转为utf-8;
-  // dec += decipher.final('utf8');//编码方式从utf-8;
-  // console.log(dec);
-
-  return enc;
-}
+// function encrypt(source) {
+//   var secret = 'jnl188**';
+//   var cipher = crypto.createCipher('aes192', secret);
+//   var enc = cipher.update(source, 'utf8', 'hex');//编码方式从utf-8转为hex;
+//   enc += cipher.final('hex');//编码方式从转为hex;
+//   //
+//   // var decipher = crypto.createDecipher('aes192', secret);
+//   // var dec = decipher.update(enc, 'hex', 'utf8');//编码方式从hex转为utf-8;
+//   // dec += decipher.final('utf8');//编码方式从utf-8;
+//   // console.log(dec);
+//
+//   return enc;
+// }
 
 function formatDate(date, sep) {
   var today = new Date(date);
@@ -233,12 +233,12 @@ function formatDate(date, sep) {
   return `${year}${sep||'-'}${month}${sep||'-'}${day}`
 }
 
-getAccessToken(getJsapiTicket)
+// getAccessToken(getJsapiTicket)
 
 module.exports = router;
 module.exports = {
-  router,
-  getAccessToken: ()=>{
-    return global.access_token
-  }
+  router
+  // getAccessToken: ()=>{
+  //   return global.access_token
+  // }
 };
