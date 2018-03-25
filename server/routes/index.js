@@ -7,7 +7,7 @@ var querystring = require('querystring');
 var config = require('../config/app.' + (process.env.NODE_ENV || 'prod') + '.config');
 
 /* GET home page. */
-router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|review|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
+router.get(/^\/(history|land|index|plan|planDetail|uc|test|practice|practiceShare|read|review|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
   // res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {serverTime: formatDate(Date.now()), title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
   // return;
   var redirectUrl = 'http://qimeng.envol.vip' + req.path;
@@ -45,7 +45,11 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|r
         }).catch(function (error) {
           console.log(error.response.data);
         });
-        res.render('auth');
+        if(req.path == '/history') {
+          renderHistoryPage(req, res);
+        } else {
+          res.render('auth');
+        }
         // checkUser(req, res, function(){
         //   res.render('index', {
         //     title: '法棍阅读',
@@ -60,7 +64,11 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|r
     })
   } else {
     console.log('openid=' + req.session.userInfo.openid)
-    res.render('auth');
+    if(req.path == '/history') {
+      renderHistoryPage(req, res);
+    } else {
+      res.render('auth');
+    }
     // checkUser(req, res, function(){
     //   res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {
     //     title: '法棍阅读',
@@ -73,6 +81,34 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|r
     // });
   }
 });
+
+function renderHistoryPage(req, res) {
+  axios.get(config.serverHost + 'api/semester/paidList?type=2&openId=' + req.session.userInfo.openid).then((rs1)=>{
+    try {
+      if(rs1.data && rs1.data[0]) {
+        var semester = rs1.data[0];
+        axios.get(config.serverHost + 'api/semester/' + semester.id + '/paperHistory').then((rs2)=>{
+          var simlpleMonthArr = ['Jan.', 'Fév.', 'Mars', 'Avr.', 'Mai', 'Juin', 'Juillet', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'];
+          var paperList = rs2.data;
+          paperList.forEach((paper) => {
+            var date = new Date(paper.readToday);
+            paper.monthStr = simlpleMonthArr[date.getMonth()];
+            paper.dateStr = date.getDate();
+          });
+          res.render('history', {
+            list: paperList,
+            semester: semester
+          });
+        });
+      } else {
+        res.render('history', { semester: null });
+      }
+    } catch (e) {
+      console.log(e);
+      res.render('history', { semester: null });
+    }
+  });
+}
 
 function checkUser(req, res, success, fail) {
   // if(req.path == '/testLand' || req.path == '/test') {
