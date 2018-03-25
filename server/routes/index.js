@@ -37,7 +37,7 @@ router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|r
           return
         }
         req.session.userInfo = resp.data;
-        req.session.userInfo.platform = 1;//来自服务号
+        req.session.userInfo.platform = 2;//来自服务号
         req.session.save();
         //
         axios.post(config.serverHost + 'api/user/subscribe', querystring.stringify(resp.data)).then((resp2)=>{
