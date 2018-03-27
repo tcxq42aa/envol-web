@@ -73,17 +73,17 @@
       </div>
 
       <!-- 开启测试 -->
-      <!--<v-btn v-if="level!='n2'" block round class="btn-test orange&#45;&#45;text white" href="/land">-->
-        <!--<span>咨询老师</span>-->
-      <!--</v-btn>-->
-      <!--<v-btn v-if="level=='n2'" block round class="btn-test orange&#45;&#45;text white" @click="goPay()">-->
-        <!--立即报名-->
-      <!--</v-btn>-->
-
-      <!-- 关闭测试 -->
-      <v-btn block round class="btn-test orange--text white" href="/land">
+      <v-btn v-if="level!='n2'&&level!='n3'" block round class="btn-test orange--text white" href="/land">
         <span>咨询老师</span>
       </v-btn>
+      <v-btn v-if="level=='n2'||level=='n3'" block round class="btn-test orange--text white" @click="goPay()">
+        立即报名
+      </v-btn>
+
+      <!-- 关闭测试 -->
+      <!--<v-btn block round class="btn-test orange&#45;&#45;text white" href="/land">-->
+        <!--<span>咨询老师</span>-->
+      <!--</v-btn>-->
 
     </div>
     <v-dialog v-model="dialog">
@@ -143,10 +143,21 @@
             check(this.semesterId).then( res => {
               this.userEnroll = res.data.enroll;
               this.userBind = res.data.bind;
-              this.level = res.data.grade.toLowerCase();
-              if(this.level) {
+
+              // 强制更新等级
+              let overrideGrade = this.$route.query.grade;
+              if(['N1', 'N2', 'N3', 'N4'].indexOf(overrideGrade) >=0){
+                console.log('强制更新登记为', overrideGrade);
+                this.level = overrideGrade.toLowerCase();
                 this.showResult = true;
+                axios.get('/api/user/update/grade?evaluationId=' + this.evaluationId + '&semesterId=' + this.semesterId + '&grade=' + overrideGrade);
+              } else {
+                this.level = res.data.grade.toLowerCase();
+                if(this.level) {
+                  this.showResult = true;
+                }
               }
+
               this.ready = true;
               this.initShare()
             })
