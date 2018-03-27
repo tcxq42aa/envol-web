@@ -21,7 +21,7 @@
   import '../stylus/test.styl'
   export default {
     created(){
-      document.title = '我的课程'
+      document.title = '入学测试'
     },
     data() {
       return {

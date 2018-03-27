@@ -6,6 +6,14 @@ var sha1 = require('sha1');
 var querystring = require('querystring');
 var config = require('../config/app.' + (process.env.NODE_ENV || 'prod') + '.config');
 
+router.get('/testLand', function(req, res, next){
+  if(['N1','N2','N3','N4'].indexOf(req.query.grade) >=0) {
+    res.redirect('/test?' + querystring.stringify(req.query));
+  } else {
+    next();
+  }
+});
+
 /* GET home page. */
 router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|review|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
   // res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {serverTime: formatDate(Date.now()), title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
