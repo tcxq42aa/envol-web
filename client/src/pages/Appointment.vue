@@ -1,15 +1,15 @@
 <template>
   <div>
-    <img src="../../public/yuyue-2.jpg" alt="" width="100%">
+    <img src="../../public/yuyue-3-1.jpg" alt="" width="100%">
     <div class="btn-appoint">
       <div style="font-size: 12px;flex-grow: 1;background: #fff;justify-content: center;display: flex;flex-direction: column;text-align: right;padding-right: 16px;">
-        <div style="color: #000"><strong>每天</strong> <span style="font-size: 18px;color: #ffb531">¥5.5</span> <strong>尽享法语阅读</strong></div>
-        <div style="color: rgb(153,153,153)">495元/期/90天</div>
+        <div style="color: #000"><strong>每天</strong> <span style="font-size: 18px;color: #ffb531">10分钟</span> <strong>尽享法语阅读</strong></div>
+        <!--<div style="color: rgb(153,153,153)">495元/期/90天</div>-->
       </div>
-      <div v-if="ready && mode==0" class="" :class="{'orange': true, 'disabled': userReservation}" style="flex-grow: 0;width: 120px;line-height: 1.2;padding-top: 10px;font-size: 15px;"
+      <div v-if="ready && mode==0" class="" :class="{'orange': true, 'disabled': userReservation}" style="flex-grow: 0;width: 120px;line-height: 54px;font-size: 15px;"
            @click="onSubmit()">
         <span>{{buttonText}}</span>
-        <br><span style="font-size: 12px;">预约立减 ¥20</span>
+        <!--<br><span style="font-size: 12px;">预约立减 ¥20</span>-->
       </div>
       <div v-if="ready && mode==1" :class="{'orange': true, 'disabled': userEnroll}" style="flex-grow: 0;width: 120px;line-height: 54px;font-size: 15px;"
            @click="onSubmit()">
@@ -84,7 +84,7 @@
       var that = this;
       wx.ready(function(){
         wx.onMenuShareTimeline({
-          title: `一起读《悲惨世界》法语版——法棍阅读第2期`, // 分享标题
+          title: `一起读法语现代小说，学最实用表达`, // 分享标题
           link: encodeURI(`https://www.envol.vip/appointment?semesterId=${that.semesterId}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           success: function (data) {
@@ -93,8 +93,8 @@
           }
         });
         wx.onMenuShareAppMessage({
-          title: `一起读《悲惨世界》法语版——法棍阅读第2期`, // 分享标题
-          desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
+          title: `一起读法语现代小说，学最实用表达`, // 分享标题
+          desc: '爱法语，怎能不阅读？开始法语阅读，做个更有深度的法语人。', // 分享描述
           link: encodeURI(`https://www.envol.vip/appointment?semesterId=${that.semesterId}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           type: 'link', // 分享类型,music、video或link，不填默认为link
