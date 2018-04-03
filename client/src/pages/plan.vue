@@ -115,9 +115,9 @@
     },
     methods: {
       prevMonth(){
-        if(this.diff <= -3) {
-          return;
-        }
+//        if(this.diff <= -3) {
+//          return;
+//        }
         this.diff = this.diff - 1;
         this.today.setDate(1);
         this.today.setMonth(this.today.getMonth() - 1);

@@ -103,7 +103,7 @@ function checkUser(req, res, success, fail) {
     axios.get(config.serverHost + 'api/user/check?readToday=&openId=' + req.session.userInfo.openid).then((res)=>{
       success();
     }).catch(function (error) {
-      if(error.response.data.code == 4041 || error.response.data.code == 4042) {
+      if(error.response.data.code == 4041 || error.response.data.code == 4042 || error.response.data.code == 4043) {
         console.log('today接口校验结果 ->', error.response.data);
         fail(error.response.data.msg);
       } else {
