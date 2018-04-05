@@ -30,7 +30,19 @@
         <img v-if="level=='n2'" src="../assets/n2@2x.png" width="118px" height="135px">
         <img v-if="level=='n3'" src="../assets/n3@2x.png" width="118px" height="135px">
         <img v-if="level=='n4'" src="../assets/n4@2x.png" width="118px" height="135px">
-        <div v-if="level=='n1'" style="line-height: 2">
+
+        <div v-if="btnEnabled" style="line-height: 2">
+          Bravo！<br>
+          等的就是你，<br>
+          你非常适合参加本期课程，<br>
+          请点击【报名】<br>
+          一起享受法语阅读的乐趣吧！
+          <div class="mt-3 bold f16">
+            <span>让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>
+          </div>
+        </div>
+
+        <div v-if="!btnEnabled && level=='n1'" style="line-height: 2">
           好可惜，<br>
           你现在的学习等级暂不适合参加<br>
           本期课程，<br>
@@ -41,7 +53,7 @@
             如何操作？
           </div>
         </div>
-        <div v-if="level=='n2'" style="line-height: 2">
+        <div v-if="!btnEnabled && level=='n2'" style="line-height: 2">
           Bravo！<br>
           等的就是你，<br>
           你非常适合参加本期课程，<br>
@@ -51,7 +63,7 @@
             <span>让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>
           </div>
         </div>
-        <div v-if="level=='n3'" style="line-height: 2">
+        <div v-if="!btnEnabled && level=='n3'" style="line-height: 2">
           太棒啦！<br>
           你的阅读水平已超过一般水平，<br>
           水平较高，<br>
@@ -61,7 +73,7 @@
             如何操作？
           </div>
         </div>
-        <div v-if="level=='n4'" style="line-height: 2">
+        <div v-if="!btnEnabled && level=='n4'" style="line-height: 2">
           哇，<br>
           你的法语阅读水平已达到B2+等级，<br>
           敬请期待我们的<br>
@@ -73,10 +85,10 @@
       </div>
 
       <!-- 开启测试 -->
-      <v-btn v-if="level!='n2'&&level!='n3'" block round class="btn-test orange--text white" href="/land">
+      <v-btn v-if="!btnEnabled" block round class="btn-test orange--text white" :href="'/land?semesterId=' + semesterId">
         <span>咨询老师</span>
       </v-btn>
-      <v-btn v-if="level=='n2'||level=='n3'" block round class="btn-test orange--text white" @click="goPay()">
+      <v-btn v-if="btnEnabled" block round class="btn-test orange--text white" @click="goPay()">
         立即报名
       </v-btn>
 
@@ -128,6 +140,7 @@
       let url = '/api/evaluation/detail';
       if(semesterId) {
         url = url + '?semesterId=' + semesterId
+        this.getSemesterDetail(semesterId);
       }
       axios.get(url)
         .then((response) => {
@@ -181,6 +194,14 @@
       });
 
     },
+    computed: {
+      btnEnabled() {
+        return (this.level == 'n1' && this.n1Enabled)
+                || (this.level == 'n2' && this.n2Enabled)
+                || (this.level == 'n3' && this.n3Enabled)
+                || (this.level == 'n4' && this.n4Enabled);
+      }
+    },
     data() {
       return {
         userBind: false, // 是否绑定手机
@@ -206,7 +227,11 @@
         data: [],
         userInfo: userInfo || {},
         userEnroll: false, //是否已报名
-        userGrade: false //是否已测试
+        userGrade: false, //是否已测试
+        n1Enabled: false,
+        n2Enabled: false,
+        n3Enabled: false,
+        n4Enabled: false,
       }
     },
     methods: {
@@ -325,6 +350,14 @@
       select(item, index, idx) {
         item.testIdx = idx
         this.$set(this.data, index, item)
+      },
+      getSemesterDetail(semesterId) {
+        axios.get('/api/semester/detail?semesterId=' + semesterId).then( ({ data }) => {
+          this.n1Enabled = data.priceN1 > 0;
+          this.n2Enabled = data.priceN2 > 0;
+          this.n3Enabled = data.priceN3 > 0;
+          this.n4Enabled = data.priceN4 > 0;
+        });
       }
     }
   }
