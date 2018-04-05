@@ -24,7 +24,7 @@ router.post('/:semesterId/reservation', function (req, res, next){
       message = '当前有一个正在学习中的课程';
     }
     if(status == 417) {
-      message = '预约失败啦～';
+      message = '预约通道已关闭～';
     }
     res.send({status: status, message: message})
   });
