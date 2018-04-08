@@ -12,7 +12,7 @@
       <v-flex xs4 class="plan-status"><span>补读</span> <div class="point-1"></div></v-flex>
       <v-flex xs4 class="plan-status"><span>未完成</span> <div class="point-2"></div></v-flex>
     </v-layout>
-    <v-layout row wrap class="pb-1" v-if="mode==2">
+    <v-layout row wrap class="pb-1 mb-3" v-if="mode==2">
       <v-flex xs12 class="plan-status"><span>已复习</span> <div class="point"></div></v-flex>
     </v-layout>
 
