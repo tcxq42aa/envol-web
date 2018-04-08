@@ -122,7 +122,12 @@
 //        }
 
         let date = qs.parse(location.search).date || formatDate(new Date(serverTime).getTime());
-        axios.post('/api/user/today?readToday=' + date).then((response) => {
+        let semesterId = qs.parse(location.search).semesterId;
+        let url = '/api/user/today?readToday=' + date;
+        if(semesterId) {
+          url = url + '&semesterId=' + semesterId;
+        }
+        axios.post(url).then((response) => {
           this.appData = response.data.data
           bus.$emit("done", this.appData);
           if(this.appData.semester && this.appData.semester.id) {

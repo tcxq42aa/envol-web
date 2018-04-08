@@ -1,6 +1,13 @@
 <template>
   <v-container fluid>
-    <v-layout row wrap class="pb-1" v-if="mode==1">
+    <div class="selection-wrap">
+      <select name="current" id="current" class="selection" @change="handleSemesterChange">
+        <option v-for="semester in paidList" :value="semester.id">{{semester.name}}</option>
+      </select>
+      <div class="selection-arrow"></div>
+    </div>
+
+    <v-layout row wrap class="pb-1 mb-3" v-if="mode==1">
       <v-flex xs4 class="plan-status"><span>当日已读</span> <div class="point"></div></v-flex>
       <v-flex xs4 class="plan-status"><span>补读</span> <div class="point-1"></div></v-flex>
       <v-flex xs4 class="plan-status"><span>未完成</span> <div class="point-2"></div></v-flex>
@@ -8,10 +15,7 @@
     <v-layout row wrap class="pb-1" v-if="mode==2">
       <v-flex xs12 class="plan-status"><span>已复习</span> <div class="point"></div></v-flex>
     </v-layout>
-    <v-layout row wrap style="position: relative;z-index: 1">
-      <v-flex xs6 class="plan-mode" :class="{'active': mode == 1}" @click="switchMode(1)"><span>Normal</span></v-flex>
-      <v-flex xs6 class="plan-mode" :class="{'active': mode == 2}" @click="switchMode(2)"><span>Révision</span></v-flex>
-    </v-layout>
+
     <div class="plan-panel card orange">
       <div class="calender-year">{{today.getFullYear()}}</div>
       <div class="calender-panel">
@@ -39,10 +43,13 @@
         </div>
       </div>
     </div>
-    <div class="btn-link mt-5 mb-4" v-if="paper">
+
+    <div class="mt-5 mb-3" style="text-align: center;color:#999">点击日期  进入当日阅读</div>
+    <div class="btn-link mb-4">
       <!--<v-btn round class="orange white&#45;&#45;text btn__orange" @click="viewDetail(today)">开始学习</v-btn>-->
-      <v-btn round class="orange white--text btn__orange" @click="viewWordList(today)">往期词表</v-btn>
-      <a href="javascript:;">点击日期  进入当日阅读</a>
+      <v-btn round class="orange white--text btn__orange" style="width: 50%" @click="viewWordList()">往期词表</v-btn>
+      <div class="switcher off" v-if="mode == 1" @click="switchMode(2)">Normal</div>
+      <div class="switcher on" v-if="mode == 2" @click="switchMode(1)">Révision</div>
     </div>
     <div class="book-list">
       <div class="book-item" v-if="book && book.id">
@@ -68,18 +75,27 @@
   import '../stylus/plan.styl'
   import { bus } from '../bus.vue'
   import { formatDate } from './util.vue'
+  var qs = require('querystringify')
   const MONTH_MAP = ['JANVIER','FÉVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'];
   export default {
     created(){
       document.title = '阅读计划';
       this.initCalender()
+      this.getPaidList()
       this.handler = (data) => {
         this.paper = data.paper;
         this.book = data.book;
         this.tractate = this.paper && this.paper.tractate;
-        this.semesterId = this.paper && this.paper.semesterId;
+        this.semesterId = data.semester && data.semester.id;
         this.statistical = data.statistical;
         this.semester = data.semester;
+        let monthDiff = new Date(serverTime).getMonth() - new Date(this.semester.endDate).getMonth();
+        monthDiff = Math.max(0, monthDiff);
+        this.today = new Date(serverTime);
+        this.diff = -monthDiff;
+        this.today.setDate(1);
+        this.today.setMonth(this.today.getMonth() - monthDiff);
+        this.initCalender(-monthDiff);
       }
       bus.$on('done', this.handler)
       bus.$once('needTest', this.handleRedirect.bind(this))
@@ -102,6 +118,7 @@
         showTooltip: false,
         tooltipMsg: '',
         reviewStatistical: [],
+        paidList: [], // 已报名列表
         mode: 1 // 1: 正常, 2: 复习
       }
     },
@@ -215,19 +232,11 @@
         if(dateStr > formatDate(new Date(serverTime).getTime())) {
           return
         }
-        this.$router.push(path + '?date=' + formatDate(date.getTime()));
+        this.$router.push(path + '?date=' + formatDate(date.getTime()) + '&semesterId=' + this.semesterId||'');
       },
 
-      viewWordList(date) {
-        let dateStr = formatDate(date.getTime())
-        var path = '/wordList';
-        if(!this.semester || (dateStr > formatDate(this.endDate, '-', true) || dateStr < formatDate(this.beginDate))) {
-          return;
-        }
-        if(dateStr > formatDate(new Date(serverTime).getTime())) {
-          return
-        }
-        this.$router.push(path + '?range=all&date=' + formatDate(date.getTime()));
+      viewWordList() {
+        this.$router.push('/wordList?range=all&date=' + formatDate(new Date(serverTime).getTime()) + '&semesterId=' + this.semesterId);
       },
 
       switchMode(mode) {
@@ -238,6 +247,19 @@
             this.initCalender(this.diff);
           })
         }
+      },
+
+      getPaidList() {
+        axios.get('/api/semester/paidList').then(({ data }) => {
+          this.paidList = data
+        })
+      },
+
+      handleSemesterChange(e) {
+        let date = qs.parse(location.search).date || formatDate(new Date(serverTime).getTime());
+        axios.post('/api/user/today?readToday=' + date + '&semesterId=' + e.target.value).then(({data}) => {
+          this.handler(data.data)
+        });
       }
     }
   }

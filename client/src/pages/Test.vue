@@ -209,7 +209,7 @@
         mobilePhone: '',
         emailRules: [
           (v) => !!v || '请填写您的手机号码',
-          (v) => /^\d{11,13}$/.test(v) || '您的手机号码有误',
+          (v) => /^[\d\w\s+-]{8,28}$/.test(v) || '您的手机号码有误',
             (v) => {
             return !this.errMsg || this.errMsg
           }
@@ -266,7 +266,7 @@
         });
       },
       bindPhone() {
-        if(/^\d{11,13}$/.test(this.mobilePhone)) {
+        if(/^[\d\w\s+-]{8,28}$/.test(this.mobilePhone)) {
           this.goPay(true);
         }
       },

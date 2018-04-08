@@ -6,7 +6,7 @@
       v-model="showAudioTooltip"
     >第一遍不能拖动哦</v-snackbar>
     <div class="card pa-3 mb-3" v-if="paper && paper.summary">
-      <router-link :to="'/handout?date=' + today" v-if="paper && paper.handout">
+      <router-link :to="'/handout?date=' + today + '&semesterId=' + semesterId" v-if="paper && paper.handout">
         <div class="read-handout-entry orange">查看今日讲义</div>
       </router-link>
       <div class="subheading bold mb-3">前情提要</div>
@@ -15,7 +15,7 @@
     <div class="card pa-3 mb-3" v-if="tractate">
       <div v-html="tractate"></div>
       <div class="btn__test-wrap">
-        <v-btn v-if="finished" :href="'/practice?date=' + today" round class="orange white--text btn__orange btn__test">读完了，去测试</v-btn>
+        <v-btn v-if="finished" :href="'/practice?date=' + today + '&semesterId=' + semesterId" round class="orange white--text btn__orange btn__test">读完了，去测试</v-btn>
         <v-btn v-if="!finished" round class="orange white--text btn__orange btn__test btn--disabled">读完了，去测试</v-btn>
       </div>
     </div>
@@ -63,11 +63,12 @@
 //        this.initAudio();
 
         let date = qs.parse(location.search).date;
+        let semesterId = qs.parse(location.search).semesterId || '';
         let readToday = (date || formatDate(new Date(serverTime).getTime()));
         let appData = data
         let paper = this.paper = appData.paper;
         if(!paper || paper.wordsTotal == 0) {
-          location.replace('/practice?date=' + readToday);
+          location.replace('/practice?date=' + readToday + '&semesterId=' + semesterId);
           return;
         }
         this.tractate = this.paper && this.paper.tractate;

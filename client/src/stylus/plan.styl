@@ -144,3 +144,55 @@
     width 30px
     height: 24px;
     line-height: 24px;
+
+.selection-wrap {
+  position relative;
+  display block;
+  margin 0 auto 30px;
+}
+.selection {
+  display block;
+  margin auto;
+  width 150px;
+}
+.selection-arrow {
+  position: absolute;
+  right: 18.6667%;
+  top: 4px;
+  border-top: 1px solid #333;
+  border-left: 1px solid #333;
+  width: 9px;
+  height: 9px;
+  transform: rotateZ(-135deg);
+}
+.switcher {
+  position relative
+  color #fc933d
+  width 80px;
+  height 22px;
+  line-height 20px;
+  border: 1px solid #fc933d;
+  border-radius 10px;
+  &::before {
+    position: absolute;
+    top: 3px;
+    width: 14px;
+    height: 14px;
+    content ' '
+    background #fc933d
+    border-radius 50%
+  }
+}
+.switcher.off {
+  padding-left: 20px;
+  &::before {
+    left: 3px;
+  }
+}
+.switcher.on {
+  text-align right
+  padding-right: 20px;
+  &::before {
+    right: 3px;
+  }
+}
