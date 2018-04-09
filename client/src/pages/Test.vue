@@ -32,11 +32,11 @@
         <img v-if="level=='n4'" src="../assets/n4@2x.png" width="118px" height="135px">
 
         <div v-if="btnEnabled" style="line-height: 2">
-          Bravo！<br>
-          等的就是你，<br>
-          你非常适合参加本期课程，<br>
-          请点击【报名】<br>
-          一起享受法语阅读的乐趣吧！
+          Bravo！等的就是你！<br>
+          你要读的书是：{{bookName}}<br>
+          {{bookRemark}}<br>
+          点击【立即报名】<br>
+          开启你的法棍阅读吧！
           <div class="mt-3 bold f16">
             <span>让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>
           </div>
@@ -200,6 +200,22 @@
                 || (this.level == 'n2' && this.n2Enabled)
                 || (this.level == 'n3' && this.n3Enabled)
                 || (this.level == 'n4' && this.n4Enabled);
+      },
+      bookName() {
+        if(this.level == 'n2') {
+          return '《Le coffret mystérieux》';
+        }
+        if(this.level == 'n3') {
+          return '《Nouvelles du monde 》';
+        }
+      },
+      bookRemark() {
+        if(this.level == 'n2') {
+          return '为期18天，价格99元。';
+        }
+        if(this.level == 'n3') {
+          return '为期34天，价格235元。';
+        }
       }
     },
     data() {
@@ -278,7 +294,8 @@
           this.phoneDialog = true;
           return;
         }
-        enroll(this.semesterId, this.mobilePhone).then(res => {
+        var semesterId = this.semesterId;
+        enroll(semesterId, this.mobilePhone).then(res => {
           var data = res.data;
           wx.chooseWXPay({
             timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -289,7 +306,7 @@
             success: function (res) {
               // 支付成功后的回调函数
               setTimeout(function(){
-                window.location.href = '/paid';
+                window.location.href = '/land?semesterId=' + semesterId;
               }, 200);
             }
           });

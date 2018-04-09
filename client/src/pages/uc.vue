@@ -36,7 +36,7 @@
         <div class="f14 bold mb-1">常见问题</div>
         <div>使用方法、打卡、<br>活动等</div></a>
       </div>
-      <div class="uc-block block-3" dark><a class="uc-link" href="/land">
+      <div class="uc-block block-3" dark><a class="uc-link" :href="'/land?semesterId=' + semesterId">
         <img src="../assets/group5Copy5@2x.png" width="70px" height="70px">
         <div class="f14 bold mb-1">我要找督导老师</div>
         <div>特殊问题</div></a>
@@ -87,7 +87,7 @@
       this.handler = (data) => {
         this.paper = data.paper;
         this.tractate = this.paper && this.paper.tractate;
-        this.semesterId = this.paper && this.paper.semesterId;
+        this.semesterId = data.semester && data.semester.id;
         this.statistical = data.statistical;
 
 //        let max = 0;
@@ -125,6 +125,7 @@
     },
     data() {
       return {
+        semesterId: '',
         dialog:false,
         settingDialog:false,
         userInfo: userInfo || {},

@@ -5,7 +5,7 @@
       <div class="share-card-top">
         <div class="mt-4 subheading">欢迎加入</div>
         <div class="orange--text mb-2" style="font-weight: bold">
-          <p style="font-size: 18px" class="mt-1 mb-1">法棍阅读 90天法语达人</p>
+          <p style="font-size: 18px" class="mt-1 mb-1">法棍阅读达人</p>
           <div class="land-line">{{season}}</div>
         </div>
         <div class="mt-3 mb-5">开课时间：{{beginDate}}</div>
@@ -14,8 +14,11 @@
         <p style="font-size: 14px" class="ma-0 mt-3 mb-2 orange--text">
           长按二维码 添加Chef法小棍微信
         </p>
-        <div class="mb-3">
+        <div class="mb-2">
           {{lastDate}}前务必添加完成
+        </div>
+        <div class="mb-3">
+          添加时请备注【三期N2】或【三期N3】
         </div>
         <div style="min-height: 142px">
           <img src="../assets/qrcode.jpg" alt="扫描二维码" width="135px" style="margin: 0 auto"/>
