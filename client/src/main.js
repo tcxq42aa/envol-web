@@ -49,7 +49,7 @@ const routes = [
   { path: '/land', component: Land },
   { path: '/overdue', component: Overdue },
   { path: '/demo', component: Demo },
-  { path: '*', redirect: '/uc' }
+  { path: '*', redirect: '/index' }
 ]
 const router = new VueRouter({
   mode: 'history',

@@ -88,6 +88,7 @@
         this.paper = data.paper;
         this.tractate = this.paper && this.paper.tractate;
         this.semesterId = data.semester && data.semester.id;
+        this.helpLink = data.semester && data.semester.faq;
         this.statistical = data.statistical;
 
 //        let max = 0;
@@ -132,7 +133,7 @@
         modal2: false,
         statistical: [],
         badge: 0,
-        helpLink: 'https://shimo.im/doc/d6a4P8lVlPUxXgIl?r=YRL1ML/',
+        helpLink: '',
         hours: ['','','00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','',''],
         minutes: ['', '', '00','05','10','15','20','25','30','35','40','45','50','55', '', ''],
         hour: '',
