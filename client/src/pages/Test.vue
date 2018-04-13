@@ -88,8 +88,12 @@
       <v-btn v-if="!btnEnabled" block round class="btn-test orange--text white" :href="'/land?semesterId=' + semesterId">
         <span>咨询老师</span>
       </v-btn>
-      <v-btn v-if="btnEnabled" block round class="btn-test orange--text white" @click="goPay()">
-        立即报名
+      <!--<v-btn v-if="btnEnabled" block round class="btn-test orange&#45;&#45;text white" @click="goPay()">-->
+        <!--立即报名-->
+      <!--</v-btn>-->
+      <v-btn v-if="btnEnabled" block round class="btn-test orange--text white btn-test-disabled" @click="goPay()">
+        报名已结束
+        <!--立即报名-->
       </v-btn>
 
       <!-- 关闭测试 -->
