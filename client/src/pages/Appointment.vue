@@ -6,12 +6,12 @@
         <div style="color: #000"><strong>每天</strong> <span style="font-size: 18px;color: #ffb531">10分钟</span> <strong>尽享法语阅读</strong></div>
         <!--<div style="color: rgb(153,153,153)">495元/期/90天</div>-->
       </div>
-      <div v-if="ready && mode==0" class="" :class="{'orange': true, 'disabled': userReservation}" style="flex-grow: 0;width: 120px;line-height: 54px;font-size: 15px;"
+      <div v-if="ready && mode==0" class="" :class="{'orange': true, 'disabled': userReservation || disableAppointment}" style="flex-grow: 0;width: 120px;line-height: 54px;font-size: 15px;"
            @click="onSubmit()">
         <span>{{buttonText}}</span>
         <!--<br><span style="font-size: 12px;">预约立减 ¥20</span>-->
       </div>
-      <div v-if="ready && mode==1" :class="{'orange': true, 'disabled': userEnroll}" style="flex-grow: 0;width: 120px;line-height: 54px;font-size: 15px;"
+      <div v-if="ready && mode==1" :class="{'orange': true, 'disabled': userEnroll || disableAppointment}" style="flex-grow: 0;width: 120px;line-height: 54px;font-size: 15px;"
            @click="onSubmit()">
         <span>{{buttonText}}</span>
       </div>
@@ -66,6 +66,7 @@
 <script>
   import '../stylus/appointment.styl'
   import {bind, check, enroll} from '../service/user'
+  import {getSemesterDetail} from '../service/semester'
   export default {
     created(){
       this.$route.query.active = 'false';
@@ -73,13 +74,29 @@
         this.mode = 1;
       }
       this.semesterId = this.$route.query.semesterId;
-      check(this.$route.query.semesterId).then( res => {
+      check(this.semesterId).then( res => {
         console.log(res);
         this.ready = true;
         this.userBind = res.data.bind;
         this.userReservation = res.data.reservation;
         this.userEnroll = res.data.enroll;
-      })
+      });
+      getSemesterDetail(this.semesterId).then( res => {
+        const semester = res.data;
+        let beginDate = this.beginDate = semester.appointmentBeginDate;
+        let endDate = this.endDate = semester.appointmentEndDate;
+        if(this.mode == 1) {
+          beginDate = this.beginDate = semester.enrollBeginDate;
+          endDate = this.endDate = semester.enrollEndDate;
+        }
+        if(endDate) {
+          endDate = this.endDate = endDate + 86400000;
+        }
+
+        if((beginDate && beginDate > this.now) || (endDate && endDate < this.now)) {
+          this.disableAppointment = true;
+        }
+      });
 
       var that = this;
       wx.ready(function(){
@@ -178,7 +195,11 @@
     },
     data() {
       return {
+        now: new Date(serverTime).getTime(),
+        disableAppointment: false, // 关闭预约
         ready: false, // 页面是否加载完成
+        beginDate: 0,
+        endDate: 0,
         mode: 0, // 0开启预约，1开启报名
         userBind: false, // 是否绑定手机
         userReservation: false,// 是否预约
@@ -205,12 +226,21 @@
         if(this.mode == 0) {
           if(this.userReservation) {
             return '已预约'
+          } else if(this.disableAppointment){
+            if(this.beginDate && this.beginDate > this.now) {
+              return '预约未开始';
+            }
+            if(this.endDate && this.endDate < this.now) {
+              return '预约已结束';
+            }
           } else {
             return '立即预约'
           }
         } else if(this.mode == 1) {
           if(this.userEnroll) {
             return '已报名'
+          } else if(this.disableAppointment){
+            return '报名已结束'
           } else {
             return '立即报名'
           }

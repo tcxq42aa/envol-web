@@ -358,7 +358,7 @@
           });
           wx.onMenuShareAppMessage({
             title: shareTitle,
-            desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
+            desc: '爱法语，怎能不阅读？开始法语阅读，做个更有深度的法语人。', // 分享描述
             link: encodeURI(`https://www.envol.vip/practiceShare?nickname=${nickname}&headimgurl=${headimgurl}&day=${day}&word=${word}&book=${book}&cover=${cover}`), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
             type: 'link', // 分享类型,music、video或link，不填默认为link

@@ -162,9 +162,10 @@
 //            bus.$emit("needTest", true);
 //          }
 //        })
-//        if(this.currentPage !== '/read') {
+        let skipInitDataPages = ['/appointment', '/practiceShare', '/test', '/testShare'];
+        if(skipInitDataPages.indexOf(this.currentPage) < 0) {
           this.initData();
-//        }
+        }
         this.refreshSignature()
       }
     }

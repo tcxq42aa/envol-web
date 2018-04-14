@@ -91,9 +91,8 @@
       <!--<v-btn v-if="btnEnabled" block round class="btn-test orange&#45;&#45;text white" @click="goPay()">-->
         <!--立即报名-->
       <!--</v-btn>-->
-      <v-btn v-if="btnEnabled" block round class="btn-test orange--text white btn-test-disabled" @click="goPay()">
-        报名已结束
-        <!--立即报名-->
+      <v-btn v-if="btnEnabled" block round class="btn-test orange--text white" :class="{'btn-test-disabled': disableEnroll}" @click="goPay()">
+        {{enrollText}}
       </v-btn>
 
       <!-- 关闭测试 -->
@@ -136,6 +135,7 @@
   import '../stylus/test.styl'
   import { todayStr } from './util.vue'
   import {check, enroll} from '../service/user'
+  import {getSemesterDetail} from '../service/semester'
   import axios from 'axios'
   export default {
     created(){
@@ -144,7 +144,7 @@
       let url = '/api/evaluation/detail';
       if(semesterId) {
         url = url + '?semesterId=' + semesterId
-        this.getSemesterDetail(semesterId);
+        this.getSemester(semesterId);
       }
       axios.get(url)
         .then((response) => {
@@ -220,10 +220,20 @@
         if(this.level == 'n3') {
           return '为期34天，价格235元。';
         }
+      },
+      enrollText() {
+        if(this.beginDate && this.beginDate > this.now) {
+          return '报名未开始';
+        }
+        if(this.endDate && this.endDate < this.now) {
+          return '报名已结束';
+        }
+        return '立即报名'
       }
     },
     data() {
       return {
+        now: new Date(serverTime).getTime(),
         userBind: false, // 是否绑定手机
         phoneDialog: false,
         mobilePhone: '',
@@ -252,6 +262,7 @@
         n2Enabled: false,
         n3Enabled: false,
         n4Enabled: false,
+        disableEnroll: false
       }
     },
     methods: {
@@ -372,13 +383,21 @@
         item.testIdx = idx
         this.$set(this.data, index, item)
       },
-      getSemesterDetail(semesterId) {
-        axios.get('/api/semester/detail?semesterId=' + semesterId).then( ({ data }) => {
+      getSemester(semesterId) {
+        getSemesterDetail(semesterId).then(({ data }) => {
           this.n1Enabled = data.priceN1 > 0;
           this.n2Enabled = data.priceN2 > 0;
           this.n3Enabled = data.priceN3 > 0;
           this.n4Enabled = data.priceN4 > 0;
-        });
+          this.beginDate = data.enrollBeginDate;
+          this.endDate   = data.enrollEndDate;
+          if(this.endDate) {
+            this.endDate = this.endDate + 86400000;
+          }
+          if((this.beginDate && this.beginDate > this.now) || (this.endDate && this.endDate < this.now)) {
+            this.disableEnroll = true;
+          }
+        })
       }
     }
   }
