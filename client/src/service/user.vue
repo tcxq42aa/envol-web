@@ -5,7 +5,7 @@
 import axios from 'axios'
 const instance = axios.create({
   baseURL: '/',
-  timeout: 3000
+  timeout: 7000
 });
 
 export const bind = (semesterId, mobilePhone) => {

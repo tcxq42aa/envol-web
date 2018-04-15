@@ -162,7 +162,7 @@
 //            bus.$emit("needTest", true);
 //          }
 //        })
-        let skipInitDataPages = ['/appointment', '/practiceShare', '/test', '/testShare'];
+        let skipInitDataPages = ['/appointment', '/practiceShare', '/land', '/test', '/testLand', '/testShare'];
         if(skipInitDataPages.indexOf(this.currentPage) < 0) {
           this.initData();
         }
