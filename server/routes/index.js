@@ -14,6 +14,15 @@ router.get('/testLand', function(req, res, next){
   }
 });
 
+router.post('/shared', function(req, res, next){
+  axios.put(config.serverHost + 'api/user/course/' + req.body.paperId + '/share?openId=' + req.session.userInfo.openid).then((resp2)=>{
+    console.log('分享成功-->', 'openid=' + req.session.userInfo.openid, 'nickname=' + req.session.userInfo.nickname);
+  }).catch(function (error) {
+    console.log('分享失败-->', error.response.data);
+  });
+  res.redirect('/');
+});
+
 /* GET home page. */
 router.get(/^\/(land|index|plan|planDetail|uc|test|practice|practiceShare|read|review|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
   // res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {serverTime: formatDate(Date.now()), title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});

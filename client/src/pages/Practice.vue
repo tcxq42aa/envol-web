@@ -224,6 +224,9 @@
       </div>
       <v-btn round class="orange white--text btn__orange btn-timeline" @click.stop="showLayer=true">去炫耀一下</v-btn>
     </v-dialog>
+    <form action="/shared" method="post" ref="form">
+      <input type="hidden" name="paperId" :value="paper?paper.id:0">
+    </form>
   </v-container>
 </template>
 
@@ -232,7 +235,7 @@
   import '../stylus/practice.styl'
   import { bus } from '../bus.vue'
   import { todayStr, formatDate, formatDateInverse } from './util.vue'
-  import { share, signature } from '../service/user.vue'
+  import { signature } from '../service/user.vue'
   import axios from 'axios'
   var qs = require('querystringify');
 
@@ -351,7 +354,7 @@
             imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
             success: function (data) {
               self.hasShared = true;
-              share(self.paper.id);
+              self.$refs.form.submit();
             },
             cancel: function (data) {
             }
@@ -363,7 +366,7 @@
             imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
             type: 'link', // 分享类型,music、video或link，不填默认为link
             success: function (data) {
-              share(self.paper.id);
+              self.$refs.form.submit();
             },
             cancel: function (data) {
             }
