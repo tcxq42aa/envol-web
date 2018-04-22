@@ -250,7 +250,7 @@
           this.tractate = this.paper.tractate;
           this.data = JSON.parse(this.paper.content);
           this.lexicalAnalysis = this.paper.lexicalAnalysis;
-          this.sentenceAnalysis = this.paper.sentenceAnalysis;
+          this.sentenceAnalysis = this.paper.sentenceAnalysis.replace(/&nbsp;/g, ' ');
           this.todayWordsTotal = this.paper.wordsTotal;
           this.wordsTotal = this.statistical.map((i)=>{
             if(i.paperId == this.paper.id) {
@@ -354,7 +354,7 @@
             imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
             success: function (data) {
               self.hasShared = true;
-              self.$refs.form.submit();
+              setTimeout(()=>{self.$refs.form.submit();}, 300);
             },
             cancel: function (data) {
             }
@@ -366,7 +366,7 @@
             imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
             type: 'link', // 分享类型,music、video或link，不填默认为link
             success: function (data) {
-              self.$refs.form.submit();
+              setTimeout(()=>{self.$refs.form.submit();}, 300);
             },
             cancel: function (data) {
             }

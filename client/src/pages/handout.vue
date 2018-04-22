@@ -17,7 +17,7 @@
       this.handler = (data) => {
         this.paper = data.paper;
         if(this.paper){
-          this.handout = this.paper.handout;
+          this.handout = this.paper.handout.replace(/&nbsp;/g, ' ');
           var t1 = new Date(data.paper.readToday);
           var t2 = new Date(parseInt(serverTimeStamp, 10));
           t1.setHours(21); //21点显示讲义解释
@@ -25,7 +25,7 @@
             var reg = /(<iframe[^>]+src=")https?:\/\/([^"]+)("[^>]+><\/iframe>)/g;
             this.handoutDesc = this.paper.handoutDesc.replace(reg, function(a0,a1,a2,a3,a4){
               return a1+"//"+a2+a3
-            })
+            }).replace(/&nbsp;/g, ' ')
           }
         }
       }

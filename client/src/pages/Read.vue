@@ -71,7 +71,8 @@
           location.replace('/practice?date=' + readToday + '&semesterId=' + semesterId);
           return;
         }
-        this.tractate = this.paper && this.paper.tractate;
+        this.tractate = this.paper && this.paper.tractate.replace(/&nbsp;/g, ' ');
+        console.log(this.tractate);
         this.semesterId = this.paper && this.paper.semesterId;
         this.statistical = appData.statistical;
         this.finished = !!this.statistical.find((item) => item.paperId == this.paper.id);
