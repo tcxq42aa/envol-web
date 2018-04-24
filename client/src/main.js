@@ -4,7 +4,6 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 import Intro from './ad/Intro.vue'
 // import './stylus/content.styl'
-import '../public/css/font.css'
 import './stylus/sz/style.styl'
 // const Index = () => import('./pages/index.vue')
 // const Plan = () => import('./pages/plan.vue')
