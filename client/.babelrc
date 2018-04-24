@@ -4,11 +4,6 @@
     ["stage-2"]
   ],
   "plugins": [
-    "add-filehash",
-    ["transform-imports", {
-        "vuetify": {
-            "transform": "vuetify/src/components/${member}"
-        }
-    }]
+    "add-filehash"
   ]
 }

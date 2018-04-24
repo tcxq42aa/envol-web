@@ -1,38 +1,38 @@
 <template>
-  <v-app light>
-    <main>
+  <!--<v-app light>-->
+    <div>
       <router-view></router-view>
-    </main>
-    <v-bottom-nav v-if="!navHidden" :value="true" :active.sync="currentPage" class="white">
-      <v-btn flat class="orange--text" value="/index" @click="switchTab('/index')">
-        <span>阅读首页</span>
-        <img v-if="currentPage!='/index'" src="./assets/home4@2x.png" height="25px"/>
-        <img v-if="currentPage=='/index'" src="./assets/home2@2x.png" height="25px"/>
-      </v-btn>
-      <v-btn flat class="orange--text" value="/plan" @click="switchTab('/plan')">
-        <span>阅读计划</span>
-        <img v-if="currentPage!='/plan'" src="./assets/plan4@2x.png" height="25px"/>
-        <img v-if="currentPage=='/plan'" src="./assets/plan3@2x.png" height="25px"/>
-      </v-btn>
-      <v-btn flat class="orange--text" value="/uc" @click="switchTab('/uc')">
-        <span>个人中心</span>
-        <img v-if="currentPage!='/uc'" src="./assets/personal4@2x.png" height="25px"/>
-        <img v-if="currentPage=='/uc'" src="./assets/personal3@2x.png" height="25px"/>
-      </v-btn>
-    </v-bottom-nav>
-  </v-app>
+    </div>
+    <!--<v-bottom-nav v-if="!navHidden" :value="true" :active.sync="currentPage" class="white">-->
+      <!--<v-btn flat class="orange&#45;&#45;text" value="/index" @click="switchTab('/index')">-->
+        <!--<span>阅读首页</span>-->
+        <!--<img v-if="currentPage!='/index'" src="./assets/home4@2x.png" height="25px"/>-->
+        <!--<img v-if="currentPage=='/index'" src="./assets/home2@2x.png" height="25px"/>-->
+      <!--</v-btn>-->
+      <!--<v-btn flat class="orange&#45;&#45;text" value="/plan" @click="switchTab('/plan')">-->
+        <!--<span>阅读计划</span>-->
+        <!--<img v-if="currentPage!='/plan'" src="./assets/plan4@2x.png" height="25px"/>-->
+        <!--<img v-if="currentPage=='/plan'" src="./assets/plan3@2x.png" height="25px"/>-->
+      <!--</v-btn>-->
+      <!--<v-btn flat class="orange&#45;&#45;text" value="/uc" @click="switchTab('/uc')">-->
+        <!--<span>个人中心</span>-->
+        <!--<img v-if="currentPage!='/uc'" src="./assets/personal4@2x.png" height="25px"/>-->
+        <!--<img v-if="currentPage=='/uc'" src="./assets/personal3@2x.png" height="25px"/>-->
+      <!--</v-btn>-->
+    <!--</v-bottom-nav>-->
+  <!--</v-app>-->
 </template>
 
 <script>
-  import { bus } from './bus.vue'
+//  import { bus } from './bus.vue'
   import { signature, check } from './service/user'
   import {formatDate} from './pages/util.vue'
   import axios from 'axios'
   var qs = require('querystringify');
   const extraPages = [
-    '/appointment', '/test','/practice',
-    '/practiceShare', '/testLand', '/testShare', '/overdue',
-    '/read', '/review', '/paid', '/badge', '/wordList', '/handout', '/mailBox', '/land'
+//    '/appointment', '/test','/practice',
+//    '/practiceShare', '/testLand', '/testShare', '/overdue',
+//    '/read', '/review', '/paid', '/badge', '/wordList', '/handout', '/mailBox', '/land'
   ]
   export default {
     created(){
@@ -59,7 +59,7 @@
       return {
         code: '',
         state: '',
-        navHidden: false,
+//        navHidden: false,
         currentPage: '/index',
 //        snackbar: true,
 //        y: 'top',
@@ -97,7 +97,7 @@
         })
       },
       initData() {
-        let storageKey = 'today_' + formatDate(new Date(serverTime).getTime());
+//        let storageKey = 'today_' + formatDate(new Date(serverTime).getTime());
 //        Object.keys(localStorage).filter( key => key.indexOf('today_') === 0).forEach(key => {
 //          if(key !== storageKey) {
 //            localStorage.removeItem(key);
@@ -121,36 +121,36 @@
 //          }
 //        }
 
-        let date = qs.parse(location.search).date || formatDate(new Date(serverTime).getTime());
-        axios.post('/api/user/today?readToday=' + date).then((response) => {
-          this.appData = response.data.data
-          bus.$emit("done", this.appData);
-          if(this.appData.semester && this.appData.semester.id) {
-//            localStorage.setItem(storageKey, JSON.stringify(this.appData));
-            check(this.appData.semester.id).then( res => {
-              this.hasTested = res.data.test;
-              bus.$emit("checked", res.data);
-            })
-          }
-        }).catch((error) => {
-          if(error.response) {
-            let res = error.response
-            if(res.status == 404 && res.data.code == 4042) {
-              this.needTest = true
-              bus.$emit("needTest", true);
-            }
-          }
-        });
+//        let date = qs.parse(location.search).date || formatDate(new Date(serverTime).getTime());
+//        axios.post('/api/user/today?readToday=' + date).then((response) => {
+//          this.appData = response.data.data
+//          bus.$emit("done", this.appData);
+//          if(this.appData.semester && this.appData.semester.id) {
+////            localStorage.setItem(storageKey, JSON.stringify(this.appData));
+//            check(this.appData.semester.id).then( res => {
+//              this.hasTested = res.data.test;
+//              bus.$emit("checked", res.data);
+//            })
+//          }
+//        }).catch((error) => {
+//          if(error.response) {
+//            let res = error.response
+//            if(res.status == 404 && res.data.code == 4042) {
+//              this.needTest = true
+//              bus.$emit("needTest", true);
+//            }
+//          }
+//        });
       }
     },
     watch:{
       $route(){
-        this.currentPage = this.$router.currentRoute.path
-        if(extraPages.indexOf(this.currentPage) >= 0){
-          this.navHidden = true
-        } else {
-          this.navHidden = false
-        }
+//        this.currentPage = this.$router.currentRoute.path
+//        if(extraPages.indexOf(this.currentPage) >= 0){
+//          this.navHidden = true
+//        } else {
+//          this.navHidden = false
+//        }
 //        setTimeout(()=>{
 //          this.appData && bus.$emit("done", this.appData);
 //          if(this.needTest == true) {

@@ -1,0 +1,132 @@
+.banner {
+  position relative;
+  padding-bottom: 52%;
+  img {
+    position absolute;
+    left 0;
+    top 0;
+  }
+}
+.card {
+  padding: 16px 24px;
+  .card-item + .card-item {
+    margin-top 20px;
+  }
+  .card-item {
+    display flex;
+    flex-direction row;
+  }
+  .card-icon {
+    flex-basis 80px;
+    width 80px;
+    height 63px;
+    border-radius 4px;
+    overflow hidden;
+    flex-shrink 0;
+    img {
+      width 100%;
+      height 100%;
+    }
+  }
+  .card-content {
+    word-break break-all
+    padding-left 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow 1;
+    font-weight 600
+    .remark {
+      margin-top 6px;
+      font-weight normal
+      display flex
+      justify-content space-between
+      font-size 10px;
+      color rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+.category {
+  margin-top 10px;
+  border-left 9px solid #634395;
+  height 30px;
+  line-height 30px;
+  padding-left 17.5px;
+  font-weight 600;
+}
+
+.tag-vip {
+  padding: 1px 4px;
+  margin: 0 6px;
+  border: 1px solid #634395;
+  color: #634395;
+  border-radius: 2px;
+}
+.container {
+  padding-bottom 55px;
+}
+.footer {
+  z-index 10;
+  box-shadow 0 0 5px rgba(0,0,0,.25)
+  background #fff;
+  position fixed;
+  bottom 0;
+  width 100%;
+  display flex;
+  .left,.right {
+    flex-basic 0;
+    text-align center;
+    height 54px;
+    line-height 54px;
+    font-size 16px;
+    letter-spacing 1px;
+  }
+  .left {
+    flex-grow 2
+    display flex
+    align-items center
+    justify-content center
+    img {
+      margin-left 5px
+      margin-top -3px;
+    }
+  }
+  .right {
+    flex-grow 3
+    background #634395;
+    color #fff;
+  }
+}
+.footer-layer {
+  z-index 9;
+  display none;
+  box-shadow 0 0 5px rgba(0,0,0,.5)
+  background #fff;
+  position fixed;
+  bottom 55px;
+  width 100%;
+  padding 22px 16px;
+  justify-content space-between
+  box-sizing: border-box;
+  .item {
+    text-align center;
+    flex-basis 0;
+    flex-grow 1;
+    height 40px;
+    line-height 40px;
+    color #634395;
+    border 1px solid #634395;
+    border-radius 2px;
+    margin: 0 10px;
+    font-size 16px;
+    transition all .15s linear;
+  }
+  .active.item {
+    background #634395;
+    color #fff;
+  }
+  &.active {
+    display flex;
+  }
+}
