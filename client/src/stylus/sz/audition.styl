@@ -1,0 +1,84 @@
+.audition-container {
+  background #634395;
+  min-height 100vh;
+  padding 25px 0 45px 25px;
+  box-sizing: border-box;
+  .box {
+    background #fff;
+    border-radius 2px;
+    box-shadow 0 5px 20px rgba(0,0,0,.3);
+    padding-right 50px;
+    padding-bottom 40px;
+    font-size 14px;
+    .title {
+      padding 20px 28px;
+      font-size 16px;
+      border-bottom 1px solid rgb(216,216,216);
+    }
+    .item {
+      margin 40px 0 0 28px;
+    }
+  }
+
+  .audio-panel {
+    margin-top 16px;
+    display flex;
+  }
+  .icon-play-lg {
+    width 34px;
+    height 34px;
+    background url(../../assets/sz/icon-play-lg.png) no-repeat
+    background-size cover
+  }
+  .duration {
+    font-size: 10px;
+    line-height: 1;
+    margin-top: 7px;
+    color rgba(0,0,0,.4);
+    letter-spacing .3px;
+  }
+  .audio-control {
+    flex-grow 1;
+    margin-left 14px;
+    margin-top 10px;
+  }
+  .audio-progress {
+    position relative;
+    height 5px;
+    border-radius 2.5px;
+    background rgba(0,0,0,.1);
+  }
+  .progress-point {
+    width 12px;
+    height 12px;
+    background #fff;
+    box-shadow 0 1.5px 4px rgba(201, 102, 201, 0.6);
+    border-radius 50%;
+    position: absolute;
+    top: -4px;
+    left 0;
+    transform translateX(-50%);
+    z-index 3;
+  }
+  .progress-line {
+    position: absolute;
+    top: 0;
+    left 0;
+    border-radius 2.5px;
+    height 5px;
+    background linear-gradient(to right, rgb(99,67,149), rgb(185,96,255));
+    z-index 2;
+  }
+  .btn-next {
+    background linear-gradient(to right, rgb(255,209,2), rgb(255,192,38));
+    height 45px;
+    line-height 45px;
+    padding 0 20px;
+    margin-top 55px;
+    box-shadow 0 5px 10px rgba(0,0,0,.15);
+    transform translateX(-10px);
+    border-radius 2px;
+    color #fff;
+    font-size 16px;
+  }
+}

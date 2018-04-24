@@ -2,9 +2,10 @@ import 'babel-polyfill';
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
-import Intro from './ad/Intro.vue'
 // import './stylus/content.styl'
 import './stylus/sz/style.styl'
+const Intro = () => import('./ad/Intro.vue')
+const Audition = () => import('./ad/Audition.vue')
 // const Index = () => import('./pages/index.vue')
 // const Plan = () => import('./pages/plan.vue')
 // const UC = () => import('./pages/uc.vue')
@@ -47,6 +48,7 @@ const routes = [
   // { path: '/land', component: Land },
   // { path: '/overdue', component: Overdue },
   // { path: '/demo', component: Demo },
+  { path: '/audition', component: Audition },
   { path: '/intro', component: Intro },
   { path: '*', redirect: '/intro' }
 ]

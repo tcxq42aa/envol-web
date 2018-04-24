@@ -38,7 +38,11 @@
 
     <!-- 底部按钮 -->
     <div class="footer" @click.stop>
-      <div class="left"><span>免费试听</span><img src="../assets/sz/icon-play.png" width="20px" height="20px"></div>
+      <div class="left">
+        <router-link to="/audition">
+          <span>免费试听</span><img src="../assets/sz/icon-play.png" width="20px" height="20px">
+        </router-link>
+      </div>
       <div class="right" @click="openPay">{{ payEnabled? '立即购买' : '购买课程' }}</div>
     </div>
     <!-- 底部按钮浮层 -->
