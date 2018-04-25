@@ -1,5 +1,5 @@
 <template>
-  <v-container class="read-container">
+  <v-container class="read-container" @touchstart>
     <v-snackbar
       :timeout="3000"
       bottom
