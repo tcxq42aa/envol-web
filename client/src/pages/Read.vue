@@ -27,16 +27,23 @@
       <audio ref="audio" controls
              @loadedmetadata="loadedmetadata" preload="auto"></audio>
       <div class="audio-panel" v-if="paper && paper.audio">
-        <div>
+        <div style="flex: auto">
           <div>Vitesse</div>
           <v-btn round fab :flat="speedType!=1" :outline="speedType==1" @click="speed(0.9, 1)">慢</v-btn>
           <v-btn round fab :flat="speedType!=2" :outline="speedType==2" @click="speed(1, 2)">常</v-btn>
           <v-btn round fab :flat="speedType!=3" :outline="speedType==3" @click="speed(1.2, 3)">快</v-btn>
         </div>
-        <div>
-          <span class="grey--text audio-current mr-1">{{currentTime}} / {{duration}}</span>
-          <img style="vertical-align: middle" src="../assets/play.png" @click="play()" v-if="!isPlay" width="24px" height="24px">
-          <img style="vertical-align: middle" src="../assets/pause.png" @click="pause()" v-if="isPlay" width="24px" height="24px">
+        <div style="flex: auto">
+          <div class="control-wrap">
+            <span class="grey--text audio-current mr-1">{{currentTime}} / {{duration}}</span>
+            <i class="reflesh" :class="{'active': loop }" @click="switchLoop()"></i>
+          </div>
+          <div class="control-wrap">
+            <i class="speed speed-back" @click="fast(-15)"></i>
+            <img style="vertical-align: middle" src="../assets/play.png" @click="play()" v-if="!isPlay" width="21px" height="20px">
+            <img style="vertical-align: middle" src="../assets/pause.png" @click="pause()" v-if="isPlay" width="21px" height="20px">
+            <i class="speed speed-forword" @click="fast(15)"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -72,7 +79,6 @@
           return;
         }
         this.tractate = this.paper && this.paper.tractate.replace(/&nbsp;/g, ' ');
-        console.log(this.tractate);
         this.semesterId = this.paper && this.paper.semesterId;
         this.statistical = appData.statistical;
         this.finished = !!this.statistical.find((item) => item.paperId == this.paper.id);
@@ -126,6 +132,7 @@
         percent: 0,
         left: 0,
         speedType: '2',
+        loop: false,
       }
     },
     computed: {
@@ -167,6 +174,10 @@
 //            localStorage.setItem('audio_' + this.paper.id, '1');
             this.percent = 0;
             this.pause();
+            if(this.loop) {
+              this.audioRef.currentTime = 0;
+              this.play();
+            }
           }
         }, 1000)
       },
@@ -200,9 +211,16 @@
           this.audioRef.playbackRate = v
         }
       },
+      fast(second) {
+        const currentTime = this.audioRef.currentTime;
+        this.audioRef.currentTime = Math.max(0, currentTime + second);
+      },
+      switchLoop() {
+        this.loop = !this.loop;
+      },
       formatTime(second){
-        let min = (second / 60).toFixed(0);
-        let sec = (second % 60).toFixed(0);
+        let min = Math.floor(second / 60);
+        let sec = Math.floor(second % 60);
         if(min == 0){
           min = '00';
         }else if(min < 10){
