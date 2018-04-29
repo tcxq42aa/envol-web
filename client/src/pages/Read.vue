@@ -39,10 +39,10 @@
             <i class="reflesh" :class="{'active': loop }" @click="switchLoop()"></i>
           </div>
           <div class="control-wrap">
-            <i class="speed speed-back" @click="fast(-15)"></i>
+            <i class="speed speed-back" :class="{ 'disabled': !finished }" @click="fast(-15)"></i>
             <img style="vertical-align: middle" src="../assets/play.png" @click="play()" v-if="!isPlay" width="21px" height="20px">
             <img style="vertical-align: middle" src="../assets/pause.png" @click="pause()" v-if="isPlay" width="21px" height="20px">
-            <i class="speed speed-forword" @click="fast(15)"></i>
+            <i class="speed speed-forword" :class="{ 'disabled': !finished }" @click="fast(15)"></i>
           </div>
         </div>
       </div>

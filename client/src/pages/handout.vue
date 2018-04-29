@@ -12,6 +12,28 @@
   var qs = require('querystringify');
 
   export default {
+    mounted() {
+      wx.ready(function(){
+          wx.hideMenuItems({
+            menuList: [
+              'menuItem:share:appMessage',
+              'menuItem:share:timeline',
+              'menuItem:share:qq',
+              'menuItem:share:weiboApp',
+              'menuItem:favorite',
+              'menuItem:share:facebook',
+              'menuItem:share:QZone',
+              'menuItem:copyUrl',
+              'menuItem:openWithQQBrowser',
+              'menuItem:openWithSafari',
+              'menuItem:share:email',
+            ], // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+            success:function(res){
+              alert("隐藏");
+            }
+          });
+      });
+    },
     created(){
       document.title = '今日讲义'
       this.handler = (data) => {

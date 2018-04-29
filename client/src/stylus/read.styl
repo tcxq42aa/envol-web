@@ -67,7 +67,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 35px;
+    height: 25px;
   .speed
     background url(../assets/speed-disable.png) center no-repeat
     background-size 15px 8.5px
@@ -76,6 +76,8 @@
     &:active
       background-image url(../assets/speed.png)
       transform rotateZ(180deg) scale3d(1.3, 1.3, 1)
+    &.disabled
+      display none
   .speed-forword
     transform rotateZ(180deg)
     &:active
