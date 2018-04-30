@@ -250,7 +250,7 @@
           this.tractate = this.paper.tractate;
           this.data = JSON.parse(this.paper.content);
           this.lexicalAnalysis = this.paper.lexicalAnalysis;
-          this.sentenceAnalysis = this.paper.sentenceAnalysis.replace(/&nbsp;/g, ' ');
+          this.sentenceAnalysis = this.paper.sentenceAnalysis;
           this.todayWordsTotal = this.paper.wordsTotal;
           this.wordsTotal = this.statistical.map((i)=>{
             if(i.paperId == this.paper.id) {

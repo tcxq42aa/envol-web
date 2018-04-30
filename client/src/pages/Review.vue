@@ -20,7 +20,7 @@
         let appData = data
         let paper = this.paper = appData.paper;
 
-        this.tractate = this.paper && this.paper.tractate.replace(/&nbsp;/g, ' ');
+        this.tractate = this.paper && this.paper.tractate;
         this.semesterId = this.paper && this.paper.semesterId;
         axios.post('/api/user/review/' + paper.id + '/save?semesterId=' + this.semesterId + '&readToday=' + formatDate(paper.readToday));
         if(!paper || paper.wordsTotal == 0) {
