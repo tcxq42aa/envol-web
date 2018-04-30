@@ -166,7 +166,15 @@
         if(skipInitDataPages.indexOf(this.currentPage) < 0) {
           this.initData();
         }
-        this.refreshSignature()
+
+        if (typeof window.WeixinJSBridge == "undefined"){
+          document.addEventListener('WeixinJSBridgeReady',() => {
+            console.log('WeixinJSBridgeReady');
+            this.refreshSignature()
+          });
+        } else {
+          this.refreshSignature()
+        }
       }
     }
   }

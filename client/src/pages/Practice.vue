@@ -333,7 +333,7 @@
             timestamp: data.timestamp, // 必填，生成签名的时间戳
             nonceStr: data.nonceStr, // 必填，生成签名的随机串
             signature: data.signature,// 必填，签名，见附录1
-            jsApiList: ['chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'getNetworkType'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            jsApiList: ['chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'getNetworkType', 'hideMenuItems'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
           cb && cb();
           console.log('call wx.config');
@@ -418,7 +418,13 @@
         }).length
         this.testResult = Math.round(correntCnt / this.resultArray.length * 100) + '%'
         this.showResult = true
-        this.initShare()
+        if (typeof window.WeixinJSBridge == "undefined"){
+          document.addEventListener('WeixinJSBridgeReady',() => {
+            this.initShare()
+          });
+        } else {
+          this.initShare()
+        }
         window.scrollTo(0, 0)
         let date = formatDate(this.paper.readToday);
         let storageKey = 'today_' + date;
