@@ -1,6 +1,14 @@
 <template>
   <div>
-    <img src="../../public/yuyue-3-1.jpg" alt="" width="100%">
+    <div style="font-size: 0">
+      <img src="../../public/images/1.png" width="100%">
+      <img src="../../public/images/2.png" width="100%">
+      <img src="../../public/images/3.png" width="100%">
+      <img src="../../public/images/4.png" width="100%">
+      <img src="../../public/images/5.png" width="100%">
+      <img src="../../public/images/6.png" width="100%">
+      <img src="../../public/images/7.png" width="100%">
+    </div>
     <div class="btn-appoint">
       <div style="font-size: 12px;flex-grow: 1;background: #fff;justify-content: center;display: flex;flex-direction: column;text-align: right;padding-right: 16px;">
         <div style="color: #000"><strong>每天</strong> <span style="font-size: 18px;color: #ffb531">10分钟</span> <strong>尽享法语阅读</strong></div>

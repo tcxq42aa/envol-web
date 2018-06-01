@@ -202,24 +202,16 @@
       btnEnabled() {
         return (this.level == 'n1' && this.n1Enabled)
                 || (this.level == 'n2' && this.n2Enabled)
-                || (this.level == 'n3' && this.n3Enabled)
+                || (this.level == 'n3' && (this.n3_aEnabled || this.n3_bEnabled))
                 || (this.level == 'n4' && this.n4Enabled);
       },
       bookName() {
-        if(this.level == 'n2') {
-          return '《Le coffret mystérieux》';
-        }
-        if(this.level == 'n3') {
-          return '《Nouvelles du monde 》';
-        }
+        const currentSemesterGrade = this.semesterGradeList.find( grade => grade.name.toLowerCase().startsWith(this.level));
+        return `《${currentSemesterGrade.bookName || ''}》`;
       },
       bookRemark() {
-        if(this.level == 'n2') {
-          return '为期18天，价格99元。';
-        }
-        if(this.level == 'n3') {
-          return '为期34天，价格235元。';
-        }
+        const currentSemesterGrade = this.semesterGradeList.find( grade => grade.name.toLowerCase().startsWith(this.level));
+        return currentSemesterGrade.desc || '';
       },
       enrollText() {
         if(this.beginDate && this.beginDate > this.now) {
@@ -260,9 +252,11 @@
         userGrade: false, //是否已测试
         n1Enabled: false,
         n2Enabled: false,
-        n3Enabled: false,
+        n3_aEnabled: false,
+        n3_bEnabled: false,
         n4Enabled: false,
-        disableEnroll: false
+        disableEnroll: false,
+        subLevel: ''
       }
     },
     methods: {
@@ -355,7 +349,7 @@
         let level = 'n2'
         let pass = true
 
-        if(level1 + level2 >= 12) {
+        if(level1 + level2 >= 1) {
           if(level3 >= 2) {
             level = 'n4'
           } else {
@@ -375,22 +369,32 @@
 
         this.initShare();
 
-//        if(this.level == 'n2') {
+        const gradeList = this.semesterGradeList.filter( grade => {
+            return grade.price > 0 && grade.name.toLowerCase().startsWith(this.level)
+        });
+        if(gradeList && gradeList.length > 1 ) {
+//          todo
+          console.log('请选择级别');
+        } else {
+          console.log('保存级别', gradeList[0].name, gradeList[0].code);
           axios.post('/api/user/evaluation/' + this.evaluationId + '/save?grade=' + this.level.toUpperCase())
-//        }
+        }
       },
       select(item, index, idx) {
         item.testIdx = idx
         this.$set(this.data, index, item)
       },
       getSemester(semesterId) {
-        getSemesterDetail(semesterId).then(({ data }) => {
-          this.n1Enabled = data.priceN1 > 0;
-          this.n2Enabled = data.priceN2 > 0;
-          this.n3Enabled = data.priceN3 > 0;
-          this.n4Enabled = data.priceN4 > 0;
-          this.beginDate = data.enrollBeginDate;
-          this.endDate   = data.enrollEndDate;
+        getSemesterDetail(semesterId).then(({ data: { semester, semesterGradeList } }) => {
+          this.semesterGradeList = semesterGradeList;
+          semesterGradeList.forEach(grade => {
+            if(grade.price > 0) {
+              this[grade.name.toLowerCase() + 'Enabled'] = true;
+            }
+          });
+
+          this.beginDate = semester.enrollBeginDate;
+          this.endDate   = semester.enrollEndDate;
           if(this.endDate) {
             this.endDate = this.endDate + 86400000;
           }
