@@ -349,7 +349,7 @@
         let level = 'n2'
         let pass = true
 
-        if(level1 + level2 >= 1) {
+        if(level1 + level2 >= 12) {
           if(level3 >= 2) {
             level = 'n4'
           } else {

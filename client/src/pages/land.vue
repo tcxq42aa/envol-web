@@ -41,7 +41,7 @@
       let url = '/api/semester/detail';
       if(semesterId) {
         url = url + '?semesterId=' + semesterId;
-        axios.get(url).then( ({ data: { name, beginDate } }) => {
+        axios.get(url).then( ({ data: { semester: { name, beginDate }} }) => {
           let m;
           if(m = name.match(/第.+期/)) {
             this.season = m[0];

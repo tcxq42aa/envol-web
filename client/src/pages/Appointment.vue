@@ -83,14 +83,12 @@
       }
       this.semesterId = this.$route.query.semesterId;
       check(this.semesterId).then( res => {
-        console.log(res);
         this.ready = true;
         this.userBind = res.data.bind;
         this.userReservation = res.data.reservation;
         this.userEnroll = res.data.enroll;
       });
-      getSemesterDetail(this.semesterId).then( res => {
-        const semester = res.data;
+      getSemesterDetail(this.semesterId).then( ({ data: { semester } }) => {
         let beginDate = this.beginDate = semester.appointmentBeginDate;
         let endDate = this.endDate = semester.appointmentEndDate;
         if(this.mode == 1) {
