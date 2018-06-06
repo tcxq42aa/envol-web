@@ -33,6 +33,12 @@
 
         <div v-if="btnEnabled" style="line-height: 2">
           Bravo！等的就是你！<br>
+          <div class="book-wrapper" v-if="bookList && bookList.length > 1">
+            <img v-for="(book, i) in bookList"
+                 @click="selectBook(book, i)"
+                 :class="{'selected': bookIdx == i}"
+                 :src="'https://static.envol.vip' + book.bookCoverUrl"/>
+          </div>
           你要读的书是：{{bookName}}<br>
           {{bookRemark}}<br>
           点击【立即报名】<br>
@@ -167,9 +173,9 @@
                 console.log('强制更新登记为', overrideGrade);
                 this.level = overrideGrade.toLowerCase();
                 this.showResult = true;
-                axios.get('/api/user/update/grade?evaluationId=' + this.evaluationId + '&semesterId=' + this.semesterId + '&grade=' + overrideGrade);
+                this.updateGrade(overrideGrade);
               } else {
-                this.level = res.data.grade.toLowerCase();
+                this.level = res.data.grade.toLowerCase().split('_')[0];
                 if(this.level) {
                   this.showResult = true;
                 }
@@ -206,12 +212,10 @@
                 || (this.level == 'n4' && this.n4Enabled);
       },
       bookName() {
-        const currentSemesterGrade = this.semesterGradeList.find( grade => grade.name.toLowerCase().startsWith(this.level));
-        return `《${currentSemesterGrade.bookName || ''}》`;
+        return `《${this.bookList[this.bookIdx].bookName || ''}》`;
       },
       bookRemark() {
-        const currentSemesterGrade = this.semesterGradeList.find( grade => grade.name.toLowerCase().startsWith(this.level));
-        return currentSemesterGrade.desc || '';
+        return this.bookList[this.bookIdx].desc || '';
       },
       enrollText() {
         if(this.beginDate && this.beginDate > this.now) {
@@ -220,7 +224,19 @@
         if(this.endDate && this.endDate < this.now) {
           return '报名已结束';
         }
+        if(this.userEnroll) {
+          return '已报名'
+        }
         return '立即报名'
+      },
+      bookList() {
+        if(this.level) {
+          return this.semesterGradeList.filter( grade => {
+            return grade.price > 0 && grade.name.toLowerCase().startsWith(this.level)
+          });
+        } else {
+          return [];
+        }
       }
     },
     data() {
@@ -256,7 +272,8 @@
         n3_bEnabled: false,
         n4Enabled: false,
         disableEnroll: false,
-        subLevel: ''
+        bookIdx: 0,
+        currentBook: {}
       }
     },
     methods: {
@@ -295,6 +312,9 @@
           this.goPay(true);
         }
       },
+      updateGrade(overrideGrade) {
+        return axios.get('/api/user/update/grade?evaluationId=' + this.evaluationId + '&semesterId=' + this.semesterId + '&grade=' + overrideGrade);
+      },
       goPay(flag) {
         if(this.userEnroll) {
           return;
@@ -303,26 +323,28 @@
           this.phoneDialog = true;
           return;
         }
-        var semesterId = this.semesterId;
-        enroll(semesterId, this.mobilePhone).then(res => {
-          var data = res.data;
-          wx.chooseWXPay({
-            timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-            nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
-            package: data.pkg, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-            signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-            paySign: data.paySign, // 支付签名
-            success: function (res) {
-              // 支付成功后的回调函数
-              setTimeout(function(){
-                window.location.href = '/land?semesterId=' + semesterId;
-              }, 200);
-            }
-          });
-          this.phoneDialog = false;
-        }).catch((e)=>{
-          console.log(e)
-        })
+        this.updateGrade(this.currentBook.code).then( res => {
+          var semesterId = this.semesterId;
+          enroll(semesterId, this.mobilePhone).then(res => {
+            var data = res.data;
+            wx.chooseWXPay({
+              timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+              nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+              package: data.pkg, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+              signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+              paySign: data.paySign, // 支付签名
+              success: function (res) {
+                // 支付成功后的回调函数
+                setTimeout(function(){
+                  window.location.href = '/land?semesterId=' + semesterId;
+                }, 200);
+              }
+            });
+            this.phoneDialog = false;
+          }).catch((e)=>{
+            console.log(e)
+          })
+        });
       },
       next(){
         if(this.current < this.data.length - 1) {
@@ -369,16 +391,12 @@
 
         this.initShare();
 
-        const gradeList = this.semesterGradeList.filter( grade => {
-            return grade.price > 0 && grade.name.toLowerCase().startsWith(this.level)
-        });
-        if(gradeList && gradeList.length > 1 ) {
-//          todo
-          console.log('请选择级别');
-        } else {
-          console.log('保存级别', gradeList[0].name, gradeList[0].code);
-          axios.post('/api/user/evaluation/' + this.evaluationId + '/save?grade=' + this.level.toUpperCase())
+        const gradeList = this.bookList;
+        let grade = this.level;
+        if(gradeList.length > 0) {
+          grade = gradeList[0].code;
         }
+        axios.post('/api/user/evaluation/' + this.evaluationId + '/save?grade=' + grade);
       },
       select(item, index, idx) {
         item.testIdx = idx
@@ -402,6 +420,10 @@
             this.disableEnroll = true;
           }
         })
+      },
+      selectBook(data, i) {
+        this.bookIdx = i;
+        this.currentBook = data;
       }
     }
   }

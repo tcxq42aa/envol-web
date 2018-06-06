@@ -20,7 +20,7 @@
         <!--<br><span style="font-size: 12px;">预约立减 ¥20</span>-->
       </div>
       <div v-if="ready && mode==1" :class="{'orange': true, 'disabled': userEnroll || disableAppointment}" style="flex-grow: 0;width: 120px;line-height: 54px;font-size: 15px;"
-           @click="onSubmit()">
+           @click.native="onSubmit()">
         <span>{{buttonText}}</span>
       </div>
     </div>
@@ -67,6 +67,22 @@
         <p style="margin-bottom: 60px;">二、测试后可正式报名，补尾款。<br>（成功后怎么操作届时会有提示。）</p>
         <v-btn round class="orange btn--large white--text btn__orange btn__next" @click="successDialog = false">我知道了</v-btn>
       </div>
+    </v-dialog>
+
+    <v-dialog v-model="mobileConfirmDialog" width="80%">
+      <v-card>
+        <v-card-title>
+          <span style="font-size: 18px;">请确认手机号码是否正确？</span>
+        </v-card-title>
+        <v-card-text style="padding-left: 30px;font-size: 22px;letter-spacing: 2px;">
+          {{mobilePhone}}
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="blue--text darken-1" flat @click.native="mobileConfirmDialog = false">取消</v-btn>
+          <v-btn class="blue white--text" @click.native="sendBindPhone()">确认</v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -150,31 +166,40 @@
           self.failDialog = true;
           return;
         }
-        if(this.userBind || reg.test(this.mobilePhone)) {
-          bind(this.$route.query.semesterId, this.mobilePhone).then( res => {
-            if(res.data.status == 200) {
-              self.dialog = false;
-              self.successDialog = true;
-              self.failDialog = false;
+        if(this.userBind){
+          this.sendBindPhone();
+        } else if(reg.test(this.mobilePhone)) {
+          this.dialog = false;
+          setTimeout(_=>{
+            this.mobileConfirmDialog = true;
+          }, 150)
+        }
+      },
+      sendBindPhone() {
+        const self = this;
+        bind(this.$route.query.semesterId, this.mobilePhone).then( res => {
+          if(res.data.status == 200) {
+            self.mobileConfirmDialog = false;
+            self.successDialog = true;
+            self.failDialog = false;
 
-              if(self.mode == 0) {
-                self.userReservation = true;
-              } else if(self.mode == 1) {
-                self.userEnroll = true;
-              }
-
-            } else {
-              self.dialog = false;
-              self.successDialog = false;
-              self.failDialog = true;
-              self.failMessage = res.data.message;
+            if(self.mode == 0) {
+              self.userReservation = true;
+            } else if(self.mode == 1) {
+              self.userEnroll = true;
             }
-          }).catch((e)=>{
-            self.dialog = false;
+
+          } else {
+            self.mobileConfirmDialog = false;
             self.successDialog = false;
             self.failDialog = true;
-          })
-        }
+            self.failMessage = res.data.message;
+          }
+        }).catch((e)=>{
+            self.mobileConfirmDialog = false;
+          self.successDialog = false;
+          self.failDialog = true;
+        })
       },
       requestPay(){
         enroll(this.$route.query.semesterId, this.mobilePhone).then(res => {
@@ -214,6 +239,7 @@
         failDialog: false,
         failMessage: '',
         successDialog: false,
+        mobileConfirmDialog: false,
         errMsg: '',
         mobilePhone: '',
         emailRules: [
