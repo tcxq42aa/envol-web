@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="{'orange': !showResult, 'test-container': !showResult}">
+  <v-container :class="{'orange': !showResult, 'test-container': !showResult}" style="padding-bottom: 0">
     <div class="test-list"
          v-if="!showResult && ready"
          :style="{transform: 'translateX(-' + 95 * current + '%)'}">
@@ -124,7 +124,18 @@
         <div class="book-desc">{{book.desc}}</div>
       </div>
 
+      <div v-if="btnEnabled" class="btn-footer-share orange" @click.stop="showLayer=true">
+        让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/>
+      </div>
     </div>
+
+    <div class="share-layer" v-if="showLayer" @click="showLayer=false">
+      <div class="share-content">
+        <img class="share-arrow" src="../assets/share-arrow@2x.png" width="68px" height="69px">
+        <p style="font-size: 16px;line-height: 22px;margin: 10px 0px 12px 0;color: rgb(252,147,61)">别忘了跟好友分享炫耀哦！</p>
+      </div>
+    </div>
+
     <v-dialog v-model="dialog">
       <v-card>
         <img src="../assets/vovo.jpg" width="100%">
@@ -329,6 +340,7 @@
         n3_bEnabled: false,
         n4Enabled: false,
         disableEnroll: false,
+        showLayer: false,
         bookIdx: 0,
         currentBook: {}
       }
@@ -336,10 +348,12 @@
     methods: {
       initShare(){
         const { nickname, headimgurl } = this.userInfo;
+        const { name: semesterName } = this.semester || {};
         const level = this.level.toUpperCase();
         console.log(level, nickname, headimgurl)
         wx.onMenuShareTimeline({
-          title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是${level}`, // 分享标题
+//          我已参加法棍阅读第4期入学测试，一起开启阅读之旅吧！
+          title: `我已参加${semesterName}入学测试，一起开启阅读之旅吧！`, // 分享标题
           link: `https://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
           success: function () {
@@ -350,7 +364,7 @@
           }
         });
         wx.onMenuShareAppMessage({
-            title: `${nickname}已在【法棍阅读】测试法语阅读水平, 他的水平是${level}`, // 分享标题
+            title: `我已参加${semesterName}入学测试，一起开启阅读之旅吧！`, // 分享标题
             desc: '爱法语，怎能不阅读？开始法语阅读，不再做个肤浅法语人。', // 分享描述
             link: `https://www.envol.vip/testShare?nickname=${nickname}&headimgurl=${headimgurl}&level=${level}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: 'https://www.envol.vip/imgs/headimg.jpeg', // 分享图标
@@ -485,6 +499,7 @@
 
           this.beginDate = semester.enrollBeginDate;
           this.endDate   = semester.enrollEndDate;
+          this.semester = semester;
           if(this.endDate) {
             this.endDate = this.endDate + 86400000;
           }
