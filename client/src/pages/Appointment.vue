@@ -40,8 +40,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="blue--text darken-1" flat @click.native="dialog = false">取消</v-btn>
-          <v-btn class="blue--text darken-1" flat @click.native="bindPhone()">确认</v-btn>
+          <v-btn round flat @click.native="dialog = false">取消</v-btn>
+          <v-btn round class="orange white--text btn__orange" flat @click.native="bindPhone()">确认</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -54,7 +54,7 @@
         <v-card-text>{{failMessage || '已经预约过了'}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="blue--text darken-1" flat @click.native="failDialog = false;failMessage=''">我知道了</v-btn>
+          <v-btn round class="orange white--text btn__orange" flat @click.native="failDialog = false;failMessage=''">我知道了</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -79,8 +79,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="blue--text darken-1" flat @click.native="mobileConfirmDialog = false">取消</v-btn>
-          <v-btn class="blue white--text" @click.native="sendBindPhone()">确认</v-btn>
+          <v-btn round flat @click.native="mobileConfirmDialog = false">取消</v-btn>
+          <v-btn round class="orange white--text btn__orange" @click.native="sendBindPhone()">确认</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

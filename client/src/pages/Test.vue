@@ -32,20 +32,20 @@
         <img v-if="level=='n4'" src="../assets/n4@2x.png" width="118px" height="135px">
 
         <div v-if="btnEnabled" style="line-height: 2">
-          Bravo！等的就是你！<br>
-          <div class="book-wrapper" v-if="bookList && bookList.length > 1">
-            <img v-for="(book, i) in bookList"
-                 @click="selectBook(book, i)"
-                 :class="{'selected': bookIdx == i}"
-                 :src="'https://static.envol.vip' + book.bookCoverUrl"/>
-          </div>
-          你要读的书是：{{bookName}}<br>
-          {{bookRemark}}<br>
-          点击【立即报名】<br>
-          开启你的法棍阅读吧！
-          <div class="mt-3 bold f16">
-            <span>让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>
-          </div>
+          Bravo！<br>等的就是你，<br>你非常适合参加本期课程，<br>请选择合适的课程<br>一起享受法语阅读的乐趣吧！
+          <!--<div class="book-wrapper" v-if="bookList && bookList.length > 1">-->
+            <!--<img v-for="(book, i) in bookList"-->
+                 <!--@click.stop="selectBook(book, i)"-->
+                 <!--:class="{'selected': bookIdx == i}"-->
+                 <!--:src="'https://static.envol.vip' + book.bookCoverUrl"/>-->
+          <!--</div>-->
+          <!--你要读的书是：{{bookName}}<br>-->
+          <!--{{bookRemark}}<br>-->
+          <!--点击【立即报名】<br>-->
+          <!--开启你的法棍阅读吧！-->
+          <!--<div class="mt-3 bold f16">-->
+            <!--<span>让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>-->
+          <!--</div>-->
         </div>
 
         <div v-if="!btnEnabled && level=='n1'" style="line-height: 2">
@@ -84,9 +84,9 @@
           你的法语阅读水平已达到B2+等级，<br>
           敬请期待我们的<br>
           达人级别阅读课程吧！
-          <div class="mt-3 bold f16">
-            <span>让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>
-          </div>
+          <!--<div class="mt-3 bold f16">-->
+            <!--<span>让小伙伴试试<img src="../assets/share@2x.png" height="15px" style="vertical-align:middle;margin-left: 5px"/></span>-->
+          <!--</div>-->
         </div>
       </div>
 
@@ -97,14 +97,32 @@
       <!--<v-btn v-if="btnEnabled" block round class="btn-test orange&#45;&#45;text white" @click="goPay()">-->
         <!--立即报名-->
       <!--</v-btn>-->
-      <v-btn v-if="btnEnabled" block round class="btn-test orange--text white" :class="{'btn-test-disabled': disableEnroll}" @click="goPay()">
-        {{enrollText}}
-      </v-btn>
+      <!--<v-btn v-if="btnEnabled" block round class="btn-test orange&#45;&#45;text white" :class="{'btn-test-disabled': disableEnroll}" @click="goPay()">-->
+        <!--{{enrollText}}-->
+      <!--</v-btn>-->
 
       <!-- 关闭测试 -->
       <!--<v-btn block round class="btn-test orange&#45;&#45;text white" href="/land">-->
         <!--<span>咨询老师</span>-->
       <!--</v-btn>-->
+
+      <!-- 可报名列表 -->
+      <div class="card white test-land-wrap mb-3"
+           style="padding-bottom: 25px;padding-top: 25px;"
+           v-for="(book, i) in bookList">
+        <div class="book-wrapper">
+          <img :src="'https://static.envol.vip' + book.bookCoverUrl"/>
+          <div class="book-right">
+            <div style="text-align: left">《{{book.bookName}}》</div>
+            <div class="orange--text" style="padding-left: 15px">
+              <span class="left">{{book.duration}}天</span>
+              <span class="right">¥{{book.price}}</span>
+            </div>
+            <v-btn @click.stop="selectBook(book, i)" round class="orange white--text btn__orange" style="margin: 0;width: 100px; align-self: flex-end">我要报名</v-btn>
+          </div>
+        </div>
+        <div class="book-desc">{{book.desc}}</div>
+      </div>
 
     </div>
     <v-dialog v-model="dialog">
@@ -129,9 +147,46 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="blue--text darken-1" flat @click.native="phoneDialog = false">取消</v-btn>
-          <v-btn class="blue--text darken-1" flat @click.native="bindPhone()">确认</v-btn>
+          <v-btn round flat @click.native="phoneDialog = false">取消</v-btn>
+          <v-btn round class="orange white--text btn__orange" @click.native="bindPhone()">确认</v-btn>
         </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="mobileConfirmDialog" width="80%">
+      <v-card>
+        <v-card-title>
+          <span style="font-size: 18px;">请确认手机号码是否正确？</span>
+        </v-card-title>
+        <v-card-text style="padding-left: 30px;font-size: 22px;letter-spacing: 2px;">
+          {{mobilePhone}}
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn round flat @click.native="mobileConfirmDialog = false">取消</v-btn>
+          <v-btn round class="orange white--text btn__orange" @click.native="sendBindPhone()">确认</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="showEnrollDialog" width="80%">
+      <v-card>
+        <v-card-text style="padding: 30px 10px 15px;text-align: center;line-height: 2">
+          <div>亲爱的未来小法棍<br>你确定要选择</div>
+          <span class="orange--text" style="font-size: 16px;font-weight: bold">《{{currentBook.bookName}}》</span>
+          <div>这本书进行阅读吗? <br><br>一旦选择，无法更改。</div>
+        </v-card-text>
+
+        <div>
+          <v-btn block round large class="orange white--text btn__orange btn__in__dialog" @click="goPay()">是的，我要报名</v-btn>
+          <v-btn block round large flat class="orange--text white btn__in__dialog"  @click.native="showEnrollDialog = false" style="font-size: 13px">我想再看看别的</v-btn>
+          <div>&nbsp;</div>
+        </div>
+        <!--<v-card-actions>-->
+          <!--<v-spacer></v-spacer>-->
+          <!--<v-btn class="blue&#45;&#45;text darken-1" flat @click.native="mobileConfirmDialog = false">取消</v-btn>-->
+          <!--<v-btn class="blue white&#45;&#45;text" @click.native="sendBindPhone()">确认</v-btn>-->
+        <!--</v-card-actions>-->
       </v-card>
     </v-dialog>
   </v-container>
@@ -140,7 +195,7 @@
 <script>
   import '../stylus/test.styl'
   import { todayStr } from './util.vue'
-  import {check, enroll} from '../service/user'
+  import { bind,check, enroll} from '../service/user'
   import {getSemesterDetail} from '../service/semester'
   import axios from 'axios'
   export default {
@@ -254,6 +309,8 @@
         ],
         ready: false,
         dialog: false,
+        mobileConfirmDialog: false,
+        showEnrollDialog: false,
         evaluationId: '',
         semesterId: '',
         todayStr: todayStr(),
@@ -308,8 +365,19 @@
         });
       },
       bindPhone() {
+        if(!this.userBind) {
+          this.phoneDialog = false;
+          setTimeout(_=>{
+            this.mobileConfirmDialog = true;
+          }, 150)
+        } else {
+          this.sendBindPhone();
+        }
+      },
+      sendBindPhone() {
         if(/^[\d\w\s+-]{8,28}$/.test(this.mobilePhone)) {
           this.goPay(true);
+          this.mobileConfirmDialog = false;
         }
       },
       updateGrade(overrideGrade) {
@@ -323,7 +391,11 @@
           this.phoneDialog = true;
           return;
         }
-        this.updateGrade(this.currentBook.code).then( res => {
+        let grade = this.currentBook.code;
+        if(!this.currentBook.code) {
+          grade = this.bookList[0].code;
+        }
+        this.updateGrade(grade).then( res => {
           var semesterId = this.semesterId;
           enroll(semesterId, this.mobilePhone).then(res => {
             var data = res.data;
@@ -424,6 +496,8 @@
       selectBook(data, i) {
         this.bookIdx = i;
         this.currentBook = data;
+        this.showEnrollDialog = true;
+        return;
       }
     }
   }
