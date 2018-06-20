@@ -7,7 +7,7 @@ var querystring = require('querystring');
 var config = require('../config/app.' + (process.env.NODE_ENV || 'prod') + '.config');
 
 /* GET home page. */
-router.get(/^\/(history|land|index|plan|planDetail|uc|test|practice|practiceShare|read|review|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
+router.get(/^\/(history|paper|land|index|plan|planDetail|uc|test|practice|practiceShare|read|review|appointment|enroll|testLand|testShare|paid|badge|wordList|handout|mailBox|overdue|demo)?$/, function (req, res, next) {
   // res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {serverTime: formatDate(Date.now()), title: '法棍阅读', userInfo: JSON.stringify(req.session.userInfo || {})});
   // return;
   var redirectUrl = 'http://qimeng.envol.vip' + req.path;
@@ -45,11 +45,9 @@ router.get(/^\/(history|land|index|plan|planDetail|uc|test|practice|practiceShar
         }).catch(function (error) {
           console.log(error.response.data);
         });
-        if(req.path == '/history') {
-          renderHistoryPage(req, res);
-        } else {
-          res.render('auth');
-        }
+
+        renderPage(req, res);
+
         // checkUser(req, res, function(){
         //   res.render('index', {
         //     title: '法棍阅读',
@@ -64,11 +62,7 @@ router.get(/^\/(history|land|index|plan|planDetail|uc|test|practice|practiceShar
     })
   } else {
     console.log('openid=' + req.session.userInfo.openid)
-    if(req.path == '/history') {
-      renderHistoryPage(req, res);
-    } else {
-      res.render('auth');
-    }
+    renderPage(req, res);
     // checkUser(req, res, function(){
     //   res.render(process.env.NODE_ENV == 'dev' ? 'index-dev' : 'index', {
     //     title: '法棍阅读',
@@ -81,6 +75,20 @@ router.get(/^\/(history|land|index|plan|planDetail|uc|test|practice|practiceShar
     // });
   }
 });
+
+function renderPage(req, res) {
+  if(req.path == '/history') {
+    renderHistoryPage(req, res);
+    return;
+  }
+
+  if(req.path == '/paper') {
+    renderPaperPage(req, res);
+    return;
+  }
+
+  res.render('auth');
+}
 
 function renderHistoryPage(req, res) {
   axios.get(config.serverHost + 'api/semester/paidList?type=2&openId=' + req.session.userInfo.openid).then((rs1)=>{
@@ -107,6 +115,22 @@ function renderHistoryPage(req, res) {
       console.log(e);
       res.render('history', { semester: null });
     }
+  });
+}
+
+function renderPaperPage(req, res) {
+  axios.get(config.serverHost + 'api/paper/check?paperId=' + req.query.paperId + '&openId=' + req.session.userInfo.openid).then((rs1)=>{
+    res.render('paper', {
+      paper: rs1.data
+    });
+    // axios.get('https://h5.youzan.com/v2/feature/MUJXn7Abbg').then(rs2 => {
+    //   res.render('paper', {
+    //     paper: rs1.data,
+    //     innerHtml: rs2.data
+    //   });
+    // })
+  }).catch(e => {
+    res.render('error', { error: {}, message: '课程已失效' });
   });
 }
 

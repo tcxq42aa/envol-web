@@ -50,8 +50,8 @@ app.use('/api/userSemester', users);
 
 var serverHost = 'http://support.edu.envol.vip'
 if(app.get('env') == 'dev') {
-  // serverHost = 'http://support.edu.envol.vip'
-  serverHost = 'http://127.0.0.1:8080'
+  serverHost = 'http://support.edu.envol.vip'
+  // serverHost = 'http://127.0.0.1:8080'
 }
 app.use('/api', proxy({
   target: serverHost,
@@ -73,6 +73,11 @@ app.use('/api', proxy({
       proxyReq.setHeader('openId', req.session.userInfo.openid);
     }
   }
+}));
+
+app.use('/v2', proxy({
+  target: 'https://h5.youzan.com',
+  changeOrigin: true
 }));
 
 app.use('/attach', proxy({
