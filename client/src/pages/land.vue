@@ -18,7 +18,7 @@
           {{lastDate}}前务必添加完成
         </div>
         <div class="mb-3">
-          添加时请备注【三期N2】或【三期N3】
+          添加时请备注报名小说名字
         </div>
         <div style="min-height: 142px">
           <img src="../assets/qrcode.jpg" alt="扫描二维码" width="135px" style="margin: 0 auto"/>
